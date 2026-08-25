@@ -1,13 +1,13 @@
-# CRAFT — project page
+# TRACE — project page
 
-Static project page for **CRAFT: Compiling Proactive Sensing Experiences into Executable
-Skills for Mobile Embodied Agents** (anonymous submission, under review).
+Static project page for **TRACE: From Slow Thinking to Fast Execution for Mobile Embodied
+Agents** (anonymous submission, under review).
 
 Everything is a single `index.html` plus assets. No build step, no dependencies.
 
 ```
 index.html            the page
-assets/fig/*.webp     figures rendered from the submission
+assets/fig/*.webp     figures rendered from the current submission source
 assets/video/*.mp4    clips from the physical testbeds
 ```
 
