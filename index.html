@@ -245,6 +245,13 @@ footer{border-top:1px solid var(--line);padding:26px 0 60px;color:var(--muted);f
     a hit replays the graph with no model between calls, a miss deliberates. The right-hand
     column is what all-stream sensing costs by comparison.</figcaption>
   </figure>
+  <figure class="card" style="margin-bottom:22px">
+    <img src="assets/fig/Motivation_example.webp" alt="Practice turns step-by-step reasoning into one-pass replay" loading="lazy">
+    <figcaption><b>The idea in one picture.</b> The first instance of a task is reasoned through
+    step by step. What that reasoning produced is compiled, and every later instance of the same
+    kind replays it in one pass, the way a practised maneuver stops needing to be thought
+    through.</figcaption>
+  </figure>
   <div class="steps">
     <div class="step"><div class="n">1</div><div>
       <h3>One tool interface for sensing and action</h3>
@@ -283,11 +290,6 @@ footer{border-top:1px solid var(--line);padding:26px 0 60px;color:var(--muted);f
       <img src="assets/fig/SkillGraph.webp" alt="A compiled skill graph with guarded and linear forms" loading="lazy">
       <figcaption>A compiled skill graph. Predicated edges let one branch wait on a self-loop and
       divert to a higher-fidelity node; the linear form runs one order throughout.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/Motivation_example.webp" alt="Practice turns step-by-step reasoning into one-pass replay" loading="lazy">
-      <figcaption>Practice turns step-by-step reasoning into one-pass replay, the way a
-      practised maneuver stops needing to be thought through.</figcaption>
     </figure>
     <figure class="card">
       <img src="assets/fig/TaskExample.webp" alt="One task on a deployed agent" loading="lazy">
