@@ -2,543 +2,578 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="description" content="CRAFT: Compiling Proactive Sensing Experiences into Executable Skills for Mobile Embodied Agents">
+<meta name="keywords" content="proactive sensing, mobile embodied agents, sensing skills, on-device inference, multimodal tools, robot, vehicle">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CRAFT — Compiling Proactive Sensing Experiences into Executable Skills</title>
-<meta name="description" content="CRAFT compiles a reasoned-out proactive sensing chain into an executable skill that a mobile device replays with no model inference between sensing steps.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<title>CRAFT: Compiling Proactive Sensing Experiences into Executable Skills</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
 <style>
-:root{
-  --bg:#EDF0F1; --surface:#FFFFFF; --sunk:#E3E7E9; --ink:#12171A; --muted:#59646A;
-  --line:#D4DADD; --accent:#B4600A; --accent2:#1F6F45; --chip:#DEE4E6;
-  --shadow:0 1px 2px rgba(18,23,26,.07),0 10px 28px rgba(18,23,26,.06);
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --bg:#0B0F12; --surface:#131A1F; --sunk:#0E1418; --ink:#E5ECF0; --muted:#8B989F;
-    --line:#212B31; --accent:#FF9B33; --accent2:#5FCC77; --chip:#1C252B;
-    --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.35);
-  }
-}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:#4a4a4a;font-family:"Noto Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:1em;font-weight:400;line-height:1.5}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Source Serif 4",Georgia,serif;font-size:17px;line-height:1.62;
-  -webkit-font-smoothing:antialiased}
-h1,h2,h3,nav,.mono,.lab,table,.btn,.stat .v{font-family:Inter,system-ui,"Helvetica Neue",Arial,sans-serif}
-.mono,code,.lab,.tl-t{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
-a{color:var(--accent)}
-.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-.lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+a{color:#3273dc;text-decoration:none}
+a:hover{text-decoration:underline}
+strong{color:#363636;font-weight:700}
 
-nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
-  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;align-items:center;gap:26px;height:52px;font-size:14px}
-nav b{font-weight:700;letter-spacing:.02em}
-nav a{color:var(--muted);text-decoration:none}
-nav a:hover{color:var(--ink)}
-nav .spacer{flex:1}
-@media (max-width:720px){nav .hideS{display:none}}
+.section{padding:3rem 1.5rem}
+.hero-body{padding:3rem 1.5rem}
+.container{margin:0 auto;position:relative;width:auto;max-width:1110px}
+.container.is-max-desktop{max-width:960px}
+.has-text-centered{text-align:center}
+.has-text-justified{text-align:justify}
+.is-full-width{width:100%}
+.column.is-three-quarters{max-width:75%;margin:0 auto}
+@media (max-width:768px){.column.is-three-quarters{max-width:100%}}
 
-header{padding:64px 0 10px}
-header h1{font-size:clamp(30px,4.6vw,50px);line-height:1.08;letter-spacing:-.024em;
-  margin:.15em 0 .28em;font-weight:700;text-wrap:balance}
-header h1 .m{color:var(--accent)}
-header p.dek{margin:0;max-width:64ch;color:var(--muted);font-size:18.5px}
-.badges{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0 0}
-.badge{font-family:"IBM Plex Mono",monospace;font-size:12px;padding:6px 11px;border-radius:999px;
-  background:var(--chip);color:var(--muted);border:1px solid var(--line)}
+.title{color:#363636;font-family:"Google Sans","Noto Sans",sans-serif;font-weight:600;line-height:1.125;margin:0 0 1.5rem}
+.title.is-1{font-size:2.7rem;font-weight:700;letter-spacing:-.01em}
+.title.is-3{font-size:2rem}
+.title.is-4{font-size:1.5rem;margin-bottom:1rem}
+.subtitle{color:#4a4a4a;font-size:1.25rem;font-weight:400;line-height:1.25}
+@media (max-width:768px){.title.is-1{font-size:1.9rem}.title.is-3{font-size:1.5rem}}
 
-section{padding:44px 0}
-section>.wrap>h2{font-size:26px;letter-spacing:-.015em;margin:0 0 6px;font-weight:700}
-section>.wrap>p.sub{margin:0 0 22px;color:var(--muted);max-width:70ch}
+.publication-title{margin-bottom:1.2rem}
+.publication-authors{color:#363636;font-family:"Google Sans","Noto Sans",sans-serif;font-size:1.25rem;line-height:1.7}
+.publication-authors .author-block{display:inline-block}
+.publication-venue{display:inline-block;margin-top:.6rem;font-weight:700;color:#363636}
+.publication-note{font-size:.82em;color:#7a7a7a}
+.publication-links{margin-top:1.6rem}
+.link-block{display:inline-block}
+.button{display:inline-flex;align-items:center;gap:.5em;border:1px solid transparent;border-radius:9999px;
+  background:#363636;color:#fff;cursor:pointer;font-family:"Google Sans","Noto Sans",sans-serif;font-size:1rem;
+  padding:.55em 1.35em;margin:.25rem;text-decoration:none;transition:background .15s}
+.button:hover{background:#4a4a4a;color:#fff;text-decoration:none}
+.button.is-muted{background:#8f8f8f;cursor:default}
+.button.is-muted:hover{background:#8f8f8f}
+.button .icon{font-size:1.05em;line-height:1}
 
-figure{margin:0}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;
-  overflow:hidden;box-shadow:var(--shadow)}
-.card img,.card video{display:block;width:100%;height:auto;background:var(--sunk)}
-.card figcaption,.cap{padding:12px 16px;font-size:14px;color:var(--muted);
-  border-top:1px solid var(--line)}
-.cap b{color:var(--ink);font-weight:600}
+img.teaser,video.teaser{display:block;margin:0 auto;max-width:100%;height:auto;border-radius:4px}
+.media-caption{margin:.9rem auto 0;max-width:900px;color:#5b5b5b;font-size:.95rem;line-height:1.55}
+.content p{margin:0 0 1.1em}
+.content ol,.content ul{margin:0 0 1.1em 1.4em;padding:0}
+.content li{margin-bottom:.5em}
+.content{color:#4a4a4a}
 
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;
-  background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:26px 0 0}
-.stat{background:var(--surface);padding:17px 18px}
-.stat .v{font-size:27px;font-weight:600;letter-spacing:-.02em;margin-top:4px;
-  font-variant-numeric:tabular-nums;color:var(--accent)}
-.stat .d{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.figrow{display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:center;margin-top:1.2rem}
+.figrow>figure{flex:1 1 280px;margin:0}
+.figrow.two>figure{flex:1 1 400px}
+.figrow img{width:100%;height:auto;border-radius:4px;background:#fafafa}
+.figrow figcaption{margin-top:.6rem;color:#5b5b5b;font-size:.9rem;line-height:1.5;text-align:left}
 
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-@media (max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+.comparisons-row{display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:center;margin-bottom:1.6rem}
+.comparison{flex:1 1 420px}
+.comparison video{width:100%;height:auto;border-radius:4px;background:#000;display:block}
+.comparison .cap{margin-top:.6rem;color:#5b5b5b;font-size:.9rem;line-height:1.55;text-align:left}
+.comparison .cap b{color:#363636}
 
-.steps{display:grid;gap:14px;counter-reset:s}
-.step{display:grid;grid-template-columns:34px 1fr;gap:14px;background:var(--surface);
-  border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-.step .n{width:26px;height:26px;border-radius:7px;background:var(--chip);color:var(--ink);
-  display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600}
-.step h3{margin:0 0 3px;font-size:16.5px;font-weight:600}
-.step p{margin:0;color:var(--muted);font-size:15px}
+.tablewrap{overflow-x:auto;margin:0 0 1rem}
+table.res{border-collapse:collapse;width:100%;text-align:center;font-size:.86rem;
+  font-family:"Noto Sans",Arial,sans-serif;font-variant-numeric:tabular-nums}
+table.res thead tr{border-bottom:2px solid #333}
+table.res thead tr.sub{border-bottom:1px solid #999}
+table.res th{padding:7px 9px;font-weight:600;color:#363636;white-space:nowrap}
+table.res td{padding:6px 9px;white-space:nowrap}
+table.res tbody tr.rule td{border-top:1.5px solid #333}
+table.res tbody tr.ours{background:#f4f7fb}
+table.res tbody tr.ours td{font-weight:600;color:#363636}
+table.res tbody tr:last-child td{border-bottom:2px solid #333}
+table.res td.first,table.res th.first{text-align:left}
+.tabcap{color:#5b5b5b;font-size:.9rem;line-height:1.55;margin:.2rem 0 0}
 
-table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
-.tscroll{overflow-x:auto;background:var(--surface);border:1px solid var(--line);
-  border-radius:12px;box-shadow:var(--shadow)}
-th,td{padding:8px 11px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
-th:first-child,td:first-child{text-align:left}
-thead th{color:var(--muted);font-weight:500;font-size:12px;letter-spacing:.03em;
-  text-transform:uppercase;background:var(--sunk)}
-tbody tr.ours{background:color-mix(in srgb,var(--accent) 9%,var(--surface))}
-tbody tr.ours td{font-weight:600}
-tbody tr.rule td{border-top:2px solid var(--line)}
-td.best{color:var(--accent);font-weight:700}
+table.trace{border-collapse:collapse;width:100%;font-size:.86rem;text-align:left}
+table.trace thead tr{border-bottom:2px solid #333}
+table.trace th{padding:7px 9px;font-weight:600;color:#363636}
+table.trace td{padding:8px 9px;border-bottom:1px solid #e6e6e6;vertical-align:top}
+table.trace td.tool{font-family:"SF Mono",Menlo,Consolas,monospace;color:#b4600a;white-space:nowrap}
+table.trace td.win{font-family:"SF Mono",Menlo,Consolas,monospace;color:#7a7a7a;white-space:nowrap}
+table.trace td.obs{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.82rem;color:#363636;line-height:1.5}
+table.trace tr.commit td{background:#f4f7fb;border-bottom:2px solid #333}
 
-.chain{display:grid;gap:10px}
-.turn{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
-.turn .head{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
-.turn .tool{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--accent)}
-.turn .t{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--muted)}
-.turn .why{font-size:14px;color:var(--muted);margin-left:auto}
-.turn .obs{margin:9px 0 0;padding:9px 11px;background:var(--sunk);border-radius:8px;
-  font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.55;
-  color:var(--ink);white-space:pre-wrap;overflow-x:auto}
-.turn.answer{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,var(--surface))}
-
-pre.bib{background:var(--surface);border:1px solid var(--line);border-radius:12px;
-  padding:16px 18px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:13px;
-  line-height:1.6;box-shadow:var(--shadow)}
-.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);
-  border-radius:10px;padding:14px 17px;font-size:15px;color:var(--muted)}
-.note b{color:var(--ink)}
-footer{border-top:1px solid var(--line);padding:26px 0 60px;color:var(--muted);font-size:13.5px}
+pre{background:#f5f5f5;color:#363636;padding:1.1rem 1.25rem;overflow-x:auto;border-radius:4px;
+  font-size:.85rem;line-height:1.6;white-space:pre}
+code{font-family:"SF Mono",Menlo,Consolas,monospace}
+.callout{border-left:4px solid #b4600a;background:#fbf7f2;padding:.9rem 1.15rem;border-radius:0 4px 4px 0;
+  color:#5b5b5b;font-size:.95rem;line-height:1.6;margin:1.2rem 0}
+.callout b{color:#363636}
+footer{background:#fafafa;border-top:1px solid #ededed;padding:2.2rem 1.5rem;color:#7a7a7a;font-size:.85rem;line-height:1.6}
+footer .container{max-width:960px}
+footer a{color:#3273dc}
+hr.rule{border:0;border-top:1px solid #ededed;margin:0}
 </style>
 </head>
 <body>
 
-<nav><div class="wrap">
-  <b>CRAFT</b>
-  <a href="#abstract">Abstract</a>
-  <a href="#why" class="hideS">Why</a>
-  <a href="#method">Method</a>
-  <a href="#demos">Demos</a>
-  <a href="#episode" class="hideS">One episode</a>
-  <a href="#results">Results</a>
-  <span class="spacer"></span>
-  <a href="#bibtex" class="hideS">BibTeX</a>
-</div></nav>
-
-<header><div class="wrap">
-  <div class="lab">Anonymous submission &middot; under review</div>
-  <h1><span class="m">CRAFT</span>: Compiling Proactive Sensing Experiences into Executable Skills for Mobile Embodied Agents</h1>
-  <p class="dek">A mobile agent that decides what to sense next pays for a model generation
-  after every sensing step. CRAFT compiles the chain it already reasoned out into an
-  executable skill, and the device replays that skill with no model inference between
-  sensing calls.</p>
-  <div class="badges">
-    <span class="badge">7 embodied datasets</span>
-    <span class="badge">2 physical testbeds</span>
-    <span class="badge">2B on-device brain</span>
-    <span class="badge">paper &amp; code after review</span>
+<!-- Header -->
+<section class="hero" id="top">
+  <div class="hero-body">
+    <div class="container">
+      <div class="has-text-centered">
+        <h1 class="title is-1 publication-title">CRAFT: Compiling Proactive Sensing Experiences into Executable Skills for Mobile Embodied Agents</h1>
+        <div class="publication-authors">
+          <span class="author-block">Anonymous Authors</span>
+          <br><span class="publication-note">author list withheld for double-blind review</span>
+          <br><span class="publication-venue">Under review</span>
+        </div>
+        <div class="publication-links">
+          <span class="link-block"><a class="button is-muted"><span class="icon">&#128196;</span><span>Paper (after review)</span></a></span>
+          <span class="link-block"><a class="button" href="#demo-video"><span class="icon">&#9654;</span><span>Demo Video</span></a></span>
+          <span class="link-block"><a class="button is-muted"><span class="icon">&#128187;</span><span>Code (after review)</span></a></span>
+          <span class="link-block"><a class="button is-muted"><span class="icon">&#128190;</span><span>Data (after review)</span></a></span>
+        </div>
+      </div>
+    </div>
   </div>
-</div></header>
+</section>
 
-<section id="teaser"><div class="wrap">
-  <figure class="card">
-    <video src="assets/video/parking_real.mp4" autoplay muted loop playsinline preload="metadata"></video>
-    <figcaption><b>Guided parking, real car, one real night recording.</b> A person outside
-    the car names a bay by speech and gesture. The 2B brain never sees a pixel directly: it
-    picks which sensing tool to spend its 12-second budget on, and commits to
-    <span class="mono">slot_4</span> after 3.6 seconds and six calls. Overlays are the site's
-    bay map, the arm bearing the gesture tool recovered, and the committed bay.
-    Faces are blurred in every recording on this page.</figcaption>
-  </figure>
-  <div class="stats">
-    <div class="stat"><div class="lab">End-to-end latency</div><div class="v">&minus;42.7%</div>
-      <div class="d">against always invoking the model between sensing steps, accuracy preserved</div></div>
-    <div class="stat"><div class="lab">Deep chains, model calls</div><div class="v">&minus;51.1%</div>
-      <div class="d">on tasks needing three or more sensing calls</div></div>
-    <div class="stat"><div class="lab">Deep chains, tokens</div><div class="v">&minus;45.5%</div>
-      <div class="d">generated tokens removed by replay on the same tasks</div></div>
-    <div class="stat"><div class="lab">A skill hit costs</div><div class="v">25.1%</div>
-      <div class="d">of the time full deliberation spends on the same task</div></div>
+<!-- Teaser -->
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video class="teaser" width="720" autoplay loop muted playsinline preload="metadata">
+        <source src="assets/video/parking_real.mp4" type="video/mp4">
+      </video>
+      <div class="media-caption has-text-centered">
+        CRAFT lets a mobile agent decide what to sense next, then compiles that decision chain into
+        a skill the device replays with no model inference between sensing calls. Above is one real
+        night recording from the vehicle testbed: a person outside the car names a parking bay by
+        speech and gesture, and the 2&nbsp;billion-parameter on-device brain commits to
+        <code>slot_4</code> after six sensing calls and 3.6 seconds of its 12-second budget.
+        Overlays are the site's bay map, the arm bearing recovered by the gesture tool, and the
+        committed bay. Faces are blurred in every recording on this page.
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section id="abstract"><div class="wrap">
-  <h2>Abstract</h2>
-  <p>Mobile embodied agents operate in physical environments where task-relevant information
-  is dispersed across heterogeneous sensors, may appear only briefly, and can sometimes be
-  obtained only through physical interaction. This calls for <em>proactive sensing</em>:
-  deciding at runtime what to sense or do next based on observations collected so far.
-  However, invoking the model after every sensing step incurs substantial latency and energy
-  overhead and may cause the agent to miss the narrow time window in which transient evidence
-  is available.</p>
-  <p>We observe that different task instances often require similar sequences of sensing and
-  action. Building on this observation, we present CRAFT, a proactive-sensing framework that
-  uses cloud compute during training to build a skill compiler and an initial skill library,
-  then deploys both on the mobile device. At runtime, all processing remains on the device:
-  tasks matched to a reliable skill execute it locally without model inference between sensing
-  steps, whereas unmatched tasks fall back to on-device model deliberation. A common tool
-  interface unifies sensing and action, while outcome-based skill selection and
-  confidence-aware fallback sustain the system reliability.</p>
-  <p>Across seven embodied datasets and two physical testbeds spanning vehicles, robots, and
-  wearables, CRAFT reduces end-to-end latency by 42.7% while preserving task accuracy. These
-  savings grow with the number of sensing steps, avoiding up to 51.1% of model invocations and
-  45.5% of generated tokens.</p>
-</div></section>
-
-<section id="why"><div class="wrap">
-  <h2>Why a device cannot just encode everything</h2>
-  <p class="sub">Evidence in a physical scene is sparse, brief, and spread across sensors that
-  each cost something to read. Encoding all of them on every round is both wasteful and too
-  slow to catch the moment that mattered.</p>
-  <figure class="card">
-    <img src="assets/fig/Motivation.webp" alt="A guided parking exchange on the clock: speech and gesture exist only in brief windows" loading="lazy">
-    <figcaption><b>A parking exchange on the clock.</b> The spoken command and the pointing
-    gesture each exist for a couple of seconds and never overlap. Consulting one stream at a time
-    meets both windows. Encoding all three streams every round takes so long that the speech is
-    over before the encoder is free, and the gesture is over before the next round starts.</figcaption>
-  </figure>
-  <div class="grid3" style="margin-top:20px">
-    <figure class="card">
-      <img src="assets/fig/SensorSparsity.webp" alt="Tools consulted per scenario, coarse to fine within each modality" loading="lazy">
-      <figcaption>Which tools a scenario actually consults, coarse to fine within each modality.
-      The pattern is sparse and it differs per scenario, so a fixed sensing set is either short
-      of evidence or full of streams nobody asked for.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/DeliberationCost.webp" alt="Token cost per task split into between-call generation and the final pass, by chain depth" loading="lazy">
-      <figcaption>Where generation goes. Most tokens are spent thinking <em>between</em> tool
-      calls, and that share grows with chain depth, which is exactly the part a compiled skill
-      can delete.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/StrategyCollapse.webp" alt="Coverage of the fifteen most frequent chains" loading="lazy">
-      <figcaption>Chains repeat. The single most frequent chain already covers 29% of embodied
-      tasks and 9% of question answering, which is what makes compiling one worth the trouble.</figcaption>
-    </figure>
+<!-- Abstract -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered">
+      <h3 class="title is-3">Abstract</h3>
+    </div>
+    <div class="content has-text-justified">
+      <p>Mobile embodied agents operate in physical environments where task-relevant information is
+      dispersed across heterogeneous sensors, may appear only briefly, and can sometimes be obtained
+      only through physical interaction. This calls for <em>proactive sensing</em>: deciding at
+      runtime what to sense or do next based on observations collected so far. However, invoking the
+      model after every sensing step incurs substantial latency and energy overhead and may cause the
+      agent to miss the narrow time window in which transient evidence is available.</p>
+      <p>We observe that different task instances often require similar sequences of sensing and
+      action. Building on this observation, we present CRAFT, a proactive-sensing framework that uses
+      cloud compute during training to build a skill compiler and an initial skill library, then
+      deploys both on the mobile device. At runtime, all processing remains on the device: tasks
+      matched to a reliable skill execute it locally without model inference between sensing steps,
+      whereas unmatched tasks fall back to on-device model deliberation. A common tool interface
+      unifies sensing and action, while outcome-based skill selection and confidence-aware fallback
+      sustain the system reliability.</p>
+      <p>Across seven embodied datasets and two physical testbeds spanning vehicles, robots, and
+      wearables, CRAFT reduces end-to-end latency by 42.7% while preserving task accuracy. These
+      savings grow with the number of sensing steps, avoiding up to 51.1% of model invocations and
+      45.5% of generated tokens.</p>
+    </div>
   </div>
-  <div class="grid2" style="margin-top:20px">
-    <figure class="card">
-      <img src="assets/fig/RouteScatter.webp" alt="Accuracy and latency of four sensing policies" loading="lazy">
-      <figcaption><b>Four sensing policies.</b> Accuracy against latency for encoding
-      everything, fixed chains, signal-triggered sensing, and deliberate proactive sensing.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/ModalityGain.webp" alt="Accuracy against sensing time" loading="lazy">
-      <figcaption><b>Accuracy against sensing time.</b> More sensing helps, but only up to the
-      point where the streams stop carrying anything the task needs.</figcaption>
-    </figure>
+</section>
+
+<!-- Demo Video -->
+<section class="section">
+  <div class="container">
+    <div id="demo-video" class="has-text-centered">
+      <div class="column is-three-quarters">
+        <h3 class="title is-3">Demo Video</h3>
+        <video class="teaser" controls playsinline preload="metadata" poster="assets/fig/RealScene.webp">
+          <source src="assets/video/demo_reel.mp4" type="video/mp4">
+        </video>
+        <div class="media-caption">
+          One minute across the four environments CRAFT runs in: guided parking and sentry on a real
+          car, an unseen cabin question, the CARLA street where the evidence sits on a camera the
+          agent has to choose, and dual-arm manipulation on a RealMan rig. Every clip is a real
+          recording, not a rendering of a run.
+        </div>
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section id="method"><div class="wrap">
-  <h2>How CRAFT works</h2>
-  <p class="sub">The cloud thinks each kind of task through once. The device replays what that
-  thinking produced, and falls back to thinking whenever the match is not trustworthy.</p>
-  <figure class="card" style="margin-bottom:22px">
-    <img src="assets/fig/overview_new.webp" alt="CRAFT system overview: cloud-side skill compiler and skill library, device-side adaptive skill execution with fallback to deliberation" loading="lazy">
-    <figcaption><b>System overview.</b> Left: the cloud learns proactive sensing with a
-    verifier and reward, then a skill compiler turns each reasoned chain into a sensing graph
-    that enters the skill library. Right: on the device a query is matched against the library;
-    a hit replays the graph with no model between calls, a miss deliberates. The right-hand
-    column is what all-stream sensing costs by comparison.</figcaption>
-  </figure>
-  <figure class="card" style="margin-bottom:22px">
-    <img src="assets/fig/Motivation_example.webp" alt="Practice turns step-by-step reasoning into one-pass replay" loading="lazy">
-    <figcaption><b>The idea in one picture.</b> The first instance of a task is reasoned through
-    step by step. What that reasoning produced is compiled, and every later instance of the same
-    kind replays it in one pass, the way a practised maneuver stops needing to be thought
-    through.</figcaption>
-  </figure>
-  <div class="steps">
-    <div class="step"><div class="n">1</div><div>
-      <h3>One tool interface for sensing and action</h3>
-      <p>Cameras, microphones, depth, IMU, gaze, trackers, and the arms themselves are all
-      typed JSON tools behind long-lived HTTP services. Adding a sensor changes a YAML
-      contract, not agent code, so the same brain moves between a car, an arm, and a headset.</p>
-    </div></div>
-    <div class="step"><div class="n">2</div><div>
-      <h3>Deliberate once, in the cloud</h3>
-      <p>The brain is trained by distillation from a large omni-modal teacher and then by
-      reinforcement learning against outcome rewards, so a chain ends in a committed answer or
-      action rather than in a description of what it saw.</p>
-    </div></div>
-    <div class="step"><div class="n">3</div><div>
-      <h3>Compile the chain into a skill graph</h3>
-      <p>The compiler keeps the calls, their order, and the guards that decide when a branch
-      applies, and drops the prose. The executor and its guard evaluator are plain Python,
-      under 300 lines, and need no GPU. Graphs live in a SQLite library with their retrieval
-      embeddings.</p>
-    </div></div>
-    <div class="step"><div class="n">4</div><div>
-      <h3>Serve by measured outcome, not by similarity alone</h3>
-      <p>A skill is admitted, kept, or evicted on what it actually scores. At serving time a
-      gate decides between replay and deliberation, and a confidence-aware fallback catches the
-      cases replay should not own. Removing that fallback costs 38 points of mean accuracy,
-      which is what makes it a system rather than a cache.</p>
-    </div></div>
+<hr class="rule">
+
+<!-- Why proactive sensing -->
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h3 class="title is-3">Why a Device Cannot Just Encode Everything</h3>
+    </div>
+    <img class="teaser" src="assets/fig/Motivation.webp" width="900" alt="A guided parking exchange on the clock: speech and gesture exist only in brief windows" loading="lazy">
+    <div class="content has-text-justified" style="margin-top:1.4rem">
+      <p>Evidence in a physical scene is sparse, brief, and spread across sensors that each cost
+      something to read. In the parking exchange above, the spoken command and the pointing gesture
+      each last a couple of seconds and never overlap. Consulting one stream at a time meets both
+      windows. Encoding all three streams on every round takes so long that the speech is over
+      before the encoder is free, and the gesture is over before the next round begins.</p>
+    </div>
+    <div class="figrow">
+      <figure>
+        <img src="assets/fig/SensorSparsity.webp" alt="Tools consulted per scenario, coarse to fine within each modality" loading="lazy">
+        <figcaption>Which tools a scenario actually consults, coarse to fine within each modality.
+        The pattern is sparse and differs per scenario, so any fixed sensing set is either short of
+        evidence or full of streams nobody asked for.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/DeliberationCost.webp" alt="Token cost per task split into between-call generation and the final pass" loading="lazy">
+        <figcaption>Where the generation goes. Most tokens are spent thinking <em>between</em> tool
+        calls, and that share grows with chain depth, which is exactly the part a compiled skill can
+        remove.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/StrategyCollapse.webp" alt="Coverage of the fifteen most frequent chains" loading="lazy">
+        <figcaption>Chains repeat. The single most frequent chain already covers 29% of embodied
+        tasks and 9% of question answering, which is what makes compiling one worth the trouble.</figcaption>
+      </figure>
+    </div>
+    <div class="figrow two">
+      <figure>
+        <img src="assets/fig/RouteScatter.webp" alt="Accuracy and latency of four sensing policies" loading="lazy">
+        <figcaption><b>Four sensing policies.</b> Accuracy against latency for encoding everything,
+        fixed chains, signal-triggered sensing, and deliberate proactive sensing.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/ModalityGain.webp" alt="Accuracy against sensing time" loading="lazy">
+        <figcaption><b>Accuracy against sensing time.</b> More sensing helps, but only up to the
+        point where the extra streams stop carrying anything the task needs.</figcaption>
+      </figure>
+    </div>
   </div>
-  <div class="grid2" style="margin-top:22px">
-    <figure class="card">
-      <img src="assets/fig/ToolPool.webp" alt="The shared pool of sensing and action tools across modalities and granularities" loading="lazy">
-      <figcaption>One shared pool of sensing and action tools, across modalities and levels of
-      granularity. A stream the chain never chooses is never encoded.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/SkillGraph.webp" alt="A compiled skill graph with guarded and linear forms" loading="lazy">
-      <figcaption>A compiled skill graph. Predicated edges let one branch wait on a self-loop and
-      divert to a higher-fidelity node; the linear form runs one order throughout.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/TaskExample.webp" alt="One task on a deployed agent" loading="lazy">
-      <figcaption>One task on a deployed agent. The cloud installs the brain and the initial
-      library once; every later step, the library update included, runs on the device.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/SkillLifeCycle.webp" alt="Skill lifecycle: admission, reuse, and eviction driven by measured outcomes" loading="lazy">
-      <figcaption>A skill's life: admitted after it demonstrates it works, kept while it keeps
-      scoring, evicted when it stops. No hand-written retention rule.</figcaption>
-    </figure>
+</section>
+
+<hr class="rule">
+
+<!-- System Overview -->
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h3 class="title is-3">System Overview</h3>
+      <img class="teaser" src="assets/fig/overview_new.webp" width="960" alt="CRAFT system overview" loading="lazy">
+    </div>
+    <div class="content has-text-justified" style="margin-top:1.4rem">
+      <p>Cloud training produces the skill compiler and an initial skill library. After deployment,
+      the device retrieves, executes, and updates skills on its own. The system has four parts:</p>
+      <ol>
+        <li><strong>One tool interface for sensing and action.</strong> Cameras, microphones, depth,
+        IMU, gaze, trackers, and the arms themselves are typed JSON tools behind long-lived HTTP
+        services. Adding a sensor changes a YAML contract rather than agent code, so the same brain
+        moves between a car, an arm, and a headset.</li>
+        <li><strong>Deliberate once, in the cloud.</strong> The brain is trained by distillation from
+        a large omni-modal teacher and then by reinforcement learning against outcome rewards, so a
+        chain ends in a committed answer or action rather than in a description of what it saw.</li>
+        <li><strong>Compile the chain into a skill graph.</strong> The compiler keeps the calls,
+        their order, and the guards that decide when a branch applies, and drops the prose. The
+        executor and its guard evaluator are plain Python, under 300 lines, and need no GPU. Graphs
+        live in a SQLite library alongside their retrieval embeddings.</li>
+        <li><strong>Serve by measured outcome.</strong> A skill is admitted, kept, or evicted on what
+        it scores. At serving time a gate chooses between replay and deliberation, and a
+        confidence-aware fallback catches the cases replay should not own. Removing that fallback
+        costs 38 points of mean accuracy, which is what makes this a system rather than a cache.</li>
+      </ol>
+    </div>
+    <div class="figrow" style="margin-top:1.4rem">
+      <figure>
+        <img src="assets/fig/ToolPool.webp" alt="The shared pool of sensing and action tools" loading="lazy">
+        <figcaption>The shared tool pool, grouped by the evidence each family produces. Sensing
+        families read what is already there; action families create evidence that did not exist.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/SkillGraph.webp" alt="A compiled skill graph, guarded and linear forms" loading="lazy">
+        <figcaption>A compiled skill graph. Predicated edges let one branch wait on a self-loop and
+        divert to a higher-fidelity node, while the linear form runs one order throughout.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/SkillLifeCycle.webp" alt="Skill lifecycle: admission, reuse, eviction" loading="lazy">
+        <figcaption>A compiled graph is served only while both of its scores hold. Admission, reuse,
+        and eviction follow measured outcomes, not a hand-written retention rule.</figcaption>
+      </figure>
+    </div>
+    <div class="figrow two" style="margin-top:1.4rem">
+      <figure>
+        <img src="assets/fig/Motivation_example.webp" alt="Practice turns step-by-step reasoning into one-pass replay" loading="lazy">
+        <figcaption>Practice turns step-by-step reasoning into one-pass replay, the way a practised
+        maneuver stops needing to be thought through.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/TaskExample.webp" alt="One task on a deployed agent" loading="lazy">
+        <figcaption>One task on a deployed agent. The cloud installs the brain and the initial
+        library once; every later step, the library update included, runs on the device.</figcaption>
+      </figure>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section id="demos"><div class="wrap">
-  <h2>Demos</h2>
-  <p class="sub">Every clip below is real recorded data from the testbeds. Faces are blurred
-  frame by frame with a pose model; nothing else is edited.</p>
+<hr class="rule">
 
-  <div class="grid2">
-    <figure class="card">
-      <video src="assets/video/sentry_real.mp4" controls muted loop playsinline preload="metadata"></video>
-      <figcaption><b>Sentry, real car, garage at night.</b> The car sits parked and unattended.
-      A person walks up and bends over the bonnet. The brain decides which stream to wake and
-      when what it has justifies committing, instead of encoding every camera continuously.
-      Ground truth for this session is <span class="mono">alert</span>, labelled from the
-      recording, not from the model.</figcaption>
-    </figure>
-    <figure class="card">
-      <video src="assets/video/carla_cams.mp4" controls muted loop playsinline preload="metadata"></video>
-      <figcaption><b>Why the choice matters, CARLA.</b> Four cameras, twelve seconds, one
-      spoken command: <em>&ldquo;This spot is no good, take that middle spot.&rdquo;</em> Only
-      <span class="mono">CAM_LEFT</span> ever contains the person pointing. The bars are the
-      windows in which speech and pointing are actually available; a chain that samples outside
-      them comes back empty.</figcaption>
-    </figure>
-    <figure class="card">
-      <video src="assets/video/arm_real.mp4" controls muted loop playsinline preload="metadata"></video>
-      <figcaption><b>Dual-arm manipulation, RealMan RM75-6FB.</b> CRAFT chooses where to look,
-      which arm senses and which acts, and what to measure: it reads a 0.436&nbsp;m gap, asks for
-      a 0.100&nbsp;m push, and closes the loop on the 0.134&nbsp;m the box actually moved. A
-      visuomotor policy with the same cameras but no choice of viewpoint produces no box motion
-      once the box leaves its wrist view.</figcaption>
-    </figure>
-    <figure class="card">
-      <video src="assets/video/cabin_real.mp4" controls muted loop playsinline preload="metadata"></video>
-      <figcaption><b>An unseen cabin task, same 2B brain.</b> Seven recorded cabin classes,
-      150 sessions, two questions the brain was never trained on. Answering
-      <em>&ldquo;what is making that sound&rdquo;</em> needs the audio-event tool: without it the
-      brain scores 0.427, below the 0.467 majority class, and with it 0.760.</figcaption>
-    </figure>
+<!-- One episode -->
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h3 class="title is-3">One Episode, End to End</h3>
+    </div>
+    <div class="content has-text-justified">
+      <p>The real transcript behind the clip at the top of this page. Session
+      <code>park/20260819_195618</code>, gesture measured from the arm, decoding temperature 0. Six
+      calls, 3.6 seconds of a 12-second budget, committed <code>slot_4</code> against a ground truth
+      of <code>slot_4</code>.</p>
+    </div>
+    <div class="tablewrap">
+      <table class="trace">
+        <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Why this call</th><th>What came back</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td class="tool">probe_activity</td><td class="win">0.0 &rarr; 0.2s</td>
+            <td>the cheapest look: is anything happening right now</td>
+            <td class="obs">speech_active=false, gesture_active=false<br>(the probe rarely false-alarms but misses about a quarter of the instants where the event IS running)</td></tr>
+          <tr><td>1</td><td class="tool">listen_speech</td><td class="win">0.2 &rarr; 1.2s</td>
+            <td>overrides the probe and spends a full second on the microphone</td>
+            <td class="obs">transcript: "Comment off over here." | other mic: "Come and bump down the gear."<br>coarse direction word: none</td></tr>
+          <tr><td>2</td><td class="tool">scan_occupancy</td><td class="win">1.2 &rarr; 1.7s</td>
+            <td>a standing fact, safe to sample at any time</td>
+            <td class="obs">occupancy (noisy): bay 0 taken, bays 1-5 free<br>free candidates: [1, 2, 3, 4, 5]</td></tr>
+          <tr><td>3</td><td class="tool">locate_speaker</td><td class="win">1.7 &rarr; 2.0s</td>
+            <td>which side of the car the voice came from</td>
+            <td class="obs">estimated speaker side: front (noisy, confidence 0.8)</td></tr>
+          <tr><td>4</td><td class="tool">select_camera</td><td class="win">2.0 &rarr; 2.1s</td>
+            <td>aim perception at that side before paying for the expensive read</td>
+            <td class="obs">now viewing the front camera</td></tr>
+          <tr><td>5</td><td class="tool">read_gesture</td><td class="win">2.1 &rarr; 3.6s</td>
+            <td>the only tool that can say WHICH bay</td>
+            <td class="obs">arm bearing 28.3&deg;. Bays by distance from the pointing line:<br>slot_4 (0.02 m), slot_3 (2.25 m), slot_5 (2.27 m), slot_2 (4.34 m), slot_1 (6.59 m)<br>cannot see which bays are taken, cross with scan_occupancy</td></tr>
+          <tr class="commit"><td>6</td><td class="tool">commit</td><td class="win">clock stops at 3.6 / 12s</td>
+            <td>nearest free bay on the pointing line</td>
+            <td class="obs">&lt;answer&gt;slot_4&lt;/answer&gt; &nbsp; ground truth slot_4 &nbsp; correct</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><b>One slip, stated plainly.</b> In its last turn the model calls 0.02&nbsp;m
+    &ldquo;the gap&rdquo; and concludes it is in the unreliable regime. The gap to the next free bay is
+    2.25&nbsp;&minus;&nbsp;0.02&nbsp;=&nbsp;2.23&nbsp;m, which is the reliable one. The arithmetic is
+    wrong and the conclusion is right; calling this chain flawless would be overclaiming.</div>
   </div>
+</section>
 
-  <div class="grid2" style="margin-top:20px">
-    <figure class="card">
-      <img src="assets/fig/real_case.webp" alt="One execution on the physical rig: view choice, arm roles, measured push distance, verification" loading="lazy">
-      <figcaption><b>The arm episode, read off the rig.</b> The brain picks a stream, assigns
-      the arm roles, sets the push distance from the gap it measures, then verifies the motion
-      it actually produced against tape.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/cabin.webp" alt="The cabin testbed: a question about the back seat starts from the rear audio stream" loading="lazy">
-      <figcaption><b>The cabin testbed.</b> A question about the back seat starts from the rear
-      audio stream, and only then selects the rear camera view.</figcaption>
-    </figure>
+<hr class="rule">
+
+<!-- Results -->
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h3 class="title is-3">Results Across Seven Embodied Sources</h3>
+    </div>
+    <div class="tablewrap">
+      <table class="res">
+        <thead>
+          <tr class="sub"><th class="first" rowspan="2">Method</th><th rowspan="2">Controller</th>
+            <th colspan="4">Question answering (EM, %)</th><th colspan="3">Embodied (%)</th>
+            <th rowspan="2">Mean</th><th colspan="2">Cost per query</th><th rowspan="2">BS@30s</th></tr>
+          <tr><th>Ego-Exo4D</th><th>HoloAssist</th><th>OmniVideo</th><th>RealSource</th>
+            <th>HM-EQA</th><th>RealMan</th><th>CARLA</th><th>Calls</th><th>Time (s)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="first">Qwen2.5-Omni</td><td>2B</td><td>91.0</td><td>32.0</td><td>35.0</td><td>45.8</td><td>11.8</td><td>69.8</td><td>27.5</td><td>44.7</td><td>14.6</td><td>91.1</td><td>14.7</td></tr>
+          <tr><td class="first">SeeMon</td><td>2B</td><td>92.0</td><td>40.0</td><td>22.0</td><td>62.5</td><td>6.7</td><td>36.0</td><td>33.9</td><td>41.9</td><td>12.4</td><td>96.1</td><td>13.1</td></tr>
+          <tr><td class="first">ProAgent</td><td>2B</td><td>93.5</td><td>41.5</td><td>26.5</td><td>60.4</td><td>10.8</td><td>77.2</td><td>32.5</td><td>48.9</td><td>11.6</td><td>94.1</td><td>15.6</td></tr>
+          <tr><td class="first">AWM</td><td>2B</td><td>92.5</td><td>48.5</td><td>32.0</td><td>58.3</td><td>9.7</td><td>75.4</td><td>37.1</td><td>50.5</td><td>10.5</td><td>84.6</td><td>17.9</td></tr>
+          <tr><td class="first">CoMIC</td><td>2B+27B</td><td>79.0</td><td>42.0</td><td>33.5</td><td>56.3</td><td>14.4</td><td>80.0</td><td>24.5</td><td>47.1</td><td>9.1</td><td>105.6</td><td>13.4</td></tr>
+          <tr><td class="first">TaskSense</td><td>2B+27B</td><td>88.0</td><td>43.0</td><td>30.5</td><td>58.3</td><td>8.7</td><td>38.0</td><td>25.7</td><td>41.7</td><td>12.3</td><td>95.8</td><td>13.1</td></tr>
+          <tr class="rule"><td class="first">Teacher, Qwen3-Omni</td><td>30B</td><td><b>98.0</b></td><td>64.0</td><td><b>62.0</b></td><td>59.7</td><td>48.0</td><td>52.1</td><td>30.2</td><td>59.1</td><td>1.69</td><td>113.9</td><td>15.6</td></tr>
+          <tr class="ours rule"><td class="first">CRAFT-Small</td><td>0.8B</td><td>87.0</td><td>60.0</td><td>56.5</td><td>46.9</td><td>10.8</td><td>79.4</td><td>39.5</td><td>54.3</td><td>2.98</td><td>16.0</td><td>54.3</td></tr>
+          <tr class="ours"><td class="first">CRAFT-Delib</td><td>2B</td><td>90.0</td><td><b>68.5</b></td><td>55.0</td><td><b>79.2</b></td><td>39.5</td><td>92.7</td><td>41.5</td><td>66.6</td><td>4.11</td><td>39.1</td><td>51.1</td></tr>
+          <tr class="ours"><td class="first">CRAFT</td><td>2B</td><td>93.8</td><td>65.6</td><td>58.0</td><td>70.8</td><td>43.6</td><td>95.3</td><td>48.5</td><td><b>67.9</b></td><td>3.44</td><td>22.4</td><td><b>67.9</b></td></tr>
+          <tr class="ours"><td class="first">CRAFT-Large</td><td>4B</td><td>91.0</td><td>54.5</td><td>56.0</td><td>53.5</td><td><b>49.2</b></td><td><b>96.6</b></td><td><b>60.5</b></td><td>65.9</td><td>2.78</td><td>&mdash;</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tabcap">Controller gives request-time model sizes; 2B+27B uses the larger model only to
+    generate guidance or a sensor plan. BS@30s is the score reachable inside a 30-second budget.
+    Entries still open in the submission are shown as &mdash;. The 2B CRAFT row answers in
+    22.4&nbsp;s per query against 91.1&nbsp;s for encoding every stream with the same backbone.</p>
+
+    <div class="figrow two" style="margin-top:2rem">
+      <figure>
+        <img src="assets/fig/DepthSaving.webp" alt="Replay saving grows with chain depth" loading="lazy">
+        <figcaption><b>Longer chains save more.</b> One-call tasks lose 38.1% of reasoning rounds and
+        24.1% of tokens to replay. At three calls or more it is 51.1% and 45.5%.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/GenerationSave.webp" alt="Generation cost with and without skill replay" loading="lazy">
+        <figcaption><b>What replay removes.</b> Deliberation generates between every two tool calls,
+        while replay keeps only the final bounded pass.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/MemoryOnlineUpdate.webp" alt="Reuse climbs and time falls with use" loading="lazy">
+        <figcaption><b>The library earns its keep.</b> Reuse climbs and per-query time falls as more
+        tasks of a kind arrive.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/Fig14_LinkQuality.webp" alt="Latency under degrading link quality" loading="lazy">
+        <figcaption><b>When the link degrades.</b> Replay runs on the device, so latency holds as the
+        connection to any remote helper gets worse.</figcaption>
+      </figure>
+    </div>
+
+    <h4 class="title is-4" style="margin-top:2.4rem">What Each Part Is Worth</h4>
+    <div class="tablewrap">
+      <table class="res">
+        <thead><tr><th class="first">Variant</th><th>Mean</th><th>Skill hit (%)</th><th>Calls</th><th>Tokens</th><th>Time (s)</th><th>BS@30s</th></tr></thead>
+        <tbody>
+          <tr><td class="first">No skill library</td><td>67.5</td><td>0.0</td><td>4.01</td><td>1257</td><td>38.0</td><td>53.3</td></tr>
+          <tr><td class="first">No reflector</td><td>61.1</td><td>72.0</td><td>3.77</td><td>872</td><td>27.5</td><td>61.1</td></tr>
+          <tr><td class="first">Commit skill answers</td><td>64.6</td><td>70.0</td><td>3.62</td><td>712</td><td>24.6</td><td>64.6</td></tr>
+          <tr><td class="first">No serving gate</td><td>62.6</td><td>75.0</td><td>3.56</td><td>795</td><td>27.2</td><td>62.6</td></tr>
+          <tr><td class="first">No fallback</td><td>29.9</td><td>72.0</td><td>2.64</td><td>344</td><td>9.5</td><td>29.9</td></tr>
+          <tr class="ours rule"><td class="first">CRAFT</td><td>67.9</td><td>71.8</td><td>3.44</td><td>730</td><td>22.4</td><td><b>67.9</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tabcap">Dropping the library keeps accuracy and loses the savings. Dropping the
+    fallback keeps the savings and loses the system.</p>
   </div>
+</section>
 
-  <figure class="card" style="margin-top:20px">
-    <img src="assets/fig/RealScene.webp" alt="The four environments: MuJoCo simulation, RealMan dual-arm robot, CARLA, and a real car" loading="lazy">
-    <figcaption><b>Where CRAFT runs.</b> Simulated dual-arm manipulation in MuJoCo, the
-    physical RealMan rig, CARLA for guided parking and sentry, and the real vehicle carrying two
-    external cameras, depth, and a microphone array.</figcaption>
-  </figure>
-</div></section>
+<hr class="rule">
 
-<section id="episode"><div class="wrap">
-  <h2>One episode, end to end</h2>
-  <p class="sub">The real transcript behind the clip at the top of this page. Session
-  <span class="mono">park/20260819_195618</span>, gesture measured from the arm, decoding
-  temperature 0. Six calls, 3.6 seconds of a 12-second budget, committed
-  <span class="mono">slot_4</span>, ground truth <span class="mono">slot_4</span>.</p>
-  <div class="chain">
-    <div class="turn"><div class="head"><span class="tool">probe_activity</span>
-      <span class="t">0.0s &rarr; 0.2s</span>
-      <span class="why">the cheapest look: is anything happening right now</span></div>
-      <div class="obs">speech_active=false  gesture_active=false
-(the probe almost never false-alarms, but it misses roughly a quarter of the
- instants where the event IS running, so one "false" does not mean it is over)</div></div>
-    <div class="turn"><div class="head"><span class="tool">listen_speech</span>
-      <span class="t">0.2s &rarr; 1.2s</span>
-      <span class="why">overrides the probe and spends a full second on the microphone</span></div>
-      <div class="obs">transcript: "Comment off over here." | other mic: "Come and bump down the gear."
-coarse direction word: none (the language does not localize the bay)</div></div>
-    <div class="turn"><div class="head"><span class="tool">scan_occupancy</span>
-      <span class="t">1.2s &rarr; 1.7s</span>
-      <span class="why">a standing fact, safe to sample at any time</span></div>
-      <div class="obs">occupancy (noisy): {0: taken, 1-5: free}   free candidates: [1, 2, 3, 4, 5]</div></div>
-    <div class="turn"><div class="head"><span class="tool">locate_speaker</span>
-      <span class="t">1.7s &rarr; 2.0s</span>
-      <span class="why">which side of the car the voice came from</span></div>
-      <div class="obs">estimated speaker side: front (noisy, confidence 0.8)</div></div>
-    <div class="turn"><div class="head"><span class="tool">select_camera</span>
-      <span class="t">2.0s &rarr; 2.1s</span>
-      <span class="why">aim perception at that side before paying for the expensive read</span></div>
-      <div class="obs">now viewing the front camera</div></div>
-    <div class="turn"><div class="head"><span class="tool">read_gesture</span>
-      <span class="t">2.1s &rarr; 3.6s</span>
-      <span class="why">the only tool that can say WHICH bay</span></div>
-      <div class="obs">arm bearing 28.3 deg. Bays ordered by distance from the line the arm traces:
-  slot_4 (0.02 m), slot_3 (2.25 m), slot_5 (2.27 m), slot_2 (4.34 m), slot_1 (6.59 m)
-This reader cannot see which bays are taken. Cross it with scan_occupancy.</div></div>
-    <div class="turn answer"><div class="head"><span class="tool">commit</span>
-      <span class="t">clock stops at 3.6s of 12</span>
-      <span class="why">nearest free bay on the pointing line</span></div>
-      <div class="obs">&lt;answer&gt;slot_4&lt;/answer&gt;   ground truth slot_4   correct</div></div>
+<!-- Real deployment -->
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h3 class="title is-3">Real-World Deployment</h3>
+      <img class="teaser" src="assets/fig/RealScene.webp" width="900" alt="The four environments: MuJoCo, RealMan, CARLA, and a real car" loading="lazy">
+      <div class="media-caption">The two embodiments, each in its simulated and its real form:
+      dual-arm manipulation in MuJoCo and on a RealMan rig, and a vehicle in CARLA and on a real car
+      carrying two external cameras, depth, and a microphone array.</div>
+    </div>
+
+    <h4 class="title is-4" style="margin-top:2.4rem">On the Real Car</h4>
+    <div class="tablewrap">
+      <table class="res">
+        <thead><tr><th class="first">Method</th><th>Controller</th><th>Parking (n=41)</th><th>Sentry (n=25)</th><th>Mean</th></tr></thead>
+        <tbody>
+          <tr><td class="first">Majority class</td><td>&mdash;</td><td>34.1</td><td>56.0</td><td>45.1</td></tr>
+          <tr class="rule"><td class="first">Qwen2.5-Omni</td><td>3B</td><td>34.1</td><td>56.0</td><td>45.1</td></tr>
+          <tr><td class="first">Qwen2.5-Omni</td><td>7B</td><td>7.3</td><td>60.0</td><td>33.7</td></tr>
+          <tr><td class="first">Unconditional sensing</td><td>2B</td><td>43.9</td><td>72.0</td><td>58.0</td></tr>
+          <tr><td class="first">Static chaining</td><td>2B</td><td>24.4</td><td>72.0</td><td>48.2</td></tr>
+          <tr><td class="first">ProAgent</td><td>2B</td><td>19.5</td><td>72.0</td><td>45.8</td></tr>
+          <tr><td class="first">AWM</td><td>2B</td><td><b>61.0</b></td><td>68.0</td><td>64.5</td></tr>
+          <tr><td class="first">CoMIC</td><td>2B+27B</td><td>48.8</td><td>68.0</td><td>58.4</td></tr>
+          <tr><td class="first">TaskSense</td><td>2B+27B</td><td>46.3</td><td>68.0</td><td>57.2</td></tr>
+          <tr class="ours rule"><td class="first">CRAFT, SFT only</td><td>2B</td><td>34.1</td><td><b>76.0</b></td><td>55.1</td></tr>
+          <tr class="ours"><td class="first">CRAFT</td><td>2B</td><td>58.5</td><td>72.0</td><td><b>65.3</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tabcap">Held-out episodes only. Parking is scored as exact identification of the
+    intended bay.</p>
+    <div class="callout"><b>What limits the real-car number.</b> These rows run the lane where the
+    gesture tool returns the labelled bay's bearing plus the noise the training environment adds, and
+    a procedure-perfect chain there reaches 91.2%. In the harder lane, where the bearing is recovered
+    from the arm in the forward camera, the reading carries a median error of 18.8&nbsp;degrees, a
+    procedure-perfect chain reaches only 36.9%, and CRAFT reaches 17.1%. That lane is measuring the
+    gesture reader, not the policy.</div>
+
+    <h4 class="title is-4" style="margin-top:2.4rem">Recordings from the Testbeds</h4>
+    <div class="comparisons-row">
+      <div class="comparison">
+        <video controls muted loop playsinline preload="metadata"><source src="assets/video/sentry_real.mp4" type="video/mp4"></video>
+        <div class="cap"><b>Sentry, real car, garage at night.</b> The car sits parked and unattended
+        while a person walks up and bends over the bonnet. The brain decides which stream to wake and
+        when what it has justifies a verdict, instead of encoding every camera continuously. Ground
+        truth for this session is <code>alert</code>, labelled from the recording rather than by the
+        model.</div>
+      </div>
+      <div class="comparison">
+        <video controls muted loop playsinline preload="metadata"><source src="assets/video/carla_cams.mp4" type="video/mp4"></video>
+        <div class="cap"><b>Why the choice matters, CARLA.</b> Four cameras, twelve seconds, one
+        spoken command: <em>&ldquo;This spot is no good, take that middle spot.&rdquo;</em> Only
+        <code>CAM_LEFT</code> ever contains the person pointing. The bars are the windows in which
+        speech and pointing are actually available, and a chain that samples outside them comes back
+        empty.</div>
+      </div>
+    </div>
+    <div class="comparisons-row">
+      <div class="comparison">
+        <video controls muted loop playsinline preload="metadata"><source src="assets/video/arm_real.mp4" type="video/mp4"></video>
+        <div class="cap"><b>Dual-arm manipulation, RealMan RM75-6FB.</b> CRAFT chooses where to look,
+        which arm senses and which acts, and what to measure: it reads a 0.436&nbsp;m gap, asks for a
+        0.100&nbsp;m push, and closes the loop on the 0.134&nbsp;m the box actually moved. A visuomotor
+        policy with the same cameras but no choice of viewpoint produces no box motion once the box
+        leaves its wrist view.</div>
+      </div>
+      <div class="comparison">
+        <video controls muted loop playsinline preload="metadata"><source src="assets/video/cabin_real.mp4" type="video/mp4"></video>
+        <div class="cap"><b>An unseen cabin task, same 2B brain.</b> Seven recorded cabin classes,
+        150 sessions, two questions the brain was never trained on. Answering <em>what is making that
+        sound</em> needs the audio-event tool: without it the brain scores 0.427, below the 0.467
+        majority class, and with it 0.760.</div>
+      </div>
+    </div>
+    <div class="figrow two" style="margin-top:1.6rem">
+      <figure>
+        <img src="assets/fig/real_case.webp" alt="One execution on the physical rig" loading="lazy">
+        <figcaption><b>The arm episode, read off the rig.</b> The brain picks a stream, assigns the
+        arm roles, sets the push distance from the gap it measures, then verifies the motion it
+        produced against tape.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig/cabin.webp" alt="The cabin testbed" loading="lazy">
+        <figcaption><b>The cabin testbed.</b> A question about the back seat starts from the rear
+        audio stream, and only then selects the rear camera view.</figcaption>
+      </figure>
+    </div>
   </div>
-  <div class="note" style="margin-top:16px"><b>One slip, stated plainly.</b> In its last turn the
-  model calls 0.02&nbsp;m &ldquo;the gap&rdquo; and concludes it is in the unreliable regime. The gap to
-  the next free bay is 2.25&nbsp;&minus;&nbsp;0.02&nbsp;=&nbsp;2.23&nbsp;m, which is the reliable one. The
-  arithmetic is wrong and the conclusion is right; calling this chain flawless would be
-  overclaiming.</div>
-</div></section>
+</section>
 
-<section id="results"><div class="wrap">
-  <h2>Results</h2>
-  <p class="sub">Seven embodied sources and two physical testbeds. Controller gives
-  request-time model sizes; 2B+27B means the larger model is used only to generate guidance or
-  a sensor plan. BS@30s is the score reachable inside a 30-second budget. Entries not yet
-  filled in the submission are shown as &mdash;.</p>
+<hr class="rule">
 
-  <div class="tscroll">
-  <table>
-    <thead><tr>
-      <th>Method</th><th>Controller</th>
-      <th>Ego-Exo4D</th><th>HoloAssist</th><th>OmniVideo</th><th>RealSource</th>
-      <th>HM-EQA</th><th>RealMan</th><th>CARLA</th>
-      <th>Mean</th><th>Calls</th><th>Time (s)</th><th>BS@30s</th>
-    </tr></thead>
-    <tbody>
-      <tr><td>Qwen2.5-Omni</td><td>2B</td><td>91.0</td><td>32.0</td><td>35.0</td><td>45.8</td><td>11.8</td><td>69.8</td><td>27.5</td><td>44.7</td><td>14.6</td><td>91.1</td><td>14.7</td></tr>
-      <tr><td>SeeMon</td><td>2B</td><td>92.0</td><td>40.0</td><td>22.0</td><td>62.5</td><td>6.7</td><td>36.0</td><td>33.9</td><td>41.9</td><td>12.4</td><td>96.1</td><td>13.1</td></tr>
-      <tr><td>ProAgent</td><td>2B</td><td>93.5</td><td>41.5</td><td>26.5</td><td>60.4</td><td>10.8</td><td>77.2</td><td>32.5</td><td>48.9</td><td>11.6</td><td>94.1</td><td>15.6</td></tr>
-      <tr><td>AWM</td><td>2B</td><td>92.5</td><td>48.5</td><td>32.0</td><td>58.3</td><td>9.7</td><td>75.4</td><td>37.1</td><td>50.5</td><td>10.5</td><td>84.6</td><td>17.9</td></tr>
-      <tr><td>CoMIC</td><td>2B+27B</td><td>79.0</td><td>42.0</td><td>33.5</td><td>56.3</td><td>14.4</td><td>80.0</td><td>24.5</td><td>47.1</td><td>9.1</td><td>105.6</td><td>13.4</td></tr>
-      <tr><td>TaskSense</td><td>2B+27B</td><td>88.0</td><td>43.0</td><td>30.5</td><td>58.3</td><td>8.7</td><td>38.0</td><td>25.7</td><td>41.7</td><td>12.3</td><td>95.8</td><td>13.1</td></tr>
-      <tr class="rule"><td>Teacher, Qwen3-Omni</td><td>30B</td><td class="best">98.0</td><td>64.0</td><td class="best">62.0</td><td>59.7</td><td>48.0</td><td>52.1</td><td>30.2</td><td>59.1</td><td>1.69</td><td>113.9</td><td>15.6</td></tr>
-      <tr class="ours rule"><td>CRAFT-Small</td><td>0.8B</td><td>87.0</td><td>60.0</td><td>56.5</td><td>46.9</td><td>10.8</td><td>79.4</td><td>39.5</td><td>54.3</td><td>2.98</td><td>16.0</td><td>54.3</td></tr>
-      <tr class="ours"><td>CRAFT-Delib</td><td>2B</td><td>90.0</td><td class="best">68.5</td><td>55.0</td><td class="best">79.2</td><td>39.5</td><td>92.7</td><td>41.5</td><td>66.6</td><td>4.11</td><td>39.1</td><td>51.1</td></tr>
-      <tr class="ours"><td>CRAFT</td><td>2B</td><td>93.8</td><td>65.6</td><td>58.0</td><td>70.8</td><td>43.6</td><td>95.3</td><td>48.5</td><td class="best">67.9</td><td>3.44</td><td>22.4</td><td class="best">67.9</td></tr>
-      <tr class="ours"><td>CRAFT-Large</td><td>4B</td><td>91.0</td><td>54.5</td><td>56.0</td><td>53.5</td><td class="best">49.2</td><td class="best">96.6</td><td class="best">60.5</td><td>65.9</td><td>2.78</td><td>&mdash;</td><td>&mdash;</td></tr>
-    </tbody>
-  </table>
+<!-- Code and data -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered">
+      <h3 class="title is-3">Code and Data</h3>
+    </div>
+    <div class="content has-text-justified">
+      <p>The prototype is over 15,000 lines of Python built on PyTorch, verl, and vLLM. Tools run as
+      long-lived HTTP services with typed JSON interfaces, so each specialist model is loaded once and
+      shared across training, evaluation, and serving. The skill library is a SQLite file holding each
+      graph as canonical JSON together with its retrieval embedding, which makes a library easy to
+      copy and evaluate reproducibly.</p>
+      <p>Code, the skill libraries, and the recorded vehicle and cabin sessions will be released after
+      review. This page is kept free of author and institution identity until then.</p>
+    </div>
   </div>
-  <p class="cap" style="border:0;padding:10px 2px"><b>Overall performance across seven data
-  sources.</b> Question answering is exact match; embodied scores are task success. The 2B CRAFT
-  row answers in 22.4&nbsp;s per query against 91.1&nbsp;s for encoding every stream with the same
-  backbone.</p>
+</section>
 
-  <div class="grid2" style="margin-top:26px">
-    <figure class="card">
-      <img src="assets/fig/DepthSaving.webp" alt="Savings from replay grow with chain depth" loading="lazy">
-      <figcaption><b>Longer chains save more.</b> One-call tasks lose 38.1% of reasoning rounds
-      and 24.1% of tokens to replay. At three calls or more it is 51.1% and 45.5%.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/GenerationSave.webp" alt="Generation cost with and without skill replay" loading="lazy">
-      <figcaption><b>What replay removes.</b> Each additional tool would otherwise require
-      another model decision, so every extra step is work replay can delete.</figcaption>
-    </figure>
-  </div>
-
-  <div class="grid2" style="margin-top:20px">
-    <figure class="card">
-      <img src="assets/fig/MemoryOnlineUpdate.webp" alt="Reuse climbs and time falls as the library is used" loading="lazy">
-      <figcaption><b>The library earns its keep with use.</b> Reuse climbs and per-query time
-      falls as more tasks of a kind arrive.</figcaption>
-    </figure>
-    <figure class="card">
-      <img src="assets/fig/Fig14_LinkQuality.webp" alt="Latency under degrading link quality" loading="lazy">
-      <figcaption><b>When the link degrades.</b> Replay runs on the device, so latency holds as
-      the connection to any remote helper gets worse.</figcaption>
-    </figure>
-  </div>
-
-  <h3 style="margin:34px 0 6px;font-size:19px">On the real car</h3>
-  <p class="sub">Held-out episodes only. Parking is scored as exact identification of the
-  intended bay.</p>
-  <div class="tscroll">
-  <table>
-    <thead><tr><th>Method</th><th>Controller</th><th>Parking (n=41)</th><th>Sentry (n=25)</th><th>Mean</th></tr></thead>
-    <tbody>
-      <tr><td>Majority class</td><td>&mdash;</td><td>34.1</td><td>56.0</td><td>45.1</td></tr>
-      <tr class="rule"><td>Qwen2.5-Omni</td><td>3B</td><td>34.1</td><td>56.0</td><td>45.1</td></tr>
-      <tr><td>Qwen2.5-Omni</td><td>7B</td><td>7.3</td><td>60.0</td><td>33.7</td></tr>
-      <tr><td>Unconditional sensing</td><td>2B</td><td>43.9</td><td>72.0</td><td>58.0</td></tr>
-      <tr><td>Static chaining</td><td>2B</td><td>24.4</td><td>72.0</td><td>48.2</td></tr>
-      <tr><td>ProAgent</td><td>2B</td><td>19.5</td><td>72.0</td><td>45.8</td></tr>
-      <tr><td>AWM</td><td>2B</td><td class="best">61.0</td><td>68.0</td><td>64.5</td></tr>
-      <tr><td>CoMIC</td><td>2B+27B</td><td>48.8</td><td>68.0</td><td>58.4</td></tr>
-      <tr><td>TaskSense</td><td>2B+27B</td><td>46.3</td><td>68.0</td><td>57.2</td></tr>
-      <tr class="ours rule"><td>CRAFT, SFT only</td><td>2B</td><td>34.1</td><td class="best">76.0</td><td>55.1</td></tr>
-      <tr class="ours"><td>CRAFT</td><td>2B</td><td>58.5</td><td>72.0</td><td class="best">65.3</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <div class="note" style="margin-top:14px"><b>What limits the real-car number.</b> These rows
-  run the lane where the gesture tool returns the labelled bay's bearing plus the noise the
-  training environment adds, and a procedure-perfect chain there reaches 91.2%. In the harder
-  lane, where the bearing is recovered from the arm in the forward camera, the reading carries a
-  median error of 18.8&nbsp;degrees, a procedure-perfect chain reaches only 36.9%, and CRAFT
-  reaches 17.1%. The gesture reader, not the policy, is what that lane is measuring.</div>
-
-  <h3 style="margin:34px 0 6px;font-size:19px">What each part is worth</h3>
-  <div class="tscroll">
-  <table>
-    <thead><tr><th>Variant</th><th>Mean</th><th>Skill hit</th><th>Calls</th><th>Tokens</th><th>Time (s)</th><th>BS@30s</th></tr></thead>
-    <tbody>
-      <tr><td>No skill library</td><td>67.5</td><td>0.0</td><td>4.01</td><td>1257</td><td>38.0</td><td>53.3</td></tr>
-      <tr><td>No reflector</td><td>61.1</td><td>72.0</td><td>3.77</td><td>872</td><td>27.5</td><td>61.1</td></tr>
-      <tr><td>Commit skill answers</td><td>64.6</td><td>70.0</td><td>3.62</td><td>712</td><td>24.6</td><td>64.6</td></tr>
-      <tr><td>No serving gate</td><td>62.6</td><td>75.0</td><td>3.56</td><td>795</td><td>27.2</td><td>62.6</td></tr>
-      <tr><td>No fallback</td><td>29.9</td><td>72.0</td><td>2.64</td><td>344</td><td>9.5</td><td>29.9</td></tr>
-      <tr class="ours rule"><td>CRAFT</td><td>67.9</td><td>71.8</td><td>3.44</td><td>730</td><td>22.4</td><td class="best">67.9</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p class="cap" style="border:0;padding:10px 2px">Dropping the library keeps accuracy and
-  loses the savings. Dropping the fallback keeps the savings and loses the system.</p>
-</div></section>
-
-<section id="bibtex"><div class="wrap">
-  <h2>BibTeX</h2>
-  <pre class="bib">@inproceedings{craft2026,
+<!-- BibTeX -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop">
+    <h3 class="title is-3">BibTeX</h3>
+    <pre><code>@inproceedings{craft2026,
   title     = {{CRAFT}: Compiling Proactive Sensing Experiences into
                Executable Skills for Mobile Embodied Agents},
   author    = {Anonymous},
   booktitle = {Under review},
   year      = {2026}
-}</pre>
-  <div class="note" style="margin-top:18px"><b>Data and privacy.</b> The vehicle and cabin
-  recordings were captured by the authors with the consent of everyone appearing in them. Every
-  face on this page is blurred frame by frame before publication. The page carries no author or
-  institution identity while the paper is under review.</div>
-</div></section>
+}</code></pre>
+  </div>
+</section>
 
-<footer><div class="wrap">
-  CRAFT project page &middot; anonymous submission, under review &middot; all clips are real
-  recordings from the testbeds described above.
-</div></footer>
+<footer>
+  <div class="container has-text-centered">
+    <p><b>Recordings and privacy.</b> The vehicle, cabin, and robot clips are real recordings from
+    the testbeds described above, captured by the authors with the consent of everyone appearing in
+    them. Every face is blurred frame by frame before publication.</p>
+    <p>This website is licensed under a
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
+    Attribution-ShareAlike 4.0 International License</a>. The layout borrows from the
+    <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> project page template.</p>
+  </div>
+</footer>
 
 </body>
 </html>
