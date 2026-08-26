@@ -103,19 +103,24 @@ table.trace tr.commit td{background:#f4f7fb;border-bottom:2px solid #333}
 .facts .note{margin:.8em 0 0;font-size:.8rem;color:#7a7a7a;line-height:1.5}
 h5.rlab{margin:0 0 .5em;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:#363636;font-weight:700}
 .tl{margin:.2rem 0 .3rem}
-.tl-track{position:relative;height:64px;background:#fafafa;border:1px solid #e2e2e2;border-radius:3px}
+.tl-track{position:relative;height:78px;cursor:pointer;user-select:none;touch-action:none;background:#fafafa;border:1px solid #e2e2e2;border-radius:3px}
 .band{position:absolute;top:0;bottom:0}
 .band.speech{background:rgba(91,127,166,.16)}
 .band.gesture{background:rgba(180,96,10,.14)}
-.band span{position:absolute;top:5px;left:6px;font-family:"SF Mono",Menlo,Consolas,monospace;
+.band span{position:absolute;left:6px;font-family:"SF Mono",Menlo,Consolas,monospace;
   font-size:.68rem;color:#5b5b5b;white-space:nowrap}
-.call{position:absolute;bottom:6px;height:22px;min-width:4px;border:0;padding:0;cursor:pointer;border-radius:2px;
+.band.speech span{top:5px}.band.gesture span{top:22px}
+.playhead{position:absolute;top:0;bottom:0;width:2px;background:#363636;pointer-events:none;z-index:4}
+.playhead b{position:absolute;top:-6px;left:-6px;width:14px;height:14px;border-radius:50%;background:#363636;display:block}
+.tl-readout{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.78rem;color:#5b5b5b;margin:.45rem 0 0}
+.tl-readout b{color:#b4600a;font-weight:600}
+.call.active{outline:2px solid #363636;outline-offset:1px}
+.call{position:absolute;bottom:8px;height:24px;min-width:4px;border:0;padding:0;cursor:pointer;border-radius:2px;
   background:#5b7fa6}
 .call:hover,.call:focus-visible{outline:2px solid #363636;outline-offset:1px}
 .call.read{background:#2f7d78}.call.survey{background:#7a5ea8}.call.aim{background:#c08a2e}
 .stop{position:absolute;top:0;bottom:0;width:2px;background:#b4600a}
-.stop span{position:absolute;bottom:-1.05rem;left:4px;font-family:"SF Mono",Menlo,Consolas,monospace;
-  font-size:.68rem;color:#b4600a;white-space:nowrap}
+.stop{z-index:3}
 .tl-axis{position:relative;height:1.1rem;margin-top:.15rem}
 .tl-axis .sec{position:absolute;transform:translateX(-50%);font-family:"SF Mono",Menlo,Consolas,monospace;
   font-size:.7rem;color:#8a8a8a}
@@ -156,14 +161,14 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
   <div class="container is-max-desktop">
     <div class="hero-body">
       <video class="teaser" width="720" autoplay loop muted playsinline preload="metadata">
-        <source src="assets/video/parking_real.mp4" type="video/mp4">
+        <source src="assets/video/parking_161129.mp4" type="video/mp4">
       </video>
       <div class="media-caption has-text-centered">
-        Guided parking on the vehicle testbed, one recorded trial. A person standing outside names a
-        bay by speech and gesture. The 2B on-device brain never receives a pixel directly: it chooses
-        which sensing tool to spend its budget on, and commits to <code>slot_4</code> after six calls
-        and 3.6&nbsp;seconds. Overlays are the site's bay map, the arm bearing recovered by the
-        gesture tool, and the committed bay. Faces are blurred in every recording on this page.
+        Guided parking on the vehicle testbed, one recorded session. A person standing outside names
+        a bay by speech and gesture, and both events start late in the clip. The 2B on-device brain
+        never receives a pixel directly: it spends ten sensing calls finding the moment the arm is up,
+        reads a bearing at 5.5&nbsp;seconds, and commits to <code>slot_4</code>, the annotated bay.
+        Faces are blurred frame by frame in every recording on this page.
       </div>
     </div>
   </div>
@@ -287,34 +292,35 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     <!-- case 1 -->
     <div class="case" id="case-parking">
       <div class="case-head">
-        <p class="eyebrow">Guided parking &middot; real vehicle &middot; one night session</p>
-        <h4>park/20260819_195618</h4>
-        <p class="lede">A person outside the car says where to park and points at a bay. The car does
-        not know which side they are standing on, which bays are free, or where the arm points, and
-        both the utterance and the gesture are over before the clip ends.</p>
+        <p class="eyebrow">Guided parking &middot; real vehicle &middot; underground garage</p>
+        <h4>park/20260819_161129</h4>
+        <p class="lede">A person standing outside the car names a bay by speech and gesture. Neither
+        event has started when the clip does: the voice begins at 4.0&nbsp;seconds and the arm goes up
+        at 4.6, and the gesture is over 1.3&nbsp;seconds later. The brain is told only that both
+        happen somewhere in the clip.</p>
         <div class="chips"><span class="chip gt">annotated slot_4</span><span class="chip">committed slot_4</span>
-          <span class="chip">6 tool calls</span><span class="chip">3.6s of a 12s budget</span>
+          <span class="chip">10 tool calls</span><span class="chip">5.7s of a 12s budget</span>
           <span class="chip">temperature 0</span></div>
       </div>
       <div class="casegrid">
         <div class="left">
           <figure>
-            <video controls muted loop playsinline preload="metadata"><source src="assets/video/parking_real.mp4" type="video/mp4"></video>
-            <figcaption>The recorded session, brightened. The person walks in from the left, speaks,
-            and points.</figcaption>
+            <video controls muted loop playsinline preload="metadata"><source src="assets/video/parking_161129.mp4" type="video/mp4"></video>
+            <figcaption>The recorded session, brightened. Scrub it and the clock above moves with it.</figcaption>
           </figure>
           <div class="facts">
             <h5>Hidden from the policy</h5>
             <dl>
-              <div class="tr"><dt>Speech window</dt><dd>1.0 &ndash; 5.5s</dd></div>
-              <div class="tr"><dt>Gesture window</dt><dd>2.4 &ndash; 7.4s</dd></div>
+              <div class="tr"><dt>Speech window</dt><dd>4.0 &ndash; 7.5s</dd></div>
+              <div class="tr"><dt>Gesture window</dt><dd>4.6 &ndash; 5.9s</dd></div>
+              <div class="tr"><dt>Bays taken</dt><dd>1, 7</dd></div>
               <div class="tr"><dt>Annotated bay</dt><dd>slot_4</dd></div>
               <div class="tr"><dt>Committed</dt><dd>slot_4</dd></div>
               <div class="tr"><dt>Outcome</dt><dd>correct</dd></div>
             </dl>
-            <p class="note">The policy is told only that a spoken command and a pointing gesture each
-            happen somewhere in the clip. These windows are used to score the run and to draw the
-            timeline, and never reach the model or any tool return.</p>
+            <p class="note">The two windows are measured from the recording by the same detectors the
+            tools use, and they never reach the model. What the brain gets back is only what a tool
+            returns at the instant it is called.</p>
           </div>
           <figure>
             <video controls muted loop playsinline preload="metadata"><source src="assets/video/carla_cams.mp4" type="video/mp4"></video>
@@ -323,60 +329,53 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
           </figure>
         </div>
         <div class="right">
-          <h5 class="rlab">Where the six calls landed on the clock</h5>
+          <h5 class="rlab">Where the ten calls landed on the clock</h5>
           <div class="tl">
             <div class="tl-track">
-              <div class="band speech" style="left:8.333%;width:37.500%"><span>speech 1.0&ndash;5.5s</span></div>
-              <div class="band gesture" style="left:20.000%;width:41.667%"><span>gesture 2.4&ndash;7.4s</span></div>
-              <button class="call " style="left:0.000%;width:1.667%" data-row="c0" title="probe_activity  0.0–0.2s"></button><button class="call read" style="left:1.667%;width:8.333%" data-row="c1" title="listen_speech  0.2–1.2s"></button><button class="call survey" style="left:10.000%;width:4.167%" data-row="c2" title="scan_occupancy  1.2–1.7s"></button><button class="call survey" style="left:14.167%;width:2.500%" data-row="c3" title="locate_speaker  1.7–2.0s"></button><button class="call aim" style="left:16.667%;width:0.833%" data-row="c4" title="select_camera  2.0–2.1s"></button><button class="call read" style="left:17.500%;width:12.500%" data-row="c5" title="read_gesture  2.1–3.6s"></button>
-              <div class="stop" style="left:30.000%"><span>commits at 3.6s</span></div>
+              <div class="band speech" style="left:33.333%;width:29.167%"><span>speech 4.0&ndash;7.5s</span></div>
+              <div class="band gesture" style="left:38.333%;width:10.833%"><span>gesture 4.6&ndash;5.9s</span></div>
+              <button class="call " style="left:0.000%;width:1.667%" data-row="c0" title="probe_activity  0.0&ndash;0.2s"></button><button class="call read" style="left:1.667%;width:8.333%" data-row="c1" title="listen_speech  0.2&ndash;1.2s"></button><button class="call " style="left:10.000%;width:1.667%" data-row="c2" title="probe_activity  1.2&ndash;1.4s"></button><button class="call survey" style="left:11.667%;width:4.167%" data-row="c3" title="scan_occupancy  1.4&ndash;1.9s"></button><button class="call survey" style="left:15.833%;width:2.500%" data-row="c4" title="locate_speaker  1.9&ndash;2.2s"></button><button class="call aim" style="left:18.333%;width:0.833%" data-row="c5" title="select_camera  2.2&ndash;2.3s"></button><button class="call read" style="left:19.167%;width:12.500%" data-row="c6" title="read_gesture  2.3&ndash;3.8s"></button><button class="call " style="left:31.667%;width:1.667%" data-row="c7" title="probe_activity  3.8&ndash;4.0s"></button><button class="call read" style="left:33.333%;width:12.500%" data-row="c8" title="read_gesture  4.0&ndash;5.5s"></button><button class="call " style="left:45.833%;width:1.667%" data-row="c9" title="probe_activity  5.5&ndash;5.7s"></button>
+              <div class="stop" style="left:47.500%"></div>
+              <div class="playhead" id="ph" style="left:0%"><b></b></div>
             </div>
             <div class="tl-axis"><span class="sec" style="left:0.00%">0</span><span class="sec" style="left:16.67%">2</span><span class="sec" style="left:33.33%">4</span><span class="sec" style="left:50.00%">6</span><span class="sec" style="left:66.67%">8</span><span class="sec" style="left:83.33%">10</span><span class="sec" style="left:100.00%">12</span></div>
+            <p class="tl-readout">clock <b id="tlnow">0.00s</b> &nbsp;&middot;&nbsp; <span id="tlwhat">drag the handle, scrub the video, or click a turn below &mdash; all three stay in step</span></p>
           </div>
-          <div class="legend" style="margin-top:1.6rem">
+          <div class="legend" style="margin-top:1.2rem">
             <span><i style="background:#5b7fa6"></i>probe</span>
             <span><i style="background:#2f7d78"></i>read content</span>
             <span><i style="background:#7a5ea8"></i>survey or locate</span>
             <span><i style="background:#c08a2e"></i>switch view</span>
             <span><i style="background:#b4600a"></i>commit</span>
           </div>
-          <p class="media-caption" style="margin:0 0 1.2rem;max-width:none">
-          <code>listen_speech</code> caught the utterance by its last 0.2&nbsp;seconds and
-          <code>read_gesture</code> landed 1.2&nbsp;seconds inside the gesture. Both windows were
-          found without a wasted call. Click a bar to jump to that turn.</p>
+          <p class="media-caption" style="margin:0 0 1.2rem;max-width:none">Three reads landed on
+          nothing: the microphone at 0.2s, the speaker locator at 1.9s, and the first look at the arm
+          at 2.3s all ran before their events began. The second look at the arm, 4.0 to 5.5s, overlaps
+          the gesture by 0.9&nbsp;seconds, and that single overlap carries the answer.</p>
           <h5 class="rlab">The transcript the brain produced</h5>
           <div class="tablewrap">
-      <table class="trace">
-        <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Why this call</th><th>What came back</th></tr></thead>
-        <tbody>
-          <tr id="c0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0 &rarr; 0.2s</td>
-            <td>the cheapest look: is anything happening right now</td>
-            <td class="obs">speech_active=false, gesture_active=false<br>(the probe rarely false-alarms but misses about a quarter of the instants where the event IS running)</td></tr>
-          <tr id="c1"><td>1</td><td class="tool">listen_speech</td><td class="win">0.2 &rarr; 1.2s</td>
-            <td>overrides the probe and spends a full second on the microphone</td>
-            <td class="obs">transcript: "Comment off over here." | other mic: "Come and bump down the gear."<br>coarse direction word: none</td></tr>
-          <tr id="c2"><td>2</td><td class="tool">scan_occupancy</td><td class="win">1.2 &rarr; 1.7s</td>
-            <td>a standing fact, safe to sample at any time</td>
-            <td class="obs">occupancy (noisy): bay 0 taken, bays 1-5 free<br>free candidates: [1, 2, 3, 4, 5]</td></tr>
-          <tr id="c3"><td>3</td><td class="tool">locate_speaker</td><td class="win">1.7 &rarr; 2.0s</td>
-            <td>which side of the car the voice came from</td>
-            <td class="obs">estimated speaker side: front (noisy, confidence 0.8)</td></tr>
-          <tr id="c4"><td>4</td><td class="tool">select_camera</td><td class="win">2.0 &rarr; 2.1s</td>
-            <td>aim perception at that side before paying for the expensive read</td>
-            <td class="obs">now viewing the front camera</td></tr>
-          <tr id="c5"><td>5</td><td class="tool">read_gesture</td><td class="win">2.1 &rarr; 3.6s</td>
-            <td>the only tool that can say WHICH bay</td>
-            <td class="obs">arm bearing 28.3&deg;. Bays by distance from the pointing line:<br>slot_4 (0.02 m), slot_3 (2.25 m), slot_5 (2.27 m), slot_2 (4.34 m), slot_1 (6.59 m)<br>cannot see which bays are taken, cross with scan_occupancy</td></tr>
-          <tr id="c6" class="commit"><td>6</td><td class="tool">commit</td><td class="win">clock stops at 3.6s</td>
+            <table class="trace">
+              <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Why this call</th><th>What came back</th></tr></thead>
+              <tbody><tr id="c0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0 &rarr; 0.2s</td>
+            <td>the cheapest look: is anything running right now</td><td class="obs">speech_active=false, gesture_active=false</td></tr><tr id="c1"><td>1</td><td class="tool">listen_speech</td><td class="win">0.2 &rarr; 1.2s</td>
+            <td>overrides the probe and spends a full second on the microphone</td><td class="obs">nothing detected yet: the spoken command has not begun</td></tr><tr id="c2"><td>2</td><td class="tool">probe_activity</td><td class="win">1.2 &rarr; 1.4s</td>
+            <td>checks again rather than trusting one negative</td><td class="obs">speech_active=false, gesture_active=false</td></tr><tr id="c3"><td>3</td><td class="tool">scan_occupancy</td><td class="win">1.4 &rarr; 1.9s</td>
+            <td>a standing fact, safe to sample at any time</td><td class="obs">occupancy (noisy): 1 and 7 taken, 2-6 free<br>free candidates: [2, 3, 4, 5, 6]</td></tr><tr id="c4"><td>4</td><td class="tool">locate_speaker</td><td class="win">1.9 &rarr; 2.2s</td>
+            <td>tries to find which side the voice comes from</td><td class="obs">nothing detected yet: the speaker&rsquo;s voice has not begun</td></tr><tr id="c5"><td>5</td><td class="tool">select_camera</td><td class="win">2.2 &rarr; 2.3s</td>
+            <td>picks a side anyway and moves on</td><td class="obs">now viewing the left camera</td></tr><tr id="c6"><td>6</td><td class="tool">read_gesture</td><td class="win">2.3 &rarr; 3.8s</td>
+            <td>spends 1.5s on the arm before the arm is up</td><td class="obs">nothing detected yet: the pointing gesture has not begun</td></tr><tr id="c7"><td>7</td><td class="tool">probe_activity</td><td class="win">3.8 &rarr; 4.0s</td>
+            <td>one more cheap check</td><td class="obs">speech_active=false, gesture_active=false</td></tr><tr id="c8"><td>8</td><td class="tool">read_gesture</td><td class="win">4.0 &rarr; 5.5s</td>
+            <td>tries the arm again, and this time the window overlaps</td><td class="obs">arm bearing &minus;3.0&deg;. Bays by distance from the pointing line:<br>slot_4 (0.81 m), slot_3 (1.47 m), slot_5 (3.13 m), slot_2 (3.63 m), slot_6 (5.15 m)<br>cannot see which bays are taken, cross with scan_occupancy</td></tr><tr id="c9"><td>9</td><td class="tool">probe_activity</td><td class="win">5.5 &rarr; 5.7s</td>
+            <td>confirms the events are running now</td><td class="obs">speech_active=true, gesture_active=true</td></tr><tr id="c10" class="commit"><td>10</td><td class="tool">commit</td><td class="win">clock stops at 5.7s</td>
             <td>nearest free bay on the pointing line</td>
-            <td class="obs">&lt;answer&gt;slot_4&lt;/answer&gt; &nbsp; annotated slot_4 &nbsp; correct</td></tr>
-        </tbody>
-      </table>
-    </div>
-          <div class="callout"><b>One slip, stated plainly.</b> In its last turn the model calls 0.02&nbsp;m
-    &ldquo;the gap&rdquo; and concludes it is in the unreliable regime. The gap to the next free bay is
-    2.25&nbsp;&minus;&nbsp;0.02&nbsp;=&nbsp;2.23&nbsp;m, which is the reliable one. The arithmetic is
-    wrong and the conclusion is right; calling this chain flawless would be overclaiming.</div>
+            <td class="obs">&lt;answer&gt;slot_4&lt;/answer&gt; &nbsp; annotated slot_4 &nbsp; correct</td></tr></tbody>
+            </table>
+          </div>
+          <div class="callout"><b>What the microphone actually returned.</b> The two channels
+          transcribe to &ldquo;Thank you.&rdquo; and &ldquo;up here&rdquo;, which name no bay at all.
+          The commit rests on the arm bearing crossed with the occupancy scan, and the brain also
+          misreads its own probe once, calling a negative result evidence that &ldquo;the events have
+          missed&rdquo;. Both are in the transcript above rather than edited out of it.</div>
         </div>
       </div>
     </div>
@@ -516,14 +515,65 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
 
 
 <script>
-document.querySelectorAll('.call').forEach(function(b){
-  b.addEventListener('click',function(){
-    var r=document.getElementById(b.dataset.row); if(!r) return;
-    document.querySelectorAll('tr.hit').forEach(function(x){x.classList.remove('hit')});
-    r.classList.add('hit');
-    r.scrollIntoView({behavior:'smooth',block:'center'});
+(function(){
+  var T=12.0;                                   // 时间轴总长（预算 12s）
+  var calls=[["c0","probe_activity",0.0,0.2],["c1","listen_speech",0.2,1.2],
+             ["c2","probe_activity",1.2,1.4],["c3","scan_occupancy",1.4,1.9],
+             ["c4","locate_speaker",1.9,2.2],["c5","select_camera",2.2,2.3],
+             ["c6","read_gesture",2.3,3.8],["c7","probe_activity",3.8,4.0],
+             ["c8","read_gesture",4.0,5.5],["c9","probe_activity",5.5,5.7],
+             ["c10","commit",5.7,5.7]];
+  var track=document.querySelector('#case-parking .tl-track');
+  var ph=document.getElementById('ph'), now=document.getElementById('tlnow'),
+      what=document.getElementById('tlwhat'),
+      vid=document.querySelector('#case-parking video');
+  if(!track||!ph||!vid) return;
+  var bars=[].slice.call(track.querySelectorAll('.call'));
+  var dragging=false, seeking=false;
+
+  function at(t){                               // 该时刻属于哪一次调用
+    for(var i=0;i<calls.length-1;i++) if(t>=calls[i][2]&&t<calls[i][3]) return i;
+    if(t>=5.7) return 10;
+    return -1;
+  }
+  function paint(t,moveVideo){
+    t=Math.max(0,Math.min(T,t));
+    ph.style.left=(t/T*100)+'%';
+    now.textContent=t.toFixed(2)+'s';
+    var i=at(t);
+    bars.forEach(function(b,k){b.classList.toggle('active',k===i)});
+    document.querySelectorAll('#case-parking tr.hit').forEach(function(r){r.classList.remove('hit')});
+    if(i>=0){var r=document.getElementById(calls[i][0]); if(r) r.classList.add('hit');}
+    what.textContent = i<0 ? 'no call in flight' :
+      (i===10 ? 'committed, the clock has stopped' : 'in call '+i+', '+calls[i][1]);
+    if(moveVideo && vid.duration && t<=vid.duration){ seeking=true; vid.currentTime=t; }
+  }
+  function fromEvent(e){
+    var r=track.getBoundingClientRect();
+    var x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+    return Math.max(0,Math.min(1,x/r.width))*T;
+  }
+  track.addEventListener('pointerdown',function(e){
+    dragging=true; track.setPointerCapture(e.pointerId); paint(fromEvent(e),true); e.preventDefault();
   });
-});
+  track.addEventListener('pointermove',function(e){ if(dragging) paint(fromEvent(e),true); });
+  ['pointerup','pointercancel'].forEach(function(ev){
+    track.addEventListener(ev,function(){ dragging=false; });
+  });
+  vid.addEventListener('timeupdate',function(){ if(!dragging) paint(vid.currentTime,false); });
+  vid.addEventListener('seeked',function(){ seeking=false; if(!dragging) paint(vid.currentTime,false); });
+
+  function jump(i){ paint(calls[i][2],true);
+    var r=document.getElementById(calls[i][0]);
+    if(r) r.scrollIntoView({behavior:'smooth',block:'center'}); }
+  bars.forEach(function(b,k){ b.addEventListener('click',function(e){ e.stopPropagation(); jump(k); }); });
+  calls.forEach(function(c,i){
+    var r=document.getElementById(c[0]); if(!r) return;
+    r.style.cursor='pointer'; r.title='jump the clock to '+c[2].toFixed(1)+'s';
+    r.addEventListener('click',function(){ paint(c[2],true); });
+  });
+  paint(0,false);
+})();
 </script>
 </body>
 </html>
