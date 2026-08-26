@@ -157,150 +157,33 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
 
 <hr class="rule">
 
-<!-- Task-level compute -->
-<section class="section">
-  <div class="container">
-    <div class="has-text-centered"><h3 class="title is-3">Task-Level Compute Reduction</h3></div>
-    <img class="teaser" src="assets/fig/Motivation_example.webp" width="900" alt="Practice turns repeated step-by-step reasoning into direct skill execution" loading="lazy">
-    <div class="media-caption has-text-centered">Practice turns repeated step-by-step reasoning into
-    direct skill execution.</div>
-    <div class="content has-text-justified" style="margin-top:1.4rem">
-      <p>Quantization, pruning, and distillation lower the cost of each model call. They do not stop
-      an agent from processing streams the task never needed, or from rebuilding a procedure it has
-      already carried out successfully many times. Task-level waste has these two sources:</p>
-      <ul>
-        <li><strong>Perception cost</strong> is wasted when the agent processes streams unrelated to
-        the task.</li>
-        <li><strong>Reasoning cost</strong> is wasted when the agent reconstructs a familiar
-        multi-step procedure it has executed before.</li>
-      </ul>
-      <p>Humans connect the two through practice: deliberate attention first identifies which evidence
-      matters, and recurring perception-action procedures gradually become automatic. TRACE follows
-      the same cycle. It reasons through unfamiliar tasks to decide what to sense, then consolidates
-      the successful recurring chains so familiar tasks avoid both unnecessary perception and repeated
-      reasoning. Because the next step still depends on what the last tool returned, the consolidated
-      form has to be a guarded graph rather than a cached answer or a fixed workflow.</p>
-    </div>
-    <div class="figrow">
-      <figure>
-        <img src="assets/fig/SensorSparsity.webp" alt="Streams consulted across task scenarios" loading="lazy">
-        <figcaption>Streams consulted across task scenarios. The pattern is sparse and differs per
-        scenario, so any fixed sensing set is either short of evidence or full of streams nobody
-        asked for.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/DeliberationCost.webp" alt="Inter-step model-generation cost grows with the number of sensing and action steps" loading="lazy">
-        <figcaption>Inter-step model-generation cost grows with the number of sensing and action
-        steps. Most tokens are spent thinking <em>between</em> tool calls, which is exactly the part
-        a compiled graph removes.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/StrategyCollapse.webp" alt="Coverage of the 15 most frequent embodied tool-use paths" loading="lazy">
-        <figcaption>Coverage of the 15 most frequent embodied tool-use paths. Chains repeat, which is
-        what makes compiling one worth the trouble.</figcaption>
-      </figure>
-    </div>
-    <div class="figrow two">
-      <figure>
-        <img src="assets/fig/RouteScatter.webp" alt="Accuracy and latency of four sensing policies" loading="lazy">
-        <figcaption>Accuracy and latency of four sensing policies.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/ModalityGain.webp" alt="Marginal accuracy gains and sensing time as more streams are processed" loading="lazy">
-        <figcaption>Marginal accuracy gains and sensing time as more streams are processed.</figcaption>
-      </figure>
-    </div>
-
-    <h4 class="title is-4" style="margin-top:2.4rem">How This Differs From Existing Approaches</h4>
-    <div class="tablewrap">
-      <table class="res">
-        <thead><tr><th class="first">Method</th><th>Sensing</th><th>Loop</th><th>Reuse</th><th>Fallback</th></tr></thead>
-        <tbody>
-          <tr><td class="first">Mobile sensing</td><td>fixed / triggered</td><td>pipeline</td><td>rerun</td><td>&mdash;</td></tr>
-          <tr><td class="first">Omni / active perception</td><td>all / selected</td><td>model</td><td>re-reason</td><td>&mdash;</td></tr>
-          <tr><td class="first">Cloud planning</td><td>adaptive</td><td>cloud</td><td>replan</td><td>cloud</td></tr>
-          <tr><td class="first">Agent memory</td><td>varies</td><td>model</td><td>interpret</td><td>model</td></tr>
-          <tr class="ours rule"><td class="first">TRACE</td><td>adaptive + act</td><td>device</td><td>replay</td><td>local</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tabcap">Task-level compute comparison. No existing approach jointly adapts heterogeneous
-    sensing, keeps the active task path local, and provides deliberative fallback when reuse is
-    unsafe.</p>
-  </div>
-</section>
-
-<hr class="rule">
-
 <!-- System overview -->
 <section class="section">
   <div class="container">
     <div class="has-text-centered">
-      <h3 class="title is-3">System Overview</h3>
+      <h3 class="title is-3">How TRACE Works</h3>
       <img class="teaser" src="assets/fig/overview_new.webp" width="960" alt="TRACE overview" loading="lazy">
       <div class="media-caption">Cloud training initializes the brain, the compiler, and the skill
       library. After deployment, query execution and skill-graph updates run on the device.</div>
     </div>
     <div class="content has-text-justified" style="margin-top:1.4rem">
-      <ol>
-        <li><strong>One tool interface for sensing and action.</strong> Cameras, microphones, depth,
-        inertial streams, trackers, and the arms themselves are typed JSON tools behind long-lived
-        HTTP services. A YAML contract lists each scenario's tools, schemas, and endpoints, so adding
-        a sensor changes configuration rather than agent code. The pool holds 66 tools and each
-        scenario uses between 7 and 20 of them.</li>
-        <li><strong>Deliberation that ends in a committed act.</strong> The 2B brain is trained by
-        distillation from a 30B omni-modal teacher and then by reinforcement learning against outcome
-        rewards, so an unfamiliar task produces a chain that ends in an answer or an action rather
-        than a description.</li>
-        <li><strong>Compilation into a guarded graph.</strong> The compiler keeps the calls, their
-        order, the branches, and the guards that decide when each applies, and drops the prose. The
-        executor and guard evaluator are plain Python, under 300 lines, and need no GPU. Graphs live
-        in a SQLite library with their retrieval embeddings, which adds 0.1&nbsp;GB of storage.</li>
-        <li><strong>Serving by measured outcome, with a way back.</strong> A gate decides between
-        replay and deliberation, guards abort a replay that deviates, and a fallback returns control
-        to the model. Removing the fallback collapses mean accuracy from 67.9% to 29.9%, which is
-        what makes this a system rather than a cache.</li>
-      </ol>
-    </div>
-    <div class="figrow">
-      <figure>
-        <img src="assets/fig/ToolPool.webp" alt="Sensing and action tools in the unified pool" loading="lazy">
-        <figcaption>Sensing and action tools in the unified pool, grouped by the evidence each family
-        produces.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/SkillGraph.webp" alt="Guarded and linear executable skill graphs" loading="lazy">
-        <figcaption>Guarded and linear executable skill graphs. Predicated edges let one branch wait
-        on a self-loop and divert to a higher-fidelity node.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/SkillLifeCycle.webp" alt="A compiled graph is served only while both scores hold" loading="lazy">
-        <figcaption>A compiled graph is served only while both of its scores hold.</figcaption>
-      </figure>
-    </div>
-    <div class="figrow two">
-      <figure>
-        <img src="assets/fig/ALlStack.webp" alt="TRACE's embodied stack and on-device skill execution" loading="lazy">
-        <figcaption>TRACE's embodied stack and on-device skill execution.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/TaskExample.webp" alt="One deployed task" loading="lazy">
-        <figcaption>One deployed task. Cloud training initializes the brain, compiler, and skill
-        library once; query execution and later library updates stay on the device.</figcaption>
-      </figure>
+      <p>An unfamiliar task is reasoned through step by step: the 2B brain picks the next sensing or
+      action tool from what the last one returned, and the chain ends in a committed answer or act.
+      A chain that keeps succeeding is compiled into a <strong>guarded graph</strong> that the device
+      replays with no model call between steps, with the guards choosing branches from live tool
+      results. When no graph matches, or a replay deviates from its guards, control returns to the
+      model. Every query runs on the device; the cloud is used once, before deployment.</p>
     </div>
   </div>
 </section>
-
-<hr class="rule">
 
 <!-- Results -->
 <section class="section">
   <div class="container">
     <div class="has-text-centered"><h3 class="title is-3">Results</h3></div>
     <img class="teaser" src="assets/fig/OverallEfficiency.webp" width="1050" alt="Task score versus latency for seven sources and their equal-source mean" loading="lazy">
-    <div class="media-caption has-text-centered">Task score versus latency for seven sources and
-    their equal-source mean.</div>
+    <div class="media-caption has-text-centered">Task score against end-to-end latency on four public
+    datasets, three simulators, and their equal-source mean.</div>
 
     <div class="tablewrap" style="margin-top:1.8rem">
       <table class="res">
@@ -325,183 +208,37 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         </tbody>
       </table>
     </div>
-    <p class="tabcap">Overall performance across seven data sources. Controller gives request-time
-    model sizes; 2B+27B uses the larger model only to generate guidance or a sensor plan. BS@30s is
-    the score reachable inside a 30-second budget.</p>
-
-    <div class="content has-text-justified" style="margin-top:1.6rem">
-      <p><strong>Against existing methods.</strong> Baselines that reprocess streams or rerun
-      predefined sensing spend 11.6 to 14.6 tool calls and 91.1 to 96.1 seconds per query; CoMIC and
-      TaskSense reach 105.6 and 95.8 seconds because their request-time guidance involves a 27B cloud
-      model. AWM has the strongest external mean at 50.5% but still needs 84.6 seconds and 10.5 calls,
-      since retrieved workflows must be interpreted for each query. TRACE reaches 67.9% in 22.4
-      seconds with 3.44 calls, improving on AWM by 17.4 points while cutting latency by 73.5% and tool
-      use by 67.2%.</p>
-      <p><strong>Student against teacher.</strong> The 2B model exceeds its 30B teacher by 8.8%
-      overall and wins on HoloAssist, RealSource, RealMan, and CARLA, by 43.2% on RealMan and 18.3% on
-      CARLA. These interactive tasks reward collecting evidence and acting on it rather than answering
-      from prior knowledge. The teacher stays 4.0 to 4.4% ahead on Ego-Exo4D, OmniVideo, and HM-EQA.</p>
-      <p><strong>Model size and serving.</strong> The 0.8B model finishes in 16.0 seconds but makes
-      fewer calls and loses 13.6 points, exploring too little before answering. Disabling skills keeps
-      66.6% accuracy but raises latency to 39.1 seconds. The 2B brain supplies the reasoning capacity;
-      skill reuse supplies the speed.</p>
+    <div class="content has-text-justified" style="margin-top:1.2rem">
+      <p>TRACE reaches 67.9% in 22.4&nbsp;seconds with 3.44 tool calls, improving on the strongest
+      external baseline by 17.4 points while cutting latency by 73.5% and tool use by 67.2%. The 2B
+      model also passes its own 30B teacher by 8.8% overall, because these tasks reward gathering
+      evidence and acting on it rather than answering from prior knowledge. Skill replay serves 61.9%
+      of queries in 11.3&nbsp;seconds against 45.1 for deliberation, and on the device it cuts the
+      real-time factor from 1.14 to 0.55 and energy from 3487 to 2988&nbsp;J per query.</p>
     </div>
-
-    <h4 class="title is-4" style="margin-top:2.4rem">Where the Time Goes</h4>
-    <div class="tablewrap">
-      <table class="res">
-        <thead>
-          <tr class="sub"><th class="first" rowspan="2">Serving path</th><th rowspan="2">Share (%)</th>
-            <th colspan="3">Latency (s)</th><th rowspan="2">Gens. / query</th></tr>
-          <tr><th>Decision</th><th>Tools</th><th>Total</th></tr>
-        </thead>
-        <tbody>
-          <tr class="ours"><td class="first">Skill hit, prefetch</td><td>61.9</td><td>9.0</td><td>2.3</td><td>11.3</td><td>3.6</td></tr>
-          <tr><td class="first">Miss, deliberation</td><td>28.2</td><td>39.1</td><td>6.0</td><td>45.1</td><td>6.9</td></tr>
-          <tr><td class="first">Failed attempt, fallback</td><td>9.9</td><td>24.9</td><td>2.2</td><td>27.1</td><td>6.0</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tabcap">Edge latency by serving path. Replay serves 61.9% of queries in 11.3 seconds
-    against 45.1 for deliberation, mainly by cutting decision time from 39.1 to 9.0 seconds. Failed
-    attempts cost 27.1 seconds, so a miss is never more expensive than full deliberation.</p>
-
-    <div class="figrow two" style="margin-top:2rem">
-      <figure>
-        <img src="assets/fig/DepthSaving.webp" alt="Replay saving grows with chain depth" loading="lazy">
-        <figcaption><b>Replay saving grows with chain depth.</b> One-call tasks lose 38.1% of
-        reasoning rounds and 24.1% of tokens; at three calls or more it is 51.1% and 45.5%.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/GenerationSave.webp" alt="Model generations in model-based execution and skill replay" loading="lazy">
-        <figcaption><b>Model generations in model-based execution and skill replay.</b> Deliberation
-        generates between every two tool calls; replay keeps only the final bounded pass.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/Fig14_LinkQuality.webp" alt="Latency under degrading link quality" loading="lazy">
-        <figcaption><b>Latency under degrading link quality.</b> Cloud latency crosses the local path
-        at about 1.03&nbsp;s of added round-trip time and stalls without connectivity, while local
-        execution stays available.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/MemoryOnlineUpdate.webp" alt="Reuse climbs and time falls with use" loading="lazy">
-        <figcaption><b>Reuse climbs and time falls with use.</b> Over a 3,000-query stream, background
-        updates after misses raise reuse to about 0.8 while a frozen library stays flat. Updates run
-        between requests.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/BudgetSensitivity.webp" alt="Budgeted score under 20, 30, and 45 second budgets" loading="lazy">
-        <figcaption><b>Budgeted score under 20-, 30-, and 45-second budgets.</b> TRACE scores 60.6 and
-        67.9 at 20 and 30 seconds against 34.1 and 51.1 for deliberation, and the two converge at 45
-        seconds. Replay matters most when the budget is tight.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/SkillAblationTradeoff.webp" alt="Ablations of the skill library, graph, and serving policy" loading="lazy">
-        <figcaption><b>Ablations of the library, graph, and serving policy.</b> Removing the library
-        barely moves accuracy (67.9 to 67.5) but raises latency from 22.4 to 38.0&nbsp;s and tokens
-        from 730 to 1257. Removing the fallback collapses accuracy to 29.9.</figcaption>
-      </figure>
-    </div>
-
-    <h4 class="title is-4" style="margin-top:2.4rem">On-Device Cost</h4>
-    <div class="tablewrap">
-      <table class="res">
-        <thead><tr><th class="first">System</th><th>Mem. (GB)</th><th>Storage (GB)</th><th>RTF</th><th>Energy (J/query)</th></tr></thead>
-        <tbody>
-          <tr><td class="first">Qwen2.5-Omni</td><td>22.5</td><td>20.8</td><td>1.59</td><td>2177.9</td></tr>
-          <tr><td class="first">TaskSense (device + cloud)</td><td>15.2 + 30.9</td><td>27.6 + 30.9</td><td>0.400</td><td>3507.8 + 2109.9</td></tr>
-          <tr class="ours rule"><td class="first">TRACE-Delib</td><td>15.2</td><td>27.5</td><td>1.14</td><td>3487.2</td></tr>
-          <tr class="ours"><td class="first">TRACE</td><td>15.2</td><td>27.6</td><td><b>0.55</b></td><td><b>2987.8</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tabcap">Measured on an NVIDIA DGX Spark. RTF is compute time divided by input duration.
-    Skill serving cuts RTF from 1.14 to 0.55 and energy from 3487.2 to 2987.8&nbsp;J per query
-    (14.3%). Counting TaskSense's measured cloud load raises it to at least 5617.7&nbsp;J per query,
-    88% above TRACE.</p>
-
-    <div class="figrow two" style="margin-top:1.4rem">
-      <figure>
-        <img src="assets/fig/PowerTrace.webp" alt="Power over the shared execution window" loading="lazy">
-        <figcaption>Power over the shared execution window, with TaskSense's cloud load shown
-        separately.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/PowerDevice.webp" alt="System-power and wall-clock measurement setup" loading="lazy">
-        <figcaption>System-power and wall-clock measurement setup.</figcaption>
-      </figure>
-    </div>
-
-    <h4 class="title is-4" style="margin-top:2.4rem">Training and Reward</h4>
-    <div class="tablewrap">
-      <table class="res">
-        <thead><tr><th class="first">Variant</th><th>Mean (%)</th><th>Calls</th><th>Tokens</th><th>BS@30s (%)</th></tr></thead>
-        <tbody>
-          <tr><td class="first">SFT only</td><td>36.8</td><td>10.9</td><td>1800</td><td>26.0</td></tr>
-          <tr><td class="first">Outcome reward only</td><td>64.2</td><td>3.11</td><td>700</td><td>64.2</td></tr>
-          <tr><td class="first">No cost meter</td><td>64.3</td><td>2.26</td><td>877</td><td>64.3</td></tr>
-          <tr class="ours rule"><td class="first">SFT then GRPO</td><td>67.9</td><td>3.44</td><td>730</td><td><b>67.9</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tabcap">Reinforcement improves both success and sensing efficiency. Outcome-only
-    training shortens trajectories but loses 3.7 points to premature stopping; dropping the cost meter
-    cuts calls to 2.26 yet generates more tokens and loses 3.6 points, which is under-exploration
-    rather than efficiency.</p>
   </div>
 </section>
-
-<hr class="rule">
 
 <!-- Real deployment -->
 <section class="section">
   <div class="container">
     <div class="has-text-centered">
-      <h3 class="title is-3">Real System Deployment</h3>
+      <h3 class="title is-3">On Physical Testbeds</h3>
       <img class="teaser" src="assets/fig/RealScene.webp" width="900" alt="Embodied testbeds and their simulators" loading="lazy">
-      <div class="media-caption">Embodied testbeds and their simulators.</div>
+      <div class="media-caption">Embodied testbeds and their simulators: a RealMan dual-arm rig and a
+      real vehicle, each with the simulator it pairs with.</div>
     </div>
 
-    <h4 class="title is-4" style="margin-top:2.4rem">Desktop Dual-Arm Manipulation</h4>
-    <div class="content has-text-justified">
-      <p>Two RealMan RM75-6FB arms with RealSense D455 cameras above the grippers, 100 trials per
-      method and task, randomized object poses, no human intervention. One task pushes an object to
-      within 3&nbsp;cm of the table edge; the other classifies the resulting motion as toppling,
-      rolling, or sliding.</p>
-    </div>
-    <div class="tablewrap">
-      <table class="res">
-        <thead><tr><th class="first">Agent</th><th>Success</th><th>Wall (s)</th><th>Tool exec. (s)</th><th>Overhead (s)</th></tr></thead>
-        <tbody>
-          <tr><td class="first">Atomic visuomotor policy</td><td>42.0%</td><td>36.6</td><td>27.3</td><td>9.3</td></tr>
-          <tr><td class="first">TRACE-Delib</td><td>83.3%</td><td>50.3</td><td>33.6</td><td>16.7</td></tr>
-          <tr class="ours rule"><td class="first">TRACE</td><td><b>92.0%</b></td><td>47.6</td><td>34.8</td><td><b>12.8</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tabcap">Replay raises success to 92.0% and cuts agent overhead from 16.7 to
-    12.8&nbsp;seconds. The atomic policy cannot change viewpoint or seek missing evidence.</p>
-    <div class="figrow two" style="margin-top:1.4rem">
-      <figure>
-        <img src="assets/fig/arm_case.webp" alt="Closed-loop dual-arm pushing with active view and role selection" loading="lazy">
-        <figcaption><b>Closed-loop dual-arm pushing with active view and role selection.</b> The chain
-        alternates head and left views, assigns the right arm to push +9.8&nbsp;cm and then
-        +7.5&nbsp;cm, and re-measures the gap from 32.3 to 22.5 to 3.8&nbsp;cm before committing.</figcaption>
-      </figure>
-      <figure style="align-self:start">
-        <video controls muted loop playsinline preload="metadata" style="width:100%;border-radius:4px;background:#000"><source src="assets/video/arm_real.mp4" type="video/mp4"></video>
-        <figcaption><b>The rig, recorded.</b> One push episode on the physical dual-arm testbed.</figcaption>
-      </figure>
+    <div class="content has-text-justified" style="margin-top:1.4rem">
+      <p>On the <strong>dual-arm rig</strong>, over 100 trials per method with randomized object
+      poses, replay reaches 92.0% success against 83.3% for the same brain without skills and 42.0%
+      for an atomic visuomotor policy, while cutting agent overhead from 16.7 to 12.8&nbsp;seconds.
+      On the <strong>vehicle</strong>, 100 trials per task on the same recorded streams, replay cuts
+      the stream clock from 21.0 to 4.4&nbsp;seconds and raises the mean score from 54.1% to 65.3%.
+      It also lands in a window holding useful evidence more often than any baseline, with an
+      empty-read rate of 21% against 33% for the best baseline.</p>
     </div>
 
-    <h4 class="title is-4" style="margin-top:2.4rem">Vehicle Sentry and Guided Parking</h4>
-    <div class="content has-text-justified">
-      <p>The vehicle stays stationary. Two concurrently recording sensing units, each a RealSense D455
-      camera plus a single-channel 48-kHz microphone, sit at the B-pillar and on the roof. 100 trials
-      per task, every method evaluated on the same recorded streams, with target slots, instructor
-      positions, intruder starting positions, and event times randomized, and a second passerby in
-      some trials.</p>
-    </div>
     <div class="tablewrap">
       <table class="res">
         <thead><tr><th class="first">Method</th><th>Controller</th><th>Parking</th><th>Sentry</th><th>Mean</th><th>Stream clock (s)</th><th>BS@10s</th></tr></thead>
@@ -517,73 +254,53 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         </tbody>
       </table>
     </div>
-    <p class="tabcap">Real-car results under a live stream. Against TRACE-Delib on the same
-    controller, replay cuts the stream clock from 21.0 to 4.4&nbsp;seconds, 79.0% less, and raises the
-    mean score from 54.1% to 65.3%. AWM reaches a competitive 63.0% but spends 25.5&nbsp;seconds of
-    stream time, which does not meet the real-time requirement.</p>
+    <p class="tabcap">Real-car results under a live stream, 100 trials per task.</p>
 
-    <div class="figrow two" style="margin-top:1.4rem">
-      <figure>
-        <img src="assets/fig/RealCarTradeoff.webp" alt="Real-vehicle efficiency and empty-read rate" loading="lazy">
-        <figcaption><b>Real-vehicle efficiency.</b> Left: accuracy against stream clock, bubble area
-        denoting controller parameters. Right: how often sensing lands outside a window that holds
-        useful evidence. TRACE has the lowest empty-read rate at 21%, against 33% for the best
-        baseline and 43% for TaskSense.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/fig/DifferentParking.webp" alt="Guided-parking scenes under three operating conditions" loading="lazy">
-        <figcaption><b>Guided-parking scenes under three operating conditions.</b></figcaption>
-      </figure>
-    </div>
-    <figure style="margin-top:1.4rem">
+    <figure style="margin-top:2rem">
       <img class="teaser" src="assets/fig/parking_case.webp" width="1000" alt="Speech and gesture ground a guided-parking request to Slot 5" loading="lazy">
-      <div class="media-caption has-text-centered"><b>Speech and gesture ground a guided-parking
-      request to Slot&nbsp;5.</b> The chain probes, listens through the 3.1&nbsp;s speech window,
-      locates the speaker, switches view, reads the 2.6&nbsp;s gesture, scans occupancy, and commits
-      before four seconds of a ten-second stream have passed.</div>
+      <div class="media-caption has-text-centered">One trial end to end: the chain probes, listens
+      through the 3.1&nbsp;s speech window, locates the speaker, switches view, reads the 2.6&nbsp;s
+      gesture, scans occupancy, and commits to Slot&nbsp;5 before four seconds of a ten-second stream
+      have passed.</div>
     </figure>
 
-    <div class="comparisons-row" style="margin-top:2rem">
+    <div class="comparisons-row" style="margin-top:2.4rem">
       <div class="comparison">
         <video controls muted loop playsinline preload="metadata"><source src="assets/video/sentry_real.mp4" type="video/mp4"></video>
         <div class="cap"><b>Sentry, real car, garage at night.</b> The car sits parked and unattended
         while a person walks up and bends over the bonnet. The brain decides which stream to wake and
-        when what it has justifies a verdict, instead of encoding every camera continuously. This
-        session is annotated as an intrusion.</div>
+        when what it has justifies a verdict. This session is annotated as an intrusion.</div>
       </div>
       <div class="comparison">
         <video controls muted loop playsinline preload="metadata"><source src="assets/video/carla_cams.mp4" type="video/mp4"></video>
         <div class="cap"><b>Why the choice matters, CARLA.</b> Four cameras, twelve seconds, one
         spoken command: <em>&ldquo;This spot is no good, take that middle spot.&rdquo;</em> Only
-        <code>CAM_LEFT</code> ever contains the person pointing. The bars mark the windows in which
-        speech and pointing are available, and a chain that samples outside them comes back
-        empty.</div>
+        <code>CAM_LEFT</code> ever contains the person pointing, and the bars mark the windows in
+        which speech and pointing are available.</div>
       </div>
     </div>
-
-    <h4 class="title is-4" style="margin-top:2.4rem">Generalization to Unseen Tasks</h4>
-    <div class="figrow two">
-      <figure>
-        <img src="assets/fig/Cabin.webp" alt="A rear-seat query selects rear audio before the rear camera" loading="lazy">
-        <figcaption><b>A rear-seat query selects rear audio before the rear camera.</b></figcaption>
-      </figure>
-      <figure style="align-self:start">
-        <video controls muted loop playsinline preload="metadata" style="width:100%;border-radius:4px;background:#000"><source src="assets/video/cabin_real.mp4" type="video/mp4"></video>
-        <figcaption><b>Recorded cabin session.</b> Seven vehicle-cabin tasks held out of training span
-        driver behavior, rear-seat monitoring, different viewpoints, and several modalities. Without
-        task-specific fine-tuning the same 2B brain answers 75.3% of these queries correctly, by
-        recombining existing tools as intermediate evidence arrives.</figcaption>
-      </figure>
+    <div class="comparisons-row">
+      <div class="comparison">
+        <video controls muted loop playsinline preload="metadata"><source src="assets/video/arm_real.mp4" type="video/mp4"></video>
+        <div class="cap"><b>Dual-arm manipulation, RealMan RM75-6FB.</b> One push episode on the
+        physical rig: the agent picks the view, assigns the sensing and acting arm, sets the push
+        distance, then re-measures what the object actually did.</div>
+      </div>
+      <div class="comparison">
+        <video controls muted loop playsinline preload="metadata"><source src="assets/video/cabin_real.mp4" type="video/mp4"></video>
+        <div class="cap"><b>Tasks it was never trained on.</b> Seven vehicle-cabin tasks held out of
+        training span driver behavior, rear-seat monitoring, other viewpoints, and other modalities.
+        Without task-specific fine-tuning the same 2B brain answers 75.3% of them correctly.</div>
+      </div>
     </div>
   </div>
 </section>
-
-<hr class="rule">
 
 <!-- One trial -->
 <section class="section">
   <div class="container">
     <div class="has-text-centered"><h3 class="title is-3">One Recorded Trial, Tool by Tool</h3></div>
+    <details><summary style="cursor:pointer;color:#3273dc;margin-bottom:1rem">Show the transcript the brain produced</summary>
     <div class="content has-text-justified">
       <p>The transcript behind the clip at the top of this page, printed as the brain produced it.
       A recorded guided-parking session on the vehicle testbed, decoding temperature 0. Six calls,
@@ -621,6 +338,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     &ldquo;the gap&rdquo; and concludes it is in the unreliable regime. The gap to the next free bay is
     2.25&nbsp;&minus;&nbsp;0.02&nbsp;=&nbsp;2.23&nbsp;m, which is the reliable one. The arithmetic is
     wrong and the conclusion is right; calling this chain flawless would be overclaiming.</div>
+    </details>
   </div>
 </section>
 
