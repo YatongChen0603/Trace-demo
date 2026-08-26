@@ -74,6 +74,61 @@ table.trace td.win{font-family:"SF Mono",Menlo,Consolas,monospace;color:#7a7a7a;
 table.trace td.obs{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.82rem;color:#363636;line-height:1.5}
 table.trace tr.commit td{background:#f4f7fb;border-bottom:2px solid #333}
 
+
+/* case layout, adapted from the rollout-review page */
+.case{margin-top:3.2rem;border-top:2px solid #363636;padding-top:1.5rem}
+.case:first-of-type{margin-top:2rem}
+.case-head{max-width:70ch}
+.case-head .eyebrow{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.72rem;letter-spacing:.15em;
+  text-transform:uppercase;color:#8a8a8a;margin:0 0 .4em}
+.case-head h4{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:1.25rem;font-weight:700;
+  color:#363636;margin:0 0 .35em;letter-spacing:-.01em}
+.case-head .lede{color:#5b5b5b;font-size:.97rem;line-height:1.6;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:.9rem 0 0}
+.chip{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.76rem;padding:3px 9px;
+  border:1px solid #dcdcdc;border-radius:2px;background:#fafafa;color:#5b5b5b;white-space:nowrap}
+.chip.gt{border-color:#b4600a;color:#b4600a;font-weight:600}
+.casegrid{display:grid;grid-template-columns:1fr;gap:1.6rem;margin-top:1.4rem}
+@media(min-width:1000px){.casegrid{grid-template-columns:minmax(300px,400px) 1fr;gap:2.2rem;align-items:start}
+  .casegrid .left{position:sticky;top:20px}}
+.casegrid .left{display:flex;flex-direction:column;gap:1rem}
+.casegrid .left video{width:100%;display:block;border-radius:4px;background:#000}
+.casegrid .left figcaption{margin-top:.45rem;color:#5b5b5b;font-size:.85rem;line-height:1.5}
+.facts{border:1px solid #e2e2e2;border-radius:4px;background:#fafafa;padding:.9rem 1rem}
+.facts h5{margin:0 0 .6em;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:#363636;font-weight:700}
+.facts dl{margin:0;display:grid;gap:5px}
+.facts .tr{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+.facts dt{color:#5b5b5b;font-size:.84rem;white-space:nowrap}
+.facts dd{margin:0;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.82rem;color:#363636;text-align:right}
+.facts .note{margin:.8em 0 0;font-size:.8rem;color:#7a7a7a;line-height:1.5}
+h5.rlab{margin:0 0 .5em;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:#363636;font-weight:700}
+.tl{margin:.2rem 0 .3rem}
+.tl-track{position:relative;height:64px;background:#fafafa;border:1px solid #e2e2e2;border-radius:3px}
+.band{position:absolute;top:0;bottom:0}
+.band.speech{background:rgba(91,127,166,.16)}
+.band.gesture{background:rgba(180,96,10,.14)}
+.band span{position:absolute;top:5px;left:6px;font-family:"SF Mono",Menlo,Consolas,monospace;
+  font-size:.68rem;color:#5b5b5b;white-space:nowrap}
+.call{position:absolute;bottom:6px;height:22px;min-width:4px;border:0;padding:0;cursor:pointer;border-radius:2px;
+  background:#5b7fa6}
+.call:hover,.call:focus-visible{outline:2px solid #363636;outline-offset:1px}
+.call.read{background:#2f7d78}.call.survey{background:#7a5ea8}.call.aim{background:#c08a2e}
+.stop{position:absolute;top:0;bottom:0;width:2px;background:#b4600a}
+.stop span{position:absolute;bottom:-1.05rem;left:4px;font-family:"SF Mono",Menlo,Consolas,monospace;
+  font-size:.68rem;color:#b4600a;white-space:nowrap}
+.tl-axis{position:relative;height:1.1rem;margin-top:.15rem}
+.tl-axis .sec{position:absolute;transform:translateX(-50%);font-family:"SF Mono",Menlo,Consolas,monospace;
+  font-size:.7rem;color:#8a8a8a}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:1.5rem 0 1rem;font-size:.78rem;color:#5b5b5b}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+tr.hit td{background:#fff6e8}
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:#e2e2e2;
+  border:1px solid #e2e2e2;border-radius:4px;overflow:hidden;margin:.2rem 0 1.1rem}
+.statrow>div{background:#fff;padding:.8rem .9rem}
+.statrow .k{font-size:.78rem;color:#5b5b5b;line-height:1.35}
+.statrow .v{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:1.35rem;font-weight:600;color:#363636;
+  margin-top:.25rem;font-variant-numeric:tabular-nums}
+.statrow .v.ours{color:#b4600a}
 pre{background:#f5f5f5;color:#363636;padding:1.1rem 1.25rem;overflow-x:auto;border-radius:4px;
   font-size:.85rem;line-height:1.6;white-space:pre}
 .callout{border-left:4px solid #b4600a;background:#fbf7f2;padding:.9rem 1.15rem;border-radius:0 4px 4px 0;
@@ -219,126 +274,231 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
   </div>
 </section>
 
-<!-- Real deployment -->
+<!-- Physical testbeds -->
 <section class="section">
   <div class="container">
     <div class="has-text-centered">
       <h3 class="title is-3">On Physical Testbeds</h3>
       <img class="teaser" src="assets/fig/RealScene.webp" width="900" alt="Embodied testbeds and their simulators" loading="lazy">
-      <div class="media-caption">Embodied testbeds and their simulators: a RealMan dual-arm rig and a
-      real vehicle, each with the simulator it pairs with.</div>
+      <div class="media-caption">A RealMan dual-arm rig and a real vehicle, each with the simulator it
+      pairs with. Everything below is a recorded session from one of them.</div>
     </div>
 
-    <div class="content has-text-justified" style="margin-top:1.4rem">
-      <p>On the <strong>dual-arm rig</strong>, over 100 trials per method with randomized object
-      poses, replay reaches 92.0% success against 83.3% for the same brain without skills and 42.0%
-      for an atomic visuomotor policy, while cutting agent overhead from 16.7 to 12.8&nbsp;seconds.
-      On the <strong>vehicle</strong>, 100 trials per task on the same recorded streams, replay cuts
-      the stream clock from 21.0 to 4.4&nbsp;seconds and raises the mean score from 54.1% to 65.3%.
-      It also lands in a window holding useful evidence more often than any baseline, with an
-      empty-read rate of 21% against 33% for the best baseline.</p>
-    </div>
-
-    <div class="tablewrap">
-      <table class="res">
-        <thead><tr><th class="first">Method</th><th>Controller</th><th>Parking</th><th>Sentry</th><th>Mean</th><th>Stream clock (s)</th><th>BS@10s</th></tr></thead>
-        <tbody>
-          <tr><td class="first">Qwen2.5-Omni</td><td>3B</td><td>56.1</td><td>56.0</td><td>56.1</td><td>8.6</td><td>56.1</td></tr>
-          <tr><td class="first">Qwen2.5-Omni</td><td>7B</td><td><b>70.7</b></td><td>56.0</td><td>63.4</td><td>6.0</td><td>63.4</td></tr>
-          <tr><td class="first">ProAgent</td><td>2B</td><td>41.5</td><td>64.0</td><td>52.8</td><td>3.8</td><td>52.8</td></tr>
-          <tr><td class="first">AWM</td><td>2B</td><td>65.9</td><td>60.0</td><td>63.0</td><td>25.5</td><td>24.7</td></tr>
-          <tr><td class="first">CoMIC</td><td>2B+27B</td><td>61.0</td><td>64.0</td><td>62.5</td><td>24.1</td><td>25.9</td></tr>
-          <tr><td class="first">TaskSense</td><td>2B+27B</td><td>48.8</td><td>52.0</td><td>50.4</td><td>6.6</td><td>50.4</td></tr>
-          <tr class="ours rule"><td class="first">TRACE-Delib</td><td>2B</td><td>56.1</td><td>52.0</td><td>54.1</td><td>21.0</td><td>25.8</td></tr>
-          <tr class="ours"><td class="first">TRACE</td><td>2B</td><td>58.5</td><td><b>72.0</b></td><td><b>65.3</b></td><td><b>4.4</b></td><td><b>65.3</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tabcap">Real-car results under a live stream, 100 trials per task.</p>
-
-    <figure style="margin-top:2rem">
-      <img class="teaser" src="assets/fig/parking_case.webp" width="1000" alt="Speech and gesture ground a guided-parking request to Slot 5" loading="lazy">
-      <div class="media-caption has-text-centered">One trial end to end: the chain probes, listens
-      through the 3.1&nbsp;s speech window, locates the speaker, switches view, reads the 2.6&nbsp;s
-      gesture, scans occupancy, and commits to Slot&nbsp;5 before four seconds of a ten-second stream
-      have passed.</div>
-    </figure>
-
-    <div class="comparisons-row" style="margin-top:2.4rem">
-      <div class="comparison">
-        <video controls muted loop playsinline preload="metadata"><source src="assets/video/sentry_real.mp4" type="video/mp4"></video>
-        <div class="cap"><b>Sentry, real car, garage at night.</b> The car sits parked and unattended
-        while a person walks up and bends over the bonnet. The brain decides which stream to wake and
-        when what it has justifies a verdict. This session is annotated as an intrusion.</div>
+    <!-- case 1 -->
+    <div class="case" id="case-parking">
+      <div class="case-head">
+        <p class="eyebrow">Guided parking &middot; real vehicle &middot; one night session</p>
+        <h4>park/20260819_195618</h4>
+        <p class="lede">A person outside the car says where to park and points at a bay. The car does
+        not know which side they are standing on, which bays are free, or where the arm points, and
+        both the utterance and the gesture are over before the clip ends.</p>
+        <div class="chips"><span class="chip gt">annotated slot_4</span><span class="chip">committed slot_4</span>
+          <span class="chip">6 tool calls</span><span class="chip">3.6s of a 12s budget</span>
+          <span class="chip">temperature 0</span></div>
       </div>
-      <div class="comparison">
-        <video controls muted loop playsinline preload="metadata"><source src="assets/video/carla_cams.mp4" type="video/mp4"></video>
-        <div class="cap"><b>Why the choice matters, CARLA.</b> Four cameras, twelve seconds, one
-        spoken command: <em>&ldquo;This spot is no good, take that middle spot.&rdquo;</em> Only
-        <code>CAM_LEFT</code> ever contains the person pointing, and the bars mark the windows in
-        which speech and pointing are available.</div>
-      </div>
-    </div>
-    <div class="comparisons-row">
-      <div class="comparison">
-        <video controls muted loop playsinline preload="metadata"><source src="assets/video/arm_real.mp4" type="video/mp4"></video>
-        <div class="cap"><b>Dual-arm manipulation, RealMan RM75-6FB.</b> One push episode on the
-        physical rig: the agent picks the view, assigns the sensing and acting arm, sets the push
-        distance, then re-measures what the object actually did.</div>
-      </div>
-      <div class="comparison">
-        <video controls muted loop playsinline preload="metadata"><source src="assets/video/cabin_real.mp4" type="video/mp4"></video>
-        <div class="cap"><b>Tasks it was never trained on.</b> Seven vehicle-cabin tasks held out of
-        training span driver behavior, rear-seat monitoring, other viewpoints, and other modalities.
-        Without task-specific fine-tuning the same 2B brain answers 75.3% of them correctly.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- One trial -->
-<section class="section">
-  <div class="container">
-    <div class="has-text-centered"><h3 class="title is-3">One Recorded Trial, Tool by Tool</h3></div>
-    <details><summary style="cursor:pointer;color:#3273dc;margin-bottom:1rem">Show the transcript the brain produced</summary>
-    <div class="content has-text-justified">
-      <p>The transcript behind the clip at the top of this page, printed as the brain produced it.
-      A recorded guided-parking session on the vehicle testbed, decoding temperature 0. Six calls,
-      3.6 seconds spent, committed <code>slot_4</code> against an annotated <code>slot_4</code>.</p>
-    </div>
-    <div class="tablewrap">
+      <div class="casegrid">
+        <div class="left">
+          <figure>
+            <video controls muted loop playsinline preload="metadata"><source src="assets/video/parking_real.mp4" type="video/mp4"></video>
+            <figcaption>The recorded session, brightened. The person walks in from the left, speaks,
+            and points.</figcaption>
+          </figure>
+          <div class="facts">
+            <h5>Hidden from the policy</h5>
+            <dl>
+              <div class="tr"><dt>Speech window</dt><dd>1.0 &ndash; 5.5s</dd></div>
+              <div class="tr"><dt>Gesture window</dt><dd>2.4 &ndash; 7.4s</dd></div>
+              <div class="tr"><dt>Annotated bay</dt><dd>slot_4</dd></div>
+              <div class="tr"><dt>Committed</dt><dd>slot_4</dd></div>
+              <div class="tr"><dt>Outcome</dt><dd>correct</dd></div>
+            </dl>
+            <p class="note">The policy is told only that a spoken command and a pointing gesture each
+            happen somewhere in the clip. These windows are used to score the run and to draw the
+            timeline, and never reach the model or any tool return.</p>
+          </div>
+          <figure>
+            <video controls muted loop playsinline preload="metadata"><source src="assets/video/carla_cams.mp4" type="video/mp4"></video>
+            <figcaption>Why the camera choice matters, shown in simulation: of four cameras, only
+            <code>CAM_LEFT</code> ever contains the person pointing.</figcaption>
+          </figure>
+        </div>
+        <div class="right">
+          <h5 class="rlab">Where the six calls landed on the clock</h5>
+          <div class="tl">
+            <div class="tl-track">
+              <div class="band speech" style="left:8.333%;width:37.500%"><span>speech 1.0&ndash;5.5s</span></div>
+              <div class="band gesture" style="left:20.000%;width:41.667%"><span>gesture 2.4&ndash;7.4s</span></div>
+              <button class="call " style="left:0.000%;width:1.667%" data-row="c0" title="probe_activity  0.0–0.2s"></button><button class="call read" style="left:1.667%;width:8.333%" data-row="c1" title="listen_speech  0.2–1.2s"></button><button class="call survey" style="left:10.000%;width:4.167%" data-row="c2" title="scan_occupancy  1.2–1.7s"></button><button class="call survey" style="left:14.167%;width:2.500%" data-row="c3" title="locate_speaker  1.7–2.0s"></button><button class="call aim" style="left:16.667%;width:0.833%" data-row="c4" title="select_camera  2.0–2.1s"></button><button class="call read" style="left:17.500%;width:12.500%" data-row="c5" title="read_gesture  2.1–3.6s"></button>
+              <div class="stop" style="left:30.000%"><span>commits at 3.6s</span></div>
+            </div>
+            <div class="tl-axis"><span class="sec" style="left:0.00%">0</span><span class="sec" style="left:16.67%">2</span><span class="sec" style="left:33.33%">4</span><span class="sec" style="left:50.00%">6</span><span class="sec" style="left:66.67%">8</span><span class="sec" style="left:83.33%">10</span><span class="sec" style="left:100.00%">12</span></div>
+          </div>
+          <div class="legend" style="margin-top:1.6rem">
+            <span><i style="background:#5b7fa6"></i>probe</span>
+            <span><i style="background:#2f7d78"></i>read content</span>
+            <span><i style="background:#7a5ea8"></i>survey or locate</span>
+            <span><i style="background:#c08a2e"></i>switch view</span>
+            <span><i style="background:#b4600a"></i>commit</span>
+          </div>
+          <p class="media-caption" style="margin:0 0 1.2rem;max-width:none">
+          <code>listen_speech</code> caught the utterance by its last 0.2&nbsp;seconds and
+          <code>read_gesture</code> landed 1.2&nbsp;seconds inside the gesture. Both windows were
+          found without a wasted call. Click a bar to jump to that turn.</p>
+          <h5 class="rlab">The transcript the brain produced</h5>
+          <div class="tablewrap">
       <table class="trace">
         <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Why this call</th><th>What came back</th></tr></thead>
         <tbody>
-          <tr><td>0</td><td class="tool">probe_activity</td><td class="win">0.0 &rarr; 0.2s</td>
+          <tr id="c0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0 &rarr; 0.2s</td>
             <td>the cheapest look: is anything happening right now</td>
             <td class="obs">speech_active=false, gesture_active=false<br>(the probe rarely false-alarms but misses about a quarter of the instants where the event IS running)</td></tr>
-          <tr><td>1</td><td class="tool">listen_speech</td><td class="win">0.2 &rarr; 1.2s</td>
+          <tr id="c1"><td>1</td><td class="tool">listen_speech</td><td class="win">0.2 &rarr; 1.2s</td>
             <td>overrides the probe and spends a full second on the microphone</td>
             <td class="obs">transcript: "Comment off over here." | other mic: "Come and bump down the gear."<br>coarse direction word: none</td></tr>
-          <tr><td>2</td><td class="tool">scan_occupancy</td><td class="win">1.2 &rarr; 1.7s</td>
+          <tr id="c2"><td>2</td><td class="tool">scan_occupancy</td><td class="win">1.2 &rarr; 1.7s</td>
             <td>a standing fact, safe to sample at any time</td>
             <td class="obs">occupancy (noisy): bay 0 taken, bays 1-5 free<br>free candidates: [1, 2, 3, 4, 5]</td></tr>
-          <tr><td>3</td><td class="tool">locate_speaker</td><td class="win">1.7 &rarr; 2.0s</td>
+          <tr id="c3"><td>3</td><td class="tool">locate_speaker</td><td class="win">1.7 &rarr; 2.0s</td>
             <td>which side of the car the voice came from</td>
             <td class="obs">estimated speaker side: front (noisy, confidence 0.8)</td></tr>
-          <tr><td>4</td><td class="tool">select_camera</td><td class="win">2.0 &rarr; 2.1s</td>
+          <tr id="c4"><td>4</td><td class="tool">select_camera</td><td class="win">2.0 &rarr; 2.1s</td>
             <td>aim perception at that side before paying for the expensive read</td>
             <td class="obs">now viewing the front camera</td></tr>
-          <tr><td>5</td><td class="tool">read_gesture</td><td class="win">2.1 &rarr; 3.6s</td>
+          <tr id="c5"><td>5</td><td class="tool">read_gesture</td><td class="win">2.1 &rarr; 3.6s</td>
             <td>the only tool that can say WHICH bay</td>
             <td class="obs">arm bearing 28.3&deg;. Bays by distance from the pointing line:<br>slot_4 (0.02 m), slot_3 (2.25 m), slot_5 (2.27 m), slot_2 (4.34 m), slot_1 (6.59 m)<br>cannot see which bays are taken, cross with scan_occupancy</td></tr>
-          <tr class="commit"><td>6</td><td class="tool">commit</td><td class="win">clock stops at 3.6s</td>
+          <tr id="c6" class="commit"><td>6</td><td class="tool">commit</td><td class="win">clock stops at 3.6s</td>
             <td>nearest free bay on the pointing line</td>
             <td class="obs">&lt;answer&gt;slot_4&lt;/answer&gt; &nbsp; annotated slot_4 &nbsp; correct</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="callout"><b>One slip, stated plainly.</b> In its last turn the model calls 0.02&nbsp;m
+          <div class="callout"><b>One slip, stated plainly.</b> In its last turn the model calls 0.02&nbsp;m
     &ldquo;the gap&rdquo; and concludes it is in the unreliable regime. The gap to the next free bay is
     2.25&nbsp;&minus;&nbsp;0.02&nbsp;=&nbsp;2.23&nbsp;m, which is the reliable one. The arithmetic is
     wrong and the conclusion is right; calling this chain flawless would be overclaiming.</div>
-    </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- case 2 -->
+    <div class="case" id="case-sentry">
+      <div class="case-head">
+        <p class="eyebrow">Sentry &middot; real vehicle &middot; underground garage at night</p>
+        <h4>Watching a car nobody is in</h4>
+        <p class="lede">The car sits parked and unattended while a person walks up and bends over the
+        bonnet. Nothing tells the brain which stream is worth waking, and a verdict given too early
+        rests on evidence it has not gathered yet.</p>
+        <div class="chips"><span class="chip gt">annotated intrusion</span><span class="chip">100 trials</span>
+          <span class="chip">live stream, no pausing</span></div>
+      </div>
+      <div class="casegrid">
+        <div class="left">
+          <figure>
+            <video controls muted loop playsinline preload="metadata"><source src="assets/video/sentry_real.mp4" type="video/mp4"></video>
+            <figcaption>One sentry session from the vehicle testbed.</figcaption>
+          </figure>
+        </div>
+        <div class="right">
+          <h5 class="rlab">What replay changes on this task</h5>
+          <div class="statrow">
+            <div><div class="k">TRACE</div><div class="v ours">72.0</div></div>
+            <div><div class="k">Best baseline</div><div class="v">64.0</div></div>
+            <div><div class="k">Deliberation only</div><div class="v">52.0</div></div>
+          </div>
+          <div class="statrow">
+            <div><div class="k">Stream clock, both tasks</div><div class="v ours">4.4s</div></div>
+            <div><div class="k">Deliberation only</div><div class="v">21.0s</div></div>
+            <div><div class="k">Empty reads</div><div class="v ours">21%</div></div>
+            <div><div class="k">Best baseline</div><div class="v">33%</div></div>
+          </div>
+          <p class="media-caption" style="margin:0;max-width:none">An empty read is a call that lands
+          in a window holding no evidence. Deliberating on a live stream costs stream time the events
+          do not wait through, which is why the same brain scores lower without its skills.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:2.4rem">
+      <div class="tablewrap">
+        <table class="res">
+          <thead><tr><th class="first">Method</th><th>Controller</th><th>Parking</th><th>Sentry</th><th>Mean</th><th>Stream clock (s)</th><th>BS@10s</th></tr></thead>
+          <tbody>
+            <tr><td class="first">Qwen2.5-Omni</td><td>3B</td><td>56.1</td><td>56.0</td><td>56.1</td><td>8.6</td><td>56.1</td></tr>
+            <tr><td class="first">Qwen2.5-Omni</td><td>7B</td><td><b>70.7</b></td><td>56.0</td><td>63.4</td><td>6.0</td><td>63.4</td></tr>
+            <tr><td class="first">ProAgent</td><td>2B</td><td>41.5</td><td>64.0</td><td>52.8</td><td>3.8</td><td>52.8</td></tr>
+            <tr><td class="first">AWM</td><td>2B</td><td>65.9</td><td>60.0</td><td>63.0</td><td>25.5</td><td>24.7</td></tr>
+            <tr><td class="first">CoMIC</td><td>2B+27B</td><td>61.0</td><td>64.0</td><td>62.5</td><td>24.1</td><td>25.9</td></tr>
+            <tr><td class="first">TaskSense</td><td>2B+27B</td><td>48.8</td><td>52.0</td><td>50.4</td><td>6.6</td><td>50.4</td></tr>
+            <tr class="ours rule"><td class="first">TRACE-Delib</td><td>2B</td><td>56.1</td><td>52.0</td><td>54.1</td><td>21.0</td><td>25.8</td></tr>
+            <tr class="ours"><td class="first">TRACE</td><td>2B</td><td>58.5</td><td><b>72.0</b></td><td><b>65.3</b></td><td><b>4.4</b></td><td><b>65.3</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tabcap">Both vehicle tasks on the same recorded streams, 100 trials per task.</p>
+    </div>
+
+    <!-- case 3 -->
+    <div class="case" id="case-arm">
+      <div class="case-head">
+        <p class="eyebrow">Manipulation &middot; RealMan RM75-6FB dual-arm rig</p>
+        <h4>Pushing an object it has to keep measuring</h4>
+        <p class="lede">The agent picks the view, assigns which arm senses and which arm acts, sets a
+        push distance, then re-measures what the object actually did. Object poses are randomized
+        between trials, so a graph that only replays motion fails.</p>
+        <div class="chips"><span class="chip">over 100 trials per method</span><span class="chip">randomized poses</span></div>
+      </div>
+      <div class="casegrid">
+        <div class="left">
+          <figure>
+            <video controls muted loop playsinline preload="metadata"><source src="assets/video/arm_real.mp4" type="video/mp4"></video>
+            <figcaption>One push episode on the physical rig.</figcaption>
+          </figure>
+        </div>
+        <div class="right">
+          <h5 class="rlab">Success rate</h5>
+          <div class="statrow">
+            <div><div class="k">TRACE, replay</div><div class="v ours">92.0%</div></div>
+            <div><div class="k">Same brain, no skills</div><div class="v">83.3%</div></div>
+            <div><div class="k">Atomic visuomotor policy</div><div class="v">42.0%</div></div>
+          </div>
+          <h5 class="rlab" style="margin-top:1.4rem">Agent overhead per episode</h5>
+          <div class="statrow">
+            <div><div class="k">TRACE, replay</div><div class="v ours">12.8s</div></div>
+            <div><div class="k">Deliberation only</div><div class="v">16.7s</div></div>
+          </div>
+          <p class="media-caption" style="margin:0;max-width:none">The guards are what survive the
+          randomization: the graph fixes the order of sensing and acting, and each branch is chosen
+          from what the tools return on this particular object.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- case 4 -->
+    <div class="case" id="case-cabin">
+      <div class="case-head">
+        <p class="eyebrow">Held out &middot; vehicle cabin</p>
+        <h4>Seven tasks it was never trained on</h4>
+        <p class="lede">Driver behavior, rear-seat monitoring, other viewpoints, and other modalities,
+        all held out of training. The same 2B brain is asked to answer them with no task-specific
+        fine-tuning and no new tools.</p>
+        <div class="chips"><span class="chip">7 held-out tasks</span><span class="chip">no fine-tuning</span></div>
+      </div>
+      <div class="casegrid">
+        <div class="left">
+          <figure>
+            <video controls muted loop playsinline preload="metadata"><source src="assets/video/cabin_real.mp4" type="video/mp4"></video>
+            <figcaption>Cabin sessions from the vehicle testbed.</figcaption>
+          </figure>
+        </div>
+        <div class="right">
+          <h5 class="rlab">Answered correctly</h5>
+          <div class="statrow"><div><div class="k">Same brain, no task-specific training</div><div class="v ours">75.3%</div></div></div>
+          <p class="media-caption" style="margin:0;max-width:none">What transfers is the habit of
+          choosing a sensor and reading it, rather than any particular skill graph.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -354,5 +514,16 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
   </div>
 </footer>
 
+
+<script>
+document.querySelectorAll('.call').forEach(function(b){
+  b.addEventListener('click',function(){
+    var r=document.getElementById(b.dataset.row); if(!r) return;
+    document.querySelectorAll('tr.hit').forEach(function(x){x.classList.remove('hit')});
+    r.classList.add('hit');
+    r.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+});
+</script>
 </body>
 </html>
