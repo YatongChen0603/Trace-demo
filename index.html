@@ -161,14 +161,13 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
   <div class="container is-max-desktop">
     <div class="hero-body">
       <video class="teaser" width="720" autoplay loop muted playsinline preload="metadata">
-        <source src="assets/video/parking_161129.mp4" type="video/mp4">
+        <source src="assets/video/parking_160331.mp4" type="video/mp4">
       </video>
       <div class="media-caption has-text-centered">
-        Guided parking on the vehicle testbed, one recorded session. A person standing outside names
-        a bay by speech and gesture, and both events start late in the clip. The 2B on-device brain
-        never receives a pixel directly: it spends ten sensing calls finding the moment the arm is up,
-        reads a bearing at 5.5&nbsp;seconds, and commits to <code>slot_4</code>, the annotated bay.
-        Faces are blurred frame by frame in every recording on this page.
+        Guided parking, one recorded session on the vehicle testbed. A person outside the car
+        names a bay by speech and gesture. The 2B brain never receives a pixel: it calls sensing
+        tools, catches the arm at 3.8&nbsp;seconds and commits to <code>slot_5</code>, the annotated
+        bay. Faces are blurred frame by frame throughout.
       </div>
     </div>
   </div>
@@ -284,175 +283,91 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
   <div class="container">
     <div class="has-text-centered">
       <h3 class="title is-3">On Physical Testbeds</h3>
-      <img class="teaser" src="assets/fig/RealScene.webp" width="900" alt="Embodied testbeds and their simulators" loading="lazy">
-      <div class="media-caption">A RealMan dual-arm rig and a real vehicle, each with the simulator it
-      pairs with. Everything below is a recorded session from one of them.</div>
+      <img class="teaser" src="assets/fig/RealScene.webp" width="900" alt="Testbeds and their simulators" loading="lazy">
+      <div class="media-caption">A dual-arm rig and a real vehicle, each with the simulator it pairs with.</div>
     </div>
 
-    <!-- case 1 -->
     <div class="case" id="case-parking">
       <div class="case-head">
-        <p class="eyebrow">Guided parking &middot; real vehicle &middot; underground garage</p>
-        <h4>park/20260819_161129</h4>
-        <p class="lede">A person standing outside the car names a bay by speech and gesture. Neither
-        event has started when the clip does: the voice begins at 4.0&nbsp;seconds and the arm goes up
-        at 4.6, and the gesture is over 1.3&nbsp;seconds later. The brain is told only that both
-        happen somewhere in the clip.</p>
-        <div class="chips"><span class="chip gt">annotated slot_4</span><span class="chip">committed slot_4</span>
-          <span class="chip">10 tool calls</span><span class="chip">5.7s of a 12s budget</span>
-          <span class="chip">temperature 0</span></div>
+        <p class="eyebrow">Guided parking &middot; real vehicle</p>
+        <h4>park/20260819_160331</h4>
+        <div class="chips"><span class="chip gt">annotated slot_5</span><span class="chip">committed slot_5</span>
+          <span class="chip">8 calls</span><span class="chip">5.3s</span>
+          <span class="chip">speech 0.5&ndash;3.0s</span><span class="chip">gesture 4.0&ndash;6.8s</span></div>
       </div>
       <div class="casegrid">
         <div class="left">
           <figure>
-            <video controls muted loop playsinline preload="metadata"><source src="assets/video/parking_161129.mp4" type="video/mp4"></video>
-            <figcaption>The recorded session, brightened. Scrub it and the clock above moves with it.</figcaption>
-          </figure>
-          <div class="facts">
-            <h5>Hidden from the policy</h5>
-            <dl>
-              <div class="tr"><dt>Speech window</dt><dd>4.0 &ndash; 7.5s</dd></div>
-              <div class="tr"><dt>Gesture window</dt><dd>4.6 &ndash; 5.9s</dd></div>
-              <div class="tr"><dt>Bays taken</dt><dd>1, 7</dd></div>
-              <div class="tr"><dt>Annotated bay</dt><dd>slot_4</dd></div>
-              <div class="tr"><dt>Committed</dt><dd>slot_4</dd></div>
-              <div class="tr"><dt>Outcome</dt><dd>correct</dd></div>
-            </dl>
-            <p class="note">The two windows are measured from the recording by the same detectors the
-            tools use, and they never reach the model. What the brain gets back is only what a tool
-            returns at the instant it is called.</p>
-          </div>
-          <figure>
-            <video controls muted loop playsinline preload="metadata"><source src="assets/video/carla_cams.mp4" type="video/mp4"></video>
-            <figcaption>Why the camera choice matters, shown in simulation: of four cameras, only
-            <code>CAM_LEFT</code> ever contains the person pointing.</figcaption>
+            <video controls muted loop playsinline preload="metadata"><source src="assets/video/parking_160331.mp4" type="video/mp4"></video>
+            <figcaption>Bays and occupancy from the site map, the arm marked while it is out, the
+            committed bay filled. Bars are the two event windows.</figcaption>
           </figure>
         </div>
         <div class="right">
-          <h5 class="rlab">Where the ten calls landed on the clock</h5>
           <div class="tl">
-            <div class="tl-track" data-total="12" data-calls='[["c0", "probe_activity", 0.0, 0.2], ["c1", "listen_speech", 0.2, 1.2], ["c2", "probe_activity", 1.2, 1.4], ["c3", "scan_occupancy", 1.4, 1.9], ["c4", "locate_speaker", 1.9, 2.2], ["c5", "select_camera", 2.2, 2.3], ["c6", "read_gesture", 2.3, 3.8], ["c7", "probe_activity", 3.8, 4.0], ["c8", "read_gesture", 4.0, 5.5], ["c9", "probe_activity", 5.5, 5.7], ["c10", "commit", 5.7, 5.7]]'>
-              <div class="band speech" style="left:33.333%;width:29.167%"><span>speech 4.0&ndash;7.5s</span></div>
-              <div class="band gesture" style="left:38.333%;width:10.833%"><span>gesture 4.6&ndash;5.9s</span></div>
-              <button class="call " style="left:0.000%;width:1.667%" data-row="c0" title="probe_activity  0.0&ndash;0.2s"></button><button class="call read" style="left:1.667%;width:8.333%" data-row="c1" title="listen_speech  0.2&ndash;1.2s"></button><button class="call " style="left:10.000%;width:1.667%" data-row="c2" title="probe_activity  1.2&ndash;1.4s"></button><button class="call survey" style="left:11.667%;width:4.167%" data-row="c3" title="scan_occupancy  1.4&ndash;1.9s"></button><button class="call survey" style="left:15.833%;width:2.500%" data-row="c4" title="locate_speaker  1.9&ndash;2.2s"></button><button class="call aim" style="left:18.333%;width:0.833%" data-row="c5" title="select_camera  2.2&ndash;2.3s"></button><button class="call read" style="left:19.167%;width:12.500%" data-row="c6" title="read_gesture  2.3&ndash;3.8s"></button><button class="call " style="left:31.667%;width:1.667%" data-row="c7" title="probe_activity  3.8&ndash;4.0s"></button><button class="call read" style="left:33.333%;width:12.500%" data-row="c8" title="read_gesture  4.0&ndash;5.5s"></button><button class="call " style="left:45.833%;width:1.667%" data-row="c9" title="probe_activity  5.5&ndash;5.7s"></button>
-              <div class="stop" style="left:47.500%"></div>
+            <div class="tl-track" data-total="10" data-calls='[["c0", "probe_activity", 0.0, 0.2], ["c1", "listen_speech", 0.2, 1.2], ["c2", "scan_occupancy", 1.2, 1.7], ["c3", "locate_speaker", 1.7, 2.0], ["c4", "select_camera", 2.0, 2.1], ["c5", "read_gesture", 2.1, 3.6], ["c6", "probe_activity", 3.6, 3.8], ["c7", "read_gesture", 3.8, 5.3], ["c8", "commit", 5.3, 5.3]]'>
+              <div class="band speech" style="left:5.000%;width:25.000%"><span>speech</span></div>
+              <div class="band gesture" style="left:40.000%;width:28.000%"><span>gesture</span></div>
+              <button class="call " style="left:0.000%;width:2.000%" data-row="c0" title="probe_activity 0.0-0.2s"></button><button class="call read" style="left:2.000%;width:10.000%" data-row="c1" title="listen_speech 0.2-1.2s"></button><button class="call survey" style="left:12.000%;width:5.000%" data-row="c2" title="scan_occupancy 1.2-1.7s"></button><button class="call survey" style="left:17.000%;width:3.000%" data-row="c3" title="locate_speaker 1.7-2.0s"></button><button class="call aim" style="left:20.000%;width:1.000%" data-row="c4" title="select_camera 2.0-2.1s"></button><button class="call read" style="left:21.000%;width:15.000%" data-row="c5" title="read_gesture 2.1-3.6s"></button><button class="call " style="left:36.000%;width:2.000%" data-row="c6" title="probe_activity 3.6-3.8s"></button><button class="call read" style="left:38.000%;width:15.000%" data-row="c7" title="read_gesture 3.8-5.3s"></button>
+              <div class="stop" style="left:53.000%"></div>
               <div class="playhead" style="left:0%"><b></b></div>
             </div>
-            <div class="tl-axis"><span class="sec" style="left:0.00%">0</span><span class="sec" style="left:16.67%">2</span><span class="sec" style="left:33.33%">4</span><span class="sec" style="left:50.00%">6</span><span class="sec" style="left:66.67%">8</span><span class="sec" style="left:83.33%">10</span><span class="sec" style="left:100.00%">12</span></div>
-            <p class="tl-readout">clock <b class="tlnow">0.00s</b> &nbsp;&middot;&nbsp; <span class="tlwhat">drag the handle, scrub the video, or click a turn below &mdash; all three stay in step</span></p>
+            <div class="tl-axis"><span class="sec" style="left:0.00%">0</span><span class="sec" style="left:20.00%">2</span><span class="sec" style="left:40.00%">4</span><span class="sec" style="left:60.00%">6</span><span class="sec" style="left:80.00%">8</span><span class="sec" style="left:100.00%">10</span></div>
+            <p class="tl-readout">clock <b class="tlnow">0.00s</b> &nbsp;<span class="tlwhat">drag, scrub or click a row</span></p>
           </div>
-          <div class="legend" style="margin-top:1.2rem">
+          <div class="legend">
             <span><i style="background:#5b7fa6"></i>probe</span>
-            <span><i style="background:#2f7d78"></i>read content</span>
-            <span><i style="background:#7a5ea8"></i>survey or locate</span>
+            <span><i style="background:#2f7d78"></i>read</span>
+            <span><i style="background:#7a5ea8"></i>survey</span>
             <span><i style="background:#c08a2e"></i>switch view</span>
             <span><i style="background:#b4600a"></i>commit</span>
           </div>
-          <p class="media-caption" style="margin:0 0 1.2rem;max-width:none">Three reads landed on
-          nothing: the microphone at 0.2s, the speaker locator at 1.9s, and the first look at the arm
-          at 2.3s all ran before their events began. The second look at the arm, 4.0 to 5.5s, overlaps
-          the gesture by 0.9&nbsp;seconds, and that single overlap carries the answer.</p>
-          <h5 class="rlab">The transcript the brain produced</h5>
           <div class="tablewrap">
             <table class="trace">
-              <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Why this call</th><th>What came back</th></tr></thead>
-              <tbody><tr id="c0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0 &rarr; 0.2s</td>
-            <td>the cheapest look: is anything running right now</td><td class="obs">speech_active=false, gesture_active=false</td></tr><tr id="c1"><td>1</td><td class="tool">listen_speech</td><td class="win">0.2 &rarr; 1.2s</td>
-            <td>overrides the probe and spends a full second on the microphone</td><td class="obs">nothing detected yet: the spoken command has not begun</td></tr><tr id="c2"><td>2</td><td class="tool">probe_activity</td><td class="win">1.2 &rarr; 1.4s</td>
-            <td>checks again rather than trusting one negative</td><td class="obs">speech_active=false, gesture_active=false</td></tr><tr id="c3"><td>3</td><td class="tool">scan_occupancy</td><td class="win">1.4 &rarr; 1.9s</td>
-            <td>a standing fact, safe to sample at any time</td><td class="obs">occupancy (noisy): 1 and 7 taken, 2-6 free<br>free candidates: [2, 3, 4, 5, 6]</td></tr><tr id="c4"><td>4</td><td class="tool">locate_speaker</td><td class="win">1.9 &rarr; 2.2s</td>
-            <td>tries to find which side the voice comes from</td><td class="obs">nothing detected yet: the speaker&rsquo;s voice has not begun</td></tr><tr id="c5"><td>5</td><td class="tool">select_camera</td><td class="win">2.2 &rarr; 2.3s</td>
-            <td>picks a side anyway and moves on</td><td class="obs">now viewing the left camera</td></tr><tr id="c6"><td>6</td><td class="tool">read_gesture</td><td class="win">2.3 &rarr; 3.8s</td>
-            <td>spends 1.5s on the arm before the arm is up</td><td class="obs">nothing detected yet: the pointing gesture has not begun</td></tr><tr id="c7"><td>7</td><td class="tool">probe_activity</td><td class="win">3.8 &rarr; 4.0s</td>
-            <td>one more cheap check</td><td class="obs">speech_active=false, gesture_active=false</td></tr><tr id="c8"><td>8</td><td class="tool">read_gesture</td><td class="win">4.0 &rarr; 5.5s</td>
-            <td>tries the arm again, and this time the window overlaps</td><td class="obs">arm bearing &minus;3.0&deg;. Bays by distance from the pointing line:<br>slot_4 (0.81 m), slot_3 (1.47 m), slot_5 (3.13 m), slot_2 (3.63 m), slot_6 (5.15 m)<br>cannot see which bays are taken, cross with scan_occupancy</td></tr><tr id="c9"><td>9</td><td class="tool">probe_activity</td><td class="win">5.5 &rarr; 5.7s</td>
-            <td>confirms the events are running now</td><td class="obs">speech_active=true, gesture_active=true</td></tr><tr id="c10" class="commit"><td>10</td><td class="tool">commit</td><td class="win">clock stops at 5.7s</td>
-            <td>nearest free bay on the pointing line</td>
-            <td class="obs">&lt;answer&gt;slot_4&lt;/answer&gt; &nbsp; annotated slot_4 &nbsp; correct</td></tr></tbody>
+              <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Returned</th></tr></thead>
+              <tbody><tr id="c0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0&ndash;0.2s</td><td class="obs">speech_active=false, gesture_active=false</td></tr><tr id="c1"><td>1</td><td class="tool">listen_speech</td><td class="win">0.2&ndash;1.2s</td><td class="obs">transcript &ldquo;over there&rdquo;, direction word: far</td></tr><tr id="c2"><td>2</td><td class="tool">scan_occupancy</td><td class="win">1.2&ndash;1.7s</td><td class="obs">1 taken, 2&ndash;7 free</td></tr><tr id="c3"><td>3</td><td class="tool">locate_speaker</td><td class="win">1.7&ndash;2.0s</td><td class="obs">speaker on the left, confidence 0.8</td></tr><tr id="c4"><td>4</td><td class="tool">select_camera</td><td class="win">2.0&ndash;2.1s</td><td class="obs">left camera</td></tr><tr id="c5"><td>5</td><td class="tool">read_gesture</td><td class="win">2.1&ndash;3.6s</td><td class="obs">the gesture has not begun</td></tr><tr id="c6"><td>6</td><td class="tool">probe_activity</td><td class="win">3.6&ndash;3.8s</td><td class="obs">gesture_active=<b>true</b></td></tr><tr id="c7"><td>7</td><td class="tool">read_gesture</td><td class="win">3.8&ndash;5.3s</td><td class="obs">arm bearing 25.0&deg;: slot_5 (0.27 m), slot_6 (1.48 m)</td></tr><tr id="c8" class="commit"><td>8</td><td class="tool">commit</td><td class="win">5.3s</td><td class="obs">slot_5 &nbsp;&middot;&nbsp; annotated slot_5 &nbsp;&middot;&nbsp; correct</td></tr></tbody>
             </table>
           </div>
-          <div class="callout"><b>What the microphone actually returned.</b> The two channels
-          transcribe to &ldquo;Thank you.&rdquo; and &ldquo;up here&rdquo;, which name no bay at all.
-          The commit rests on the arm bearing crossed with the occupancy scan, and the brain also
-          misreads its own probe once, calling a negative result evidence that &ldquo;the events have
-          missed&rdquo;. Both are in the transcript above rather than edited out of it.</div>
         </div>
       </div>
     </div>
 
-    <!-- case 2 -->
     <div class="case" id="case-sentry">
       <div class="case-head">
-        <p class="eyebrow">Sentry &middot; real vehicle &middot; underground garage &middot; skill replay</p>
+        <p class="eyebrow">Sentry &middot; real vehicle &middot; replayed graph</p>
         <h4>fight/20260819_165141</h4>
-        <p class="lede">The car is parked and unattended when a person walks up to it and leans over
-        the bonnet. This session runs on a retrieved skill graph: the brain thinks once, for
-        0.37&nbsp;seconds and nine tokens, and the six calls that follow come from the graph, with the
-        guards choosing each branch from what the previous tool returned.</p>
         <div class="chips"><span class="chip gt">annotated alert</span><span class="chip">answered alert</span>
-          <span class="chip">6 tool calls</span><span class="chip">verdict at 5.97s of a 10s stream</span>
-          <span class="chip">replayed, not deliberated</span></div>
+          <span class="chip">6 calls</span><span class="chip">5.97s</span>
+          <span class="chip">1 model turn, 9 tokens</span><span class="chip">5 of 5 reads found evidence</span></div>
       </div>
       <div class="casegrid">
         <div class="left">
           <figure>
             <video controls muted loop playsinline preload="metadata"><source src="assets/video/sentry_165141.mp4" type="video/mp4"></video>
-            <figcaption>The recorded session, brightened. Scrub it and the clock moves with it.</figcaption>
+            <figcaption>No event bands here: a person is in frame for most of every sentry recording.</figcaption>
           </figure>
-          <div class="facts">
-            <h5>What the run cost</h5>
-            <dl>
-              <div class="tr"><dt>Model turns</dt><dd>1</dd></div>
-              <div class="tr"><dt>Generated tokens</dt><dd>9</dd></div>
-              <div class="tr"><dt>Thinking charged to the stream</dt><dd>0.37s</dd></div>
-              <div class="tr"><dt>Reads that found evidence</dt><dd>5 of 5</dd></div>
-              <div class="tr"><dt>Graph retrieved from</dt><dd>26 supporting runs</dd></div>
-              <div class="tr"><dt>Outcome</dt><dd>correct</dd></div>
-            </dl>
-            <p class="note">Compare with the parking case above, where the brain reasons between every
-            call. Here it reasons once, and the stream advances 5.97 seconds while six tools run.</p>
-          </div>
         </div>
         <div class="right">
-          <h5 class="rlab">Where the six calls landed on the stream</h5>
           <div class="tl">
             <div class="tl-track" data-total="10" data-calls='[["s0", "probe_activity", 0.0, 0.2], ["s1", "track_approach", 0.2, 1.7], ["s2", "locate_motion", 1.7, 2.0], ["s3", "select_camera", 2.0, 2.1], ["s4", "track_approach", 2.1, 3.6], ["s5", "raise_fidelity", 3.6, 5.6], ["s6", "verdict", 5.97, 5.97]]'>
-              <button class="call " style="left:0.000%;width:2.000%" data-row="s0" title="probe_activity  0.0-0.2s"></button><button class="call read" style="left:2.000%;width:15.000%" data-row="s1" title="track_approach  0.2-1.7s"></button><button class="call survey" style="left:17.000%;width:3.000%" data-row="s2" title="locate_motion  1.7-2.0s"></button><button class="call aim" style="left:20.000%;width:1.000%" data-row="s3" title="select_camera  2.0-2.1s"></button><button class="call read" style="left:21.000%;width:15.000%" data-row="s4" title="track_approach  2.1-3.6s"></button><button class="call read" style="left:36.000%;width:20.000%" data-row="s5" title="raise_fidelity  3.6-5.6s"></button>
+              <button class="call " style="left:0.000%;width:2.000%" data-row="s0" title="probe_activity 0.0-0.2s"></button><button class="call read" style="left:2.000%;width:15.000%" data-row="s1" title="track_approach 0.2-1.7s"></button><button class="call survey" style="left:17.000%;width:3.000%" data-row="s2" title="locate_motion 1.7-2.0s"></button><button class="call aim" style="left:20.000%;width:1.000%" data-row="s3" title="select_camera 2.0-2.1s"></button><button class="call read" style="left:21.000%;width:15.000%" data-row="s4" title="track_approach 2.1-3.6s"></button><button class="call read" style="left:36.000%;width:20.000%" data-row="s5" title="raise_fidelity 3.6-5.6s"></button>
               <div class="stop" style="left:59.700%"></div>
               <div class="playhead" style="left:0%"><b></b></div>
             </div>
             <div class="tl-axis"><span class="sec" style="left:0.00%">0</span><span class="sec" style="left:20.00%">2</span><span class="sec" style="left:40.00%">4</span><span class="sec" style="left:60.00%">6</span><span class="sec" style="left:80.00%">8</span><span class="sec" style="left:100.00%">10</span></div>
-            <p class="tl-readout">clock <b class="tlnow">0.00s</b> &nbsp;&middot;&nbsp; <span class="tlwhat">drag the handle, scrub the video, or click a step below</span></p>
+            <p class="tl-readout">clock <b class="tlnow">0.00s</b> &nbsp;<span class="tlwhat">drag, scrub or click a row</span></p>
           </div>
-          <p class="media-caption" style="margin:1.2rem 0;max-width:none">There are no event bands on
-          this clock, and that is a property of the data rather than a gap in the figure. A person is
-          in the forward camera for more than 90&#37; of the recording in 82 of the 90 sentry sessions,
-          so nothing here can be missed by reading at the wrong moment. What the stream still charges
-          for is deliberation, which is why a replayed graph gains on this task.</p>
-          <h5 class="rlab">The graph as it replayed</h5>
           <div class="tablewrap">
             <table class="trace">
-              <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Why this step</th><th>What came back</th></tr></thead>
-              <tbody><tr id="s0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0 &rarr; 0.2s</td><td>the graph opens with the cheapest look</td><td class="obs">someone is present</td></tr><tr id="s1"><td>1</td><td class="tool">track_approach</td><td class="win">0.2 &rarr; 1.7s</td><td>the first guarded branch: is the person closing in</td><td class="obs">approach confirmed</td></tr><tr id="s2"><td>2</td><td class="tool">locate_motion</td><td class="win">1.7 &rarr; 2.0s</td><td>which side the movement is on</td><td class="obs">motion located</td></tr><tr id="s3"><td>3</td><td class="tool">select_camera</td><td class="win">2.0 &rarr; 2.1s</td><td>points the next read at that side</td><td class="obs">view switched</td></tr><tr id="s4"><td>4</td><td class="tool">track_approach</td><td class="win">2.1 &rarr; 3.6s</td><td>tracks the approach again from the new view</td><td class="obs">approach confirmed</td></tr><tr id="s5"><td>5</td><td class="tool">raise_fidelity</td><td class="win">3.6 &rarr; 5.6s</td><td>spends the expensive read only once the cheap ones agree</td><td class="obs">close-range detail returned</td></tr><tr id="s6" class="commit"><td>6</td><td class="tool">verdict</td><td class="win">clock stops at 5.97s</td><td>the graph&rsquo;s exit condition is met</td><td class="obs">&lt;answer&gt;alert&lt;/answer&gt; &nbsp; annotated alert &nbsp; correct</td></tr></tbody>
+              <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Returned</th></tr></thead>
+              <tbody><tr id="s0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0&ndash;0.2s</td><td class="obs">someone is present</td></tr><tr id="s1"><td>1</td><td class="tool">track_approach</td><td class="win">0.2&ndash;1.7s</td><td class="obs">approach confirmed</td></tr><tr id="s2"><td>2</td><td class="tool">locate_motion</td><td class="win">1.7&ndash;2.0s</td><td class="obs">motion on the left</td></tr><tr id="s3"><td>3</td><td class="tool">select_camera</td><td class="win">2.0&ndash;2.1s</td><td class="obs">left camera</td></tr><tr id="s4"><td>4</td><td class="tool">track_approach</td><td class="win">2.1&ndash;3.6s</td><td class="obs">approach confirmed</td></tr><tr id="s5"><td>5</td><td class="tool">raise_fidelity</td><td class="win">3.6&ndash;5.6s</td><td class="obs">close-range detail</td></tr><tr id="s6" class="commit"><td>6</td><td class="tool">verdict</td><td class="win">5.97s</td><td class="obs">alert &nbsp;&middot;&nbsp; annotated alert &nbsp;&middot;&nbsp; correct</td></tr></tbody>
             </table>
-          </div>
-          <h5 class="rlab" style="margin-top:1.8rem">Across 100 trials of each task</h5>
-          <div class="statrow">
-            <div><div class="k">TRACE, sentry</div><div class="v ours">72.0</div></div>
-            <div><div class="k">Best baseline</div><div class="v">64.0</div></div>
-            <div><div class="k">Deliberation only</div><div class="v">52.0</div></div>
-          </div>
-          <div class="statrow">
-            <div><div class="k">Stream clock, both tasks</div><div class="v ours">4.4s</div></div>
-            <div><div class="k">Deliberation only</div><div class="v">21.0s</div></div>
-            <div><div class="k">Empty reads, parking</div><div class="v ours">21&#37;</div></div>
-            <div><div class="k">Best baseline</div><div class="v">33&#37;</div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <div style="margin-top:2.4rem">
+    <div style="margin-top:2.6rem">
       <div class="tablewrap">
         <table class="res">
           <thead><tr><th class="first">Method</th><th>Controller</th><th>Parking</th><th>Sentry</th><th>Mean</th><th>Stream clock (s)</th><th>BS@10s</th></tr></thead>
@@ -468,67 +383,45 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
           </tbody>
         </table>
       </div>
-      <p class="tabcap">Both vehicle tasks on the same recorded streams, 100 trials per task.</p>
+      <p class="tabcap">100 trials per task on the recorded streams. Parking is scored within one bay.</p>
     </div>
 
-    <!-- case 3 -->
     <div class="case" id="case-arm">
       <div class="case-head">
-        <p class="eyebrow">Manipulation &middot; RealMan RM75-6FB dual-arm rig</p>
-        <h4>Pushing an object it has to keep measuring</h4>
-        <p class="lede">The agent picks the view, assigns which arm senses and which arm acts, sets a
-        push distance, then re-measures what the object actually did. Object poses are randomized
-        between trials, so a graph that only replays motion fails.</p>
-        <div class="chips"><span class="chip">over 100 trials per method</span><span class="chip">randomized poses</span></div>
+        <p class="eyebrow">Manipulation &middot; RealMan RM75-6FB</p>
+        <h4>Push, over 100 trials per method</h4>
+        <div class="chips"><span class="chip">randomized object poses</span></div>
       </div>
       <div class="casegrid">
-        <div class="left">
-          <figure>
-            <video controls muted loop playsinline preload="metadata"><source src="assets/video/arm_real.mp4" type="video/mp4"></video>
-            <figcaption>One push episode on the physical rig.</figcaption>
-          </figure>
-        </div>
+        <div class="left"><figure>
+          <video controls muted loop playsinline preload="metadata"><source src="assets/video/arm_real.mp4" type="video/mp4"></video>
+        </figure></div>
         <div class="right">
-          <h5 class="rlab">Success rate</h5>
           <div class="statrow">
-            <div><div class="k">TRACE, replay</div><div class="v ours">92.0%</div></div>
-            <div><div class="k">Same brain, no skills</div><div class="v">83.3%</div></div>
-            <div><div class="k">Atomic visuomotor policy</div><div class="v">42.0%</div></div>
+            <div><div class="k">TRACE, replay</div><div class="v ours">92.0&#37;</div></div>
+            <div><div class="k">No skills</div><div class="v">83.3&#37;</div></div>
+            <div><div class="k">Atomic policy</div><div class="v">42.0&#37;</div></div>
           </div>
-          <h5 class="rlab" style="margin-top:1.4rem">Agent overhead per episode</h5>
           <div class="statrow">
-            <div><div class="k">TRACE, replay</div><div class="v ours">12.8s</div></div>
-            <div><div class="k">Deliberation only</div><div class="v">16.7s</div></div>
+            <div><div class="k">Overhead, replay</div><div class="v ours">12.8s</div></div>
+            <div><div class="k">Deliberation</div><div class="v">16.7s</div></div>
           </div>
-          <p class="media-caption" style="margin:0;max-width:none">The guards are what survive the
-          randomization: the graph fixes the order of sensing and acting, and each branch is chosen
-          from what the tools return on this particular object.</p>
         </div>
       </div>
     </div>
 
-    <!-- case 4 -->
     <div class="case" id="case-cabin">
       <div class="case-head">
         <p class="eyebrow">Held out &middot; vehicle cabin</p>
-        <h4>Seven tasks it was never trained on</h4>
-        <p class="lede">Driver behavior, rear-seat monitoring, other viewpoints, and other modalities,
-        all held out of training. The same 2B brain is asked to answer them with no task-specific
-        fine-tuning and no new tools.</p>
-        <div class="chips"><span class="chip">7 held-out tasks</span><span class="chip">no fine-tuning</span></div>
+        <h4>Seven tasks never trained on</h4>
+        <div class="chips"><span class="chip">no task-specific fine-tuning</span></div>
       </div>
       <div class="casegrid">
-        <div class="left">
-          <figure>
-            <video controls muted loop playsinline preload="metadata"><source src="assets/video/cabin_real.mp4" type="video/mp4"></video>
-            <figcaption>Cabin sessions from the vehicle testbed.</figcaption>
-          </figure>
-        </div>
+        <div class="left"><figure>
+          <video controls muted loop playsinline preload="metadata"><source src="assets/video/cabin_real.mp4" type="video/mp4"></video>
+        </figure></div>
         <div class="right">
-          <h5 class="rlab">Answered correctly</h5>
-          <div class="statrow"><div><div class="k">Same brain, no task-specific training</div><div class="v ours">75.3%</div></div></div>
-          <p class="media-caption" style="margin:0;max-width:none">What transfers is the habit of
-          choosing a sensor and reading it, rather than any particular skill graph.</p>
+          <div class="statrow"><div><div class="k">Answered correctly</div><div class="v ours">75.3&#37;</div></div></div>
         </div>
       </div>
     </div>
