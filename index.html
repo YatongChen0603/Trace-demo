@@ -395,8 +395,20 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
       <div class="casegrid">
         <div class="left"><figure>
           <video controls muted loop playsinline preload="metadata"><source src="assets/video/arm_real.mp4" type="video/mp4"></video>
+          <figcaption>External view of one push trial. Scrub the timeline on the right to step
+          through the motion phases.</figcaption>
         </figure></div>
         <div class="right">
+          <div class="tl">
+            <div class="tl-track" data-total="12" data-phases='[["arm approaches", 3.0, 6.6], ["contact, box tipped", 6.6, 8.2], ["both hands settle it at the edge", 8.2, 12.0]]'>
+              <div class="band" style="left:25.000%;width:30.000%;background:rgba(91,127,166,.16)"><span style="top:5px">approach</span></div>
+              <div class="band" style="left:55.000%;width:13.333%;background:rgba(180,96,10,.14)"><span style="top:22px">tip</span></div>
+              <div class="band" style="left:68.333%;width:31.667%;background:rgba(47,125,120,.12)"><span style="top:5px">settle</span></div>
+              <div class="playhead" style="left:0%"><b></b></div>
+            </div>
+            <div class="tl-axis"><span class="sec" style="left:0.00%">0</span><span class="sec" style="left:16.67%">2</span><span class="sec" style="left:33.33%">4</span><span class="sec" style="left:50.00%">6</span><span class="sec" style="left:66.67%">8</span><span class="sec" style="left:83.33%">10</span><span class="sec" style="left:100.00%">12</span></div>
+            <p class="tl-readout">clock <b class="tlnow">0.00s</b> &nbsp;<span class="tlwhat">drag or scrub</span></p>
+          </div>
           <div class="statrow">
             <div><div class="k">TRACE, replay</div><div class="v ours">92.0&#37;</div></div>
             <div><div class="k">No skills</div><div class="v">83.3&#37;</div></div>
@@ -406,6 +418,12 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
             <div><div class="k">Overhead, replay</div><div class="v ours">12.8s</div></div>
             <div><div class="k">Deliberation</div><div class="v">16.7s</div></div>
           </div>
+          <figure style="margin:0">
+            <video controls muted loop playsinline preload="metadata" style="width:100%;display:block;border-radius:4px;background:#000"><source src="assets/video/arm_views_ep0.mp4" type="video/mp4"></video>
+            <figcaption style="margin-top:.45rem;color:#5b5b5b;font-size:.85rem;line-height:1.5">
+            The rig also records three synchronized onboard views, shown here for one recorded push
+            episode &mdash; left to right: head camera, left wrist, right wrist.</figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -446,13 +464,19 @@ document.querySelectorAll('.case').forEach(function(box){
   var track=box.querySelector('.tl-track'); if(!track) return;
   var T=parseFloat(track.dataset.total||'12'),
       calls=JSON.parse(track.dataset.calls||'[]'),
+      phases=JSON.parse(track.dataset.phases||'[]'),
       ph=box.querySelector('.playhead'), now=box.querySelector('.tlnow'),
       what=box.querySelector('.tlwhat'), vid=box.querySelector('video'),
       bars=[].slice.call(track.querySelectorAll('.call')), dragging=false;
   var last=calls.length-1;
   function at(t){
+    if(!calls.length) return -1;
     for(var i=0;i<last;i++) if(t>=calls[i][2]&&t<calls[i][3]) return i;
     if(t>=calls[last][2]) return last;
+    return -1;
+  }
+  function phaseAt(t){
+    for(var i=0;i<phases.length;i++) if(t>=phases[i][1]&&t<phases[i][2]) return i;
     return -1;
   }
   function paint(t,moveVideo){
@@ -463,8 +487,11 @@ document.querySelectorAll('.case').forEach(function(box){
     bars.forEach(function(b,k){ b.classList.toggle('active',k===i); });
     box.querySelectorAll('tr.hit').forEach(function(r){ r.classList.remove('hit'); });
     if(i>=0){ var r=document.getElementById(calls[i][0]); if(r) r.classList.add('hit'); }
-    if(what) what.textContent = i<0 ? 'nothing in flight' :
-      (i===last ? 'answered, the clock has stopped' : 'in call '+i+', '+calls[i][1]);
+    if(what){
+      if(calls.length) what.textContent = i<0 ? 'nothing in flight' :
+        (i===last ? 'answered, the clock has stopped' : 'in call '+i+', '+calls[i][1]);
+      else{ var j=phaseAt(t); what.textContent = j<0 ? 'before the arm moves' : phases[j][0]; }
+    }
     if(moveVideo && vid && vid.duration && t<=vid.duration) vid.currentTime=t;
   }
   function fromEvent(e){
