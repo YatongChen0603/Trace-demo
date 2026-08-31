@@ -560,16 +560,6 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
               <tbody><tr id="r0"><td>0</td><td class="tool">LISTEN</td><td class="win">0.00&ndash;1.40s</td><td class="obs">on the 1.2&nbsp;s of speech uttered so far: &ldquo;Not here.&rdquo; &mdash; the refusal is already decodable, the bay to use is not</td></tr><tr id="r1"><td>1</td><td class="tool">SCAN</td><td class="win">1.45&ndash;1.50s</td><td class="obs">all six bays resolved from the front-wide view: 0, 2, 4 taken; 1, 3, 5 free &mdash; run while the speaker is still mid-sentence</td></tr><tr id="r2"><td>2</td><td class="tool">LISTEN</td><td class="win">1.55&ndash;2.00s</td><td class="obs">on 1.8&nbsp;s of speech: &ldquo;Not here, park in that middle spot.&rdquo; &mdash; the direction cue lands, <i>middle</i></td></tr><tr id="r3" class="commit"><td>3</td><td class="tool">RECOGNIZE_GESTURE &rarr; commit</td><td class="win">2.05&ndash;2.15s</td><td class="obs">arm bearing &minus;165.9&deg; against an annotated arm at &minus;153.3&deg; &rarr; bay 3, the middle free bay the arm points nearest</td></tr></tbody>
             </table>
           </div>
-          <p class="tabcap">The clip ends where the decision does, at 2.15&nbsp;s. It and the timeline run on one
-          clock: the simulator steps at a fixed 50&nbsp;ms, every frame is stamped with its own step, and the
-          utterance starts at t&nbsp;=&nbsp;0 &mdash; so the 2.15&nbsp;s written here and the 2.15&nbsp;s burned
-          into the video are the same instant, and the audio needs no aligning. The agent only ever hears what
-          has been said by the time it asks: the first LISTEN sees 1.2&nbsp;s of audio, the second 1.8&nbsp;s.
-          That is why SCAN can run at 1.45&nbsp;s, a full second before the sentence ends &mdash; the refusal
-          alone fixes the candidate set. Most of each LISTEN bar is waiting for the speaker rather than
-          computing: the four calls cost 43&ndash;163&nbsp;ms each, 0.41&nbsp;s of model time inside a
-          2.15&nbsp;s decision. The large panel is the camera the agent picked for the arm read, from the
-          direction the voice came from; the occupancy scan runs on the front-wide lens.</p>
         </div>
       </div>
     </div>
