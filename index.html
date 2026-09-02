@@ -116,6 +116,8 @@ h5.rlab{margin:0 0 .5em;font-size:.82rem;letter-spacing:.06em;text-transform:upp
 .band span{position:absolute;left:6px;font-family:"Noto Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   font-size:.68rem;color:#5b5b5b;white-space:nowrap}
 .band.speech2{background:rgba(91,127,166,.16)}
+/* pre: the stretch before the clock's zero — nothing has been said yet */
+.band.pre{background:rgba(0,0,0,.05)}
 .band.speech span{top:5px}.band.gesture span{top:22px}.band.speech2 span{top:39px}
 .playhead{position:absolute;top:0;bottom:0;width:2px;background:#363636;pointer-events:none;z-index:4}
 .playhead b{position:absolute;top:-6px;left:-6px;width:14px;height:14px;border-radius:50%;background:#363636;display:block}
@@ -126,6 +128,7 @@ h5.rlab{margin:0 0 .5em;font-size:.82rem;letter-spacing:.06em;text-transform:upp
   background:#5b7fa6}
 .call:hover,.call:focus-visible{outline:2px solid #363636;outline-offset:1px}
 .call.read{background:#2f7d78}.call.survey{background:#7a5ea8}.call.aim{background:#c08a2e}
+.call.miss{background:#b9bcc2}
 .stop{position:absolute;top:0;bottom:0;width:2px;background:#b4600a}
 .stop{z-index:3}
 .tl-axis{position:relative;height:1.1rem;margin-top:.15rem}
@@ -158,7 +161,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     <div class="container">
       <div class="has-text-centered">
         <h1 class="title is-1">TRACE: Consolidating Embodied Experience into Executable On-Device Skills</h1>
-        <p class="venue">ACM MobiCom 2027</p>
+        <p class="venue">#19 Submitted to MobiCom 2027</p>
       </div>
     </div>
   </div>
@@ -335,7 +338,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     <div class="case" id="case-parking">
       <div class="case-head">
         <h4>Guided parking</h4>
-        <p class="lede">&ldquo;Talk over there&rdquo; &mdash; spoken and pointed from outside the car. The replayed skill listens, looks, and commits 3.6&nbsp;s into a 10&nbsp;s recording.</p>
+        <p class="lede">Park in the bay the person outside is pointing at.</p>
       </div>
       <div class="casegrid">
         <div class="left">
@@ -345,7 +348,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         <div class="right">
           <div class="tl">
             <div class="tl-track" data-total="10" data-calls='[["c0", "probe_activity", 0.0, 0.2], ["c1", "listen_speech", 0.2, 1.2], ["c2", "locate_speaker", 1.2, 1.5], ["c3", "select_camera", 1.5, 1.6], ["c4", "read_gesture", 1.6, 3.1], ["c5", "scan_occupancy", 3.1, 3.6], ["c6", "commit", 3.6, 3.6]]'>
-              <div class="band speech" style="left:30.000%;width:55.000%"><span>annotated speech</span></div>
+              <div class="band speech" style="left:0.000%;width:12.000%"><span>spoken instruction</span></div>
               <div class="band gesture" style="left:2.000%;width:36.000%"><span>gesture</span></div>
               <button class="call" style="left:0.000%;width:2.000%" data-row="c0" title="probe_activity 0.0-0.2s"></button><button class="call read" style="left:2.000%;width:10.000%" data-row="c1" title="listen_speech 0.2-1.2s"></button><button class="call survey" style="left:12.000%;width:3.000%" data-row="c2" title="locate_speaker 1.2-1.5s"></button><button class="call aim" style="left:15.000%;width:1.000%" data-row="c3" title="select_camera 1.5-1.6s"></button><button class="call read" style="left:16.000%;width:15.000%" data-row="c4" title="read_gesture 1.6-3.1s"></button><button class="call survey" style="left:31.000%;width:5.000%" data-row="c5" title="scan_occupancy 3.1-3.6s"></button>
               <div class="stop" style="left:36.000%"></div>
@@ -357,10 +360,9 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
           <div class="tablewrap">
             <table class="trace">
               <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Returned</th></tr></thead>
-              <tbody><tr id="c0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0&ndash;0.2s</td><td class="obs">speech_active = <b>true</b>, gesture_active = false</td></tr><tr id="c1"><td>1</td><td class="tool">listen_speech</td><td class="win">0.2&ndash;1.2s</td><td class="obs">transcript &ldquo;talk over there.&rdquo; from that one-second window &mdash; coarse direction word: <b>far</b></td></tr><tr id="c2"><td>2</td><td class="tool">locate_speaker</td><td class="win">1.2&ndash;1.5s</td><td class="obs">nobody is audibly speaking right now &mdash; the utterance had already finished</td></tr><tr id="c3"><td>3</td><td class="tool">select_camera</td><td class="win">1.5&ndash;1.6s</td><td class="obs">now viewing the front camera &mdash; both recorded views are shown on the left, and the arm is only in the cabin one</td></tr><tr id="c4"><td>4</td><td class="tool">read_gesture</td><td class="win">1.6&ndash;3.1s</td><td class="obs">arm bearing &minus;43.6&deg;: slot_2 sits 0.08 m from the pointing line, slot_1 at 1.47 m, slot_3 at 1.80 m</td></tr><tr id="c5"><td>5</td><td class="tool">scan_occupancy</td><td class="win">3.1&ndash;3.6s</td><td class="obs">occupancy (noisy): bays 1 and 7 taken; free candidates 2&ndash;6</td></tr><tr id="c6" class="commit"><td>6</td><td class="tool">commit</td><td class="win">3.6s</td><td class="obs">slot_2 &mdash; the bay nearest the pointing line that the occupancy scan also reported free</td></tr></tbody>
+              <tbody><tr id="c0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0&ndash;0.2s</td><td class="obs">speech_active = true, gesture_active = false</td></tr><tr id="c1"><td>1</td><td class="tool">listen_speech</td><td class="win">0.2&ndash;1.2s</td><td class="obs">transcript &ldquo;talk over there.&rdquo; from that one-second window &mdash; coarse direction word: far</td></tr><tr id="c2"><td>2</td><td class="tool">locate_speaker</td><td class="win">1.2&ndash;1.5s</td><td class="obs">nobody is audibly speaking right now &mdash; the utterance had already finished</td></tr><tr id="c3"><td>3</td><td class="tool">select_camera</td><td class="win">1.5&ndash;1.6s</td><td class="obs">now viewing the front camera &mdash; both recorded views are shown on the left, and the arm is only in the cabin one</td></tr><tr id="c4"><td>4</td><td class="tool">read_gesture</td><td class="win">1.6&ndash;3.1s</td><td class="obs">arm bearing &minus;43.6&deg;: slot_2 sits 0.08 m from the pointing line, slot_1 at 1.47 m, slot_3 at 1.80 m</td></tr><tr id="c5"><td>5</td><td class="tool">scan_occupancy</td><td class="win">3.1&ndash;3.6s</td><td class="obs">occupancy (noisy): bays 1 and 7 taken; free candidates 2&ndash;6</td></tr><tr id="c6" class="commit"><td>6</td><td class="tool">commit</td><td class="win">3.6s</td><td class="obs">slot_2 &mdash; the bay nearest the pointing line that the occupancy scan also reported free</td></tr></tbody>
             </table>
           </div>
-          <p class="tabcap">Six calls, one model turn, and the bay is committed at 3.6&nbsp;s of a 10&nbsp;s recording &mdash; the microphone narrows the direction, the arm picks the bay, the occupancy scan rules out the ones already taken. Two annotation notes, kept visible rather than smoothed over: the site&rsquo;s speech window is annotated from 3.0&nbsp;s although the microphone returns words at 0.2&ndash;1.2&nbsp;s, and the bay vote for this session was 4 of 6 samples at &ldquo;medium&rdquo; confidence.</p>
         </div>
       </div>
     </div>
@@ -368,6 +370,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     <div class="case" id="case-sentry">
       <div class="case-head">
         <h4>Sentry</h4>
+        <p class="lede">Decide whether the person walking up to the car warrants an alert.</p>
       </div>
       <div class="casegrid">
         <div class="left">
@@ -377,7 +380,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         </div>
         <div class="right">
           <div class="tl">
-            <div class="tl-track" data-total="10" data-calls='[["s0", "probe_activity", 0.0, 0.2], ["s1", "track_approach", 0.2, 0.3], ["s2", "locate_motion", 0.3, 2.0], ["s3", "select_camera", 2.0, 2.1], ["s4", "track_approach", 2.1, 3.6], ["s5", "raise_fidelity", 3.6, 5.6], ["s6", "verdict", 5.6, 5.6]]'>
+            <div class="tl-track" data-total="10" data-calls='[["s0", "probe_activity", 0.0, 0.2], ["s1", "track_approach", 0.2, 0.3], ["s2", "locate_motion", 0.3, 2.0], ["s3", "select_camera", 2.0, 2.1], ["s4", "track_approach", 2.1, 3.6], ["s5", "raise_fidelity", 3.6, 5.6], ["s6", "commit", 5.6, 5.6]]'>
               <button class="call" style="left:0.000%;width:2.000%" data-row="s0" title="probe_activity 0.0-0.2s"></button><button class="call aim" style="left:2.000%;width:1.000%" data-row="s1" title="track_approach - failed, no camera selected"></button><button class="call survey" style="left:3.000%;width:17.000%" data-row="s2" title="locate_motion, to 2.0s"></button><button class="call aim" style="left:20.000%;width:1.000%" data-row="s3" title="select_camera 2.0-2.1s"></button><button class="call read" style="left:21.000%;width:15.000%" data-row="s4" title="track_approach 2.1-3.6s"></button><button class="call read" style="left:36.000%;width:20.000%" data-row="s5" title="raise_fidelity 3.6-5.6s"></button>
               <div class="stop" style="left:56.000%"></div>
               <div class="playhead" style="left:0%"><b></b></div>
@@ -388,7 +391,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
           <div class="tablewrap">
             <table class="trace">
               <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Returned</th></tr></thead>
-              <tbody><tr id="s0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0&ndash;0.2s</td><td class="obs">person_near=true, contact_now=false &mdash; the contact flag is conservative and stays false through most real contact</td></tr><tr id="s1"><td>1</td><td class="tool">track_approach</td><td class="win">0.2s</td><td class="obs">Error: no camera selected &mdash; the tracker needs a view first</td></tr><tr id="s2"><td>2</td><td class="tool">locate_motion</td><td class="win">to 2.0s</td><td class="obs">motion on the left side (noisy, confidence 0.8)</td></tr><tr id="s3"><td>3</td><td class="tool">select_camera</td><td class="win">2.0&ndash;2.1s</td><td class="obs">now viewing the left camera (the B-pillar unit)</td></tr><tr id="s4"><td>4</td><td class="tool">track_approach</td><td class="win">2.1&ndash;3.6s</td><td class="obs">body distance &minus;0.06 m over the sampled frames, trend steady, reaching_for_vehicle=true</td></tr><tr id="s5"><td>5</td><td class="tool">raise_fidelity</td><td class="win">3.6&ndash;5.6s</td><td class="obs">body distance 0.06 m, hand_on_vehicle=true, posture: reaching toward the vehicle</td></tr><tr id="s6" class="commit"><td>6</td><td class="tool">verdict</td><td class="win">5.6s</td><td class="obs">alert</td></tr></tbody>
+              <tbody><tr id="s0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.0&ndash;0.2s</td><td class="obs">person_near=true, contact_now=false &mdash; the contact flag is conservative and stays false through most real contact</td></tr><tr id="s1"><td>1</td><td class="tool">track_approach</td><td class="win">0.2s</td><td class="obs">Error: no camera selected &mdash; the tracker needs a view first</td></tr><tr id="s2"><td>2</td><td class="tool">locate_motion</td><td class="win">to 2.0s</td><td class="obs">motion on the left side (noisy, confidence 0.8)</td></tr><tr id="s3"><td>3</td><td class="tool">select_camera</td><td class="win">2.0&ndash;2.1s</td><td class="obs">now viewing the left camera (the B-pillar unit)</td></tr><tr id="s4"><td>4</td><td class="tool">track_approach</td><td class="win">2.1&ndash;3.6s</td><td class="obs">body distance &minus;0.06 m over the sampled frames, trend steady, reaching_for_vehicle=true</td></tr><tr id="s5"><td>5</td><td class="tool">raise_fidelity</td><td class="win">3.6&ndash;5.6s</td><td class="obs">body distance 0.06 m, hand_on_vehicle=true, posture: reaching toward the vehicle</td></tr><tr id="s6" class="commit"><td>6</td><td class="tool">commit</td><td class="win">5.6s</td><td class="obs">alert</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -398,6 +401,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     <div class="case" id="case-arm">
       <div class="case-head">
         <h4>Dual-arm push</h4>
+        <p class="lede">Push the box to the table edge and report the gap left.</p>
       </div>
       <div class="casegrid">
         <div class="left">
@@ -407,12 +411,12 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         </div>
         <div class="right">
           <div class="tl">
-            <div class="tl-track" data-total="89" data-calls='[["a0", "observe (head)", 1.89, 1.92], ["a1", "push_primitive (right)", 4.08, 46.68], ["a2", "observe (head)", 49.53, 49.56], ["a3", "observe (left_wrist)", 49.56, 49.56], ["a4", "observe (right_wrist)", 49.56, 49.89], ["a5", "push_primitive (right)", 54.74, 81.12], ["a6", "observe (head)", 88.76, 88.79]]'>
+            <div class="tl-track" data-total="89" data-calls='[["a0", "observe (head)", 1.89, 1.92], ["a1", "push (right arm)", 4.08, 46.68], ["a2", "push (right arm), refused", 49.50, 49.53], ["a3", "observe (head)", 49.53, 49.56], ["a4", "observe (left_wrist)", 49.56, 49.70], ["a5", "observe (right_wrist)", 49.70, 49.89], ["a6", "push (right arm)", 54.74, 81.12], ["a7", "observe (head)", 88.76, 88.79], ["a8", "commit, withdrawn", 88.80, 88.85], ["a9", "commit", 88.85, 89.0]]'>
               <div class="band gesture" style="left:4.580%;width:47.870%;top:0;bottom:56px"><span style="top:3px">push 1 &mdash; right arm strokes</span></div>
               <div class="band speech" style="left:4.580%;width:47.870%;top:24px;bottom:32px"><span style="top:3px">left wrist watching the stroke</span></div>
               <div class="band gesture" style="left:61.510%;width:29.640%;top:0;bottom:56px"><span style="top:3px">push 2 &mdash; right arm strokes</span></div>
               <div class="band speech" style="left:61.510%;width:29.640%;top:24px;bottom:32px"><span style="top:3px">left wrist watching</span></div>
-              <button class="call read" style="left:2.120%;width:1.600%" data-row="a0" title="observe head at 1.9s"></button><button class="call" style="left:4.580%;width:47.870%" data-row="a1" title="push 1: 4.1-46.7s"></button><button class="call read" style="left:55.650%;width:1.600%" data-row="a2" title="observe head at 49.6s"></button><button class="call read" style="left:57.400%;width:1.600%" data-row="a3" title="observe left wrist at 49.6s"></button><button class="call read" style="left:59.150%;width:1.600%" data-row="a4" title="observe right wrist at 49.9s"></button><button class="call" style="left:61.510%;width:29.640%" data-row="a5" title="push 2: 54.7-81.1s"></button><button class="call read" style="left:97.100%;width:1.600%" data-row="a6" title="observe head at 88.8s"></button>
+              <button class="call read" style="left:2.120%;width:1.600%" data-row="a0" title="observe (head) at 1.9s"></button><button class="call" style="left:4.580%;width:47.870%" data-row="a1" title="push (right arm) 1: 4.1-46.7s"></button><button class="call miss" style="left:53.900%;width:1.600%" data-row="a2" title="push refused - an observation was required first"></button><button class="call read" style="left:55.650%;width:1.600%" data-row="a3" title="observe (head) at 49.6s"></button><button class="call read" style="left:57.400%;width:1.600%" data-row="a4" title="observe (left_wrist) at 49.6s"></button><button class="call read" style="left:59.150%;width:1.600%" data-row="a5" title="observe (right_wrist) at 49.9s"></button><button class="call" style="left:61.510%;width:29.640%" data-row="a6" title="push (right arm) 2: 54.7-81.1s"></button><button class="call read" style="left:97.100%;width:1.600%" data-row="a7" title="observe (head) at 88.8s"></button>
               <div class="stop" style="left:99.800%"></div>
               <div class="playhead" style="left:0%"><b></b></div>
             </div>
@@ -422,7 +426,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
           <div class="tablewrap">
             <table class="trace">
               <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Returned</th></tr></thead>
-              <tbody><tr id="a0"><td>0</td><td class="tool">observe (head)</td><td class="win">1.9s</td><td class="obs">box at (0.236, 0.307) &plusmn;1.5 cm, gap to the far edge 32.3 cm; reachable arm: right</td></tr><tr id="a1"><td>1</td><td class="tool">push_primitive</td><td class="win">4.1&ndash;46.7s</td><td class="obs">right arm strokes: object moved 9.8 cm (asked 10.0)<br><span style="color:#5b7fa6">observer for this stroke: the left wrist camera, aimed at the object for the whole pass</span></td></tr><tr id="a2"><td>2</td><td class="tool">observe (head)</td><td class="win">49.6s</td><td class="obs">box at (0.193, 0.405), gap now 22.5 cm &mdash; push again</td></tr><tr id="a3"><td>3</td><td class="tool">observe (left_wrist)</td><td class="win">49.6s</td><td class="obs">object not in view &mdash; 32&#37; of the frame is the gripper</td></tr><tr id="a4"><td>4</td><td class="tool">observe (right_wrist)</td><td class="win">49.9s</td><td class="obs">cardboard at centre-upper of this arm&rsquo;s own view</td></tr><tr id="a5"><td>5</td><td class="tool">push_primitive</td><td class="win">54.7&ndash;81.1s</td><td class="obs">right arm strokes: moved 7.5 cm &mdash; capped to 9.3 cm by the table edge<br><span style="color:#5b7fa6">observer for this stroke: the left wrist camera</span></td></tr><tr id="a6"><td>6</td><td class="tool">observe (head)</td><td class="win">88.8s</td><td class="obs">box at (0.068, 0.537), gap now 3.8 cm</td></tr><tr id="a7" class="commit"><td>7</td><td class="tool">commit</td><td class="win">after 88.8s</td><td class="obs">answer 0.038 m &mdash; boundary reached and verified from the head view</td></tr></tbody>
+              <tbody><tr id="a0"><td>0</td><td class="tool">observe (head)</td><td class="win">1.9s</td><td class="obs">box at (0.236, 0.307) &plusmn;1.5 cm, gap to the far edge 32.3 cm; reachable arm: right</td></tr><tr id="a1"><td>1</td><td class="tool">push (right arm)</td><td class="win">4.1&ndash;46.7s</td><td class="obs">right arm strokes: object moved 9.8 cm (asked 10.0)<br>observer for this stroke: the left wrist camera, aimed at the object for the whole pass</td></tr><tr id="a2" class="miss"><td>2</td><td class="tool">push (right arm)</td><td class="win">49.5s</td><td class="obs">not executed &mdash; &ldquo;an observation was required first&rdquo;. The three readings below came back instead of the stroke</td></tr><tr id="a3"><td>3</td><td class="tool">observe (head)</td><td class="win">49.6s</td><td class="obs">box at (0.193, 0.405), gap now 22.5 cm &mdash; push again</td></tr><tr id="a4"><td>4</td><td class="tool">observe (left_wrist)</td><td class="win">49.6s</td><td class="obs">object not in view &mdash; 32&#37; of the frame is the gripper</td></tr><tr id="a5"><td>5</td><td class="tool">observe (right_wrist)</td><td class="win">49.9s</td><td class="obs">cardboard at centre-upper of this arm&rsquo;s own view</td></tr><tr id="a6"><td>6</td><td class="tool">push (right arm)</td><td class="win">54.7&ndash;81.1s</td><td class="obs">right arm strokes: moved 7.5 cm &mdash; capped to 9.3 cm by the table edge<br>observer for this stroke: the left wrist camera</td></tr><tr id="a7"><td>7</td><td class="tool">observe (head)</td><td class="win">88.8s</td><td class="obs">box at (0.068, 0.537), and the head re-measures the block as deeper than before &mdash; half-depth 0.135 m against 0.080 m &mdash; so its far face now sits at 0.672 m and the gap reads 3.8 cm. Of the 18.7 cm the gap closed since the last reading, 13.1 cm is travel and 5.5 cm is the re-measurement</td></tr><tr id="a8" class="miss"><td>8</td><td class="tool">commit</td><td class="win">after 88.8s</td><td class="obs">answer 0.225 m &mdash; withdrawn. It was derived from the position read before the second stroke, with no new reading taken; the episode did not end here</td></tr><tr id="a9" class="commit"><td>9</td><td class="tool">commit</td><td class="win">after 88.8s</td><td class="obs">answer 0.038 m, computed from the 88.8 s head reading &mdash; 0.710 &minus; (0.537 + 0.135)</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -432,6 +436,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     <div class="case" id="case-cabin">
       <div class="case-head">
         <h4>Cabin monitoring, held-out task</h4>
+        <p class="lede">Say what the person in the driver&rsquo;s seat is doing.</p>
       </div>
       <div class="casegrid">
         <div class="left">
@@ -440,9 +445,9 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         </div>
         <div class="right">
           <div class="tl">
-            <div class="tl-track" data-total="10" data-calls='[["b0", "audio_asr_tool", 1.25, 2.25], ["b1", "video_temporal_ground_tool", 2.25, 3.75], ["b2", "video_caption_tool", 3.75, 5.75], ["b3", "commit", 6.23, 6.23]]'>
+            <div class="tl-track" data-total="10" data-calls='[["b0", "audio_asr", 1.25, 2.25], ["b1", "video_temporal_ground", 2.25, 3.75], ["b2", "video_caption", 3.75, 5.75], ["b3", "commit", 6.23, 6.23]]'>
               <div class="band gesture" style="left:10.400%;width:22.700%"><span>grounded event window 1.04&ndash;3.31s</span></div>
-              <button class="call" style="left:12.500%;width:10.000%" data-row="b0" title="audio_asr_tool 1.25-2.25s"></button><button class="call survey" style="left:22.500%;width:15.000%" data-row="b1" title="video_temporal_ground_tool 2.25-3.75s"></button><button class="call read" style="left:37.500%;width:20.000%" data-row="b2" title="video_caption_tool 3.75-5.75s"></button>
+              <button class="call" style="left:12.500%;width:10.000%" data-row="b0" title="audio_asr 1.25-2.25s"></button><button class="call survey" style="left:22.500%;width:15.000%" data-row="b1" title="video_temporal_ground 2.25-3.75s"></button><button class="call read" style="left:37.500%;width:20.000%" data-row="b2" title="video_caption 3.75-5.75s"></button>
               <div class="stop" style="left:62.300%"></div>
               <div class="playhead" style="left:0%"><b></b></div>
             </div>
@@ -452,7 +457,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
           <div class="tablewrap">
             <table class="trace">
               <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Returned</th></tr></thead>
-              <tbody><tr id="b0"><td>0</td><td class="tool">audio_asr_tool</td><td class="win">1.25&ndash;2.25s</td><td class="obs">no speech detected &mdash; rules out talking on the phone</td></tr><tr id="b1"><td>1</td><td class="tool">video_temporal_ground_tool</td><td class="win">2.25&ndash;3.75s</td><td class="obs">&ldquo;What is the person in the driver&rsquo;s seat doing?&rdquo; localized to t = [1.04, 3.31]s</td></tr><tr id="b2"><td>2</td><td class="tool">video_caption_tool</td><td class="win">3.75&ndash;5.75s</td><td class="obs">&ldquo;a man &hellip; in the driver&rsquo;s seat &hellip; looking down at and interacting with his smartphone&rdquo;</td></tr><tr id="b3" class="commit"><td>3</td><td class="tool">commit</td><td class="win">6.23s</td><td class="obs">holding and looking at a phone, 3.8 s before the stream ends</td></tr></tbody>
+              <tbody><tr id="b0"><td>0</td><td class="tool">audio_asr</td><td class="win">1.25&ndash;2.25s</td><td class="obs">no speech detected &mdash; rules out talking on the phone</td></tr><tr id="b1"><td>1</td><td class="tool">video_temporal_ground</td><td class="win">2.25&ndash;3.75s</td><td class="obs">&ldquo;What is the person in the driver&rsquo;s seat doing?&rdquo; localized to t = [1.04, 3.31]s</td></tr><tr id="b2"><td>2</td><td class="tool">video_caption</td><td class="win">3.75&ndash;5.75s</td><td class="obs">&ldquo;a man &hellip; in the driver&rsquo;s seat &hellip; looking down at and interacting with his smartphone&rdquo;</td></tr><tr id="b3" class="commit"><td>3</td><td class="tool">commit</td><td class="win">6.23s</td><td class="obs">holding and looking at a phone, 3.8 s before the stream ends</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -481,8 +486,8 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         </figure></div>
         <div class="right">
           <div class="tl">
-            <div class="tl-track" data-total="14" data-calls='[["h0", "look_tool", 0, 2], ["h1", "list_frontiers_tool", 2, 4], ["h2", "goto_frontier_tool", 4, 6], ["h3", "look_tool", 6, 8], ["h4", "turn_tool", 8, 10], ["h5", "look_tool", 10, 12], ["h6", "localize_tool", 12, 14]]'>
-              <button class="call read" style="left:0.000%;width:14.286%" data-row="h0" title="look_tool"></button><button class="call survey" style="left:14.286%;width:14.286%" data-row="h1" title="list_frontiers_tool"></button><button class="call" style="left:28.571%;width:14.286%" data-row="h2" title="goto_frontier_tool"></button><button class="call read" style="left:42.857%;width:14.286%" data-row="h3" title="look_tool"></button><button class="call aim" style="left:57.143%;width:14.286%" data-row="h4" title="turn_tool"></button><button class="call read" style="left:71.429%;width:14.286%" data-row="h5" title="look_tool"></button><button class="call survey" style="left:85.714%;width:14.286%" data-row="h6" title="localize_tool"></button>
+            <div class="tl-track" data-total="14" data-calls='[["h0", "look", 0, 2], ["h1", "list_frontiers", 2, 4], ["h2", "goto_frontier", 4, 6], ["h3", "look", 6, 8], ["h4", "turn", 8, 10], ["h5", "look", 10, 12], ["h6", "localize", 12, 14]]'>
+              <button class="call read" style="left:0.000%;width:14.286%" data-row="h0" title="look"></button><button class="call survey" style="left:14.286%;width:14.286%" data-row="h1" title="list_frontiers"></button><button class="call" style="left:28.571%;width:14.286%" data-row="h2" title="goto_frontier"></button><button class="call read" style="left:42.857%;width:14.286%" data-row="h3" title="look"></button><button class="call aim" style="left:57.143%;width:14.286%" data-row="h4" title="turn"></button><button class="call read" style="left:71.429%;width:14.286%" data-row="h5" title="look"></button><button class="call survey" style="left:85.714%;width:14.286%" data-row="h6" title="localize"></button>
               <div class="stop" style="left:100.000%"></div>
               <div class="playhead" style="left:0%"><b></b></div>
             </div>
@@ -492,7 +497,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
           <div class="tablewrap">
             <table class="trace">
               <thead><tr><th>#</th><th>Tool</th><th>Returned</th></tr></thead>
-              <tbody><tr id="h0"><td>0</td><td class="tool">look_tool</td><td class="obs">a kitchen with an exit to the left leading to a stair</td></tr><tr id="h1"><td>1</td><td class="tool">list_frontiers_tool</td><td class="obs">unexplored places: F1 0.9 m away, turn 127&deg; left, 23&#37; &hellip;</td></tr><tr id="h2"><td>2</td><td class="tool">goto_frontier_tool</td><td class="obs">arrived at F5 (1.35 m travelled), now facing it</td></tr><tr id="h3"><td>3</td><td class="tool">look_tool</td><td class="obs">a kitchen with an exit to the left into a dining room</td></tr><tr id="h4"><td>4</td><td class="tool">turn_tool(&minus;45&deg;)</td><td class="obs">heading now 21.6&deg;</td></tr><tr id="h5"><td>5</td><td class="tool">look_tool</td><td class="obs">a kitchen with an exit to the left, featuring a stove &mdash; the stove top is clear</td></tr><tr id="h6" class="commit"><td>6</td><td class="tool">localize_tool &rarr; commit</td><td class="obs">no</td></tr></tbody>
+              <tbody><tr id="h0"><td>0</td><td class="tool">look</td><td class="obs">a kitchen with an exit to the left leading to a stair</td></tr><tr id="h1"><td>1</td><td class="tool">list_frontiers</td><td class="obs">unexplored places: F1 0.9 m away, turn 127&deg; left, 23&#37; &hellip;</td></tr><tr id="h2"><td>2</td><td class="tool">goto_frontier</td><td class="obs">arrived at F5 (1.35 m travelled), now facing it</td></tr><tr id="h3"><td>3</td><td class="tool">look</td><td class="obs">a kitchen with an exit to the left into a dining room</td></tr><tr id="h4"><td>4</td><td class="tool">turn(&minus;45&deg;)</td><td class="obs">heading now 21.6&deg;</td></tr><tr id="h5"><td>5</td><td class="tool">look</td><td class="obs">a kitchen with an exit to the left, featuring a stove &mdash; the stove top is clear</td></tr><tr id="h6" class="commit"><td>6</td><td class="tool">localize &rarr; commit</td><td class="obs">no</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -502,7 +507,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     <div class="case" id="sim-realman">
       <div class="case-head">
         <h4>RealMan manipulation</h4>
-        <p class="lede">Push the box 16&nbsp;cm across the table &mdash; and read off how it moved from the other arm&rsquo;s wrist camera.</p>
+        <p class="lede">Push the box 16&nbsp;cm across the table.</p>
       </div>
       <div class="casegrid">
         <div class="left"><figure>
@@ -510,10 +515,10 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         </figure></div>
         <div class="right">
           <div class="tl">
-            <div class="tl-track" data-total="5.06" data-calls='[["m0", "look (left arm to the watch pose)", 0.0, 1.63], ["m1", "push (right arm, +16 cm)", 1.63, 4.44], ["m2", "verify", 4.44, 5.06]]'>
+            <div class="tl-track" data-total="5.06" data-calls='[["m0", "look (left arm)", 0.0, 1.63], ["m1", "push (right arm)", 1.63, 4.44], ["m2", "evaluate_task", 4.44, 5.06]]'>
               <div class="band speech" style="left:0.000%;width:32.200%"><span>left arm &rarr; watch pose</span></div>
               <div class="band gesture" style="left:32.200%;width:55.500%"><span>right arm strokes, left wrist watching</span></div>
-              <button class="call aim" style="left:0.000%;width:32.200%" data-row="m0" title="look — left arm to the watch pose"></button><button class="call" style="left:32.200%;width:55.500%" data-row="m1" title="push — right arm, +16 cm"></button><button class="call read" style="left:87.700%;width:12.300%" data-row="m2" title="verify"></button>
+              <button class="call aim" style="left:0.000%;width:32.200%" data-row="m0" title="look (left arm)"></button><button class="call" style="left:32.200%;width:55.500%" data-row="m1" title="push (right arm), +16 cm"></button><button class="call read" style="left:87.700%;width:12.300%" data-row="m2" title="evaluate_task"></button>
               <div class="stop" style="left:100.000%"></div>
               <div class="playhead" style="left:0%"><b></b></div>
             </div>
@@ -522,11 +527,10 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
           </div>
           <div class="tablewrap">
             <table class="trace">
-              <thead><tr><th>#</th><th>Step</th><th>Returned</th></tr></thead>
-              <tbody><tr id="m0"><td>0</td><td class="tool">look &mdash; left arm</td><td class="obs">the left arm travels to [0.097, 0.400, 1.016] and holds there, so its wrist camera looks down the line the box is about to travel</td></tr><tr id="m1"><td>1</td><td class="tool">push &mdash; right arm</td><td class="obs">the right arm stages behind the box and drives it 0.160&nbsp;m along +y; watched from the left wrist at framing quality 0.43, the box turned 0&deg; through the stroke &mdash; it slid rather than tipping &mdash; and came to rest 0.211&nbsp;m from the far edge</td></tr><tr id="m2" class="commit"><td>2</td><td class="tool">verify</td><td class="obs">success &mdash; measured displacement 0.160&nbsp;m against the 0.16&nbsp;m target, progress 1.000</td></tr></tbody>
+              <thead><tr><th>#</th><th>Tool</th><th>Returned</th></tr></thead>
+              <tbody><tr id="m0"><td>0</td><td class="tool">look (left arm)</td><td class="obs">the left arm travels to [0.097, 0.400, 1.016] and holds there, so its wrist camera looks down the line the box is about to travel</td></tr><tr id="m1"><td>1</td><td class="tool">push (right arm)</td><td class="obs">the right arm stages behind the box and drives it 0.160&nbsp;m along +y; watched from the left wrist at framing quality 0.43, the box turned 0&deg; through the stroke &mdash; it slid rather than tipping &mdash; and came to rest 0.211&nbsp;m from the far edge</td></tr><tr id="m2" class="commit"><td>2</td><td class="tool">evaluate_task</td><td class="obs">success &mdash; measured displacement 0.160&nbsp;m against the 0.16&nbsp;m target, progress 1.000</td></tr></tbody>
             </table>
           </div>
-          <p class="tabcap">Neither arm can do this alone: the box sits where only the right arm reaches, which is exactly why the left one is free to watch. The reading &mdash; slid, not tipped &mdash; comes from that wrist view, not from the fixed head camera, which never frames the stroke well enough to resolve it.</p>
         </div>
       </div>
     </div>
@@ -534,8 +538,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
     <div class="case" id="sim-carla">
       <div class="case-head">
         <h4>CARLA guided parking</h4>
-        <p class="lede">&ldquo;Not here, park in that middle spot&rdquo; &mdash; four tool calls, and the bay is
-        committed at 2.15&nbsp;s, 0.01&nbsp;s before the speaker finishes the sentence.</p>
+        <p class="lede">Park in the bay the person outside is pointing at.</p>
       </div>
       <div class="casegrid">
         <div class="left"><figure>
@@ -545,19 +548,21 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
         </figure></div>
         <div class="right">
           <div class="tl">
-            <div class="tl-track" data-total="2.20" data-calls='[["r0", "LISTEN", 0.0, 1.4], ["r1", "SCAN", 1.45, 1.5], ["r2", "LISTEN", 1.55, 2.0], ["r3", "RECOGNIZE_GESTURE", 2.05, 2.15]]'>
-              <div class="band speech" style="left:0.000%;width:98.136%"></div>
-              <button class="call" style="left:0.000%;width:63.636%" data-row="r0" title="LISTEN 0.00-1.40s"></button><button class="call survey" style="left:65.909%;width:2.273%" data-row="r1" title="SCAN 1.45-1.50s"></button><button class="call" style="left:70.455%;width:20.455%" data-row="r2" title="LISTEN 1.55-2.00s"></button><button class="call read" style="left:93.182%;width:4.545%" data-row="r3" title="RECOGNIZE_GESTURE 2.05-2.15s"></button>
-              <div class="stop" style="left:97.727%"></div>
+            <div class="tl-track" data-total="4.80" data-calls='[["r0", "probe_activity", 0.0, 0.1], ["r1", "probe_activity", 0.7, 0.8], ["r2", "probe_activity", 1.4, 1.5], ["r3", "probe_activity", 2.1, 2.2], ["r4", "listen_speech", 2.55, 3.95], ["r5", "scan_occupancy", 4.0, 4.05], ["r6", "listen_speech", 4.1, 4.55], ["r7", "read_gesture", 4.6, 4.7]]'>
+              <div class="band pre" style="left:0.000%;width:53.125%"><span>walking up</span></div>
+              <div class="band speech" style="left:53.125%;width:44.979%"><span>speaking</span></div>
+              <div class="band gesture" style="left:65.625%;width:10.417%"><span>arm goes up</span></div>
+              <button class="call aim" style="left:0.000%;width:2.083%" data-row="r0" title="probe_activity 0.00-0.10s"></button><button class="call aim" style="left:14.583%;width:2.083%" data-row="r1" title="probe_activity 0.70-0.80s"></button><button class="call aim" style="left:29.167%;width:2.083%" data-row="r2" title="probe_activity 1.40-1.50s"></button><button class="call aim" style="left:43.750%;width:2.083%" data-row="r3" title="probe_activity 2.10-2.20s"></button><button class="call" style="left:53.125%;width:29.167%" data-row="r4" title="listen_speech 2.55-3.95s"></button><button class="call survey" style="left:83.333%;width:1.042%" data-row="r5" title="scan_occupancy 4.00-4.05s"></button><button class="call" style="left:85.417%;width:9.375%" data-row="r6" title="listen_speech 4.10-4.55s"></button><button class="call read" style="left:95.833%;width:2.083%" data-row="r7" title="read_gesture 4.60-4.70s"></button>
+              <div class="stop" style="left:97.917%"></div>
               <div class="playhead" style="left:0%"><b></b></div>
             </div>
-            <div class="tl-axis"><span class="sec" style="left:0.00%">0</span><span class="sec" style="left:22.73%">0.5</span><span class="sec" style="left:45.45%">1.0</span><span class="sec" style="left:68.18%">1.5</span><span class="sec" style="left:90.91%">2.0</span><span class="sec" style="left:100.00%">2.2</span></div>
+            <div class="tl-axis"><span class="sec" style="left:0.00%">0</span><span class="sec" style="left:20.83%">1</span><span class="sec" style="left:41.67%">2</span><span class="sec" style="left:62.50%">3</span><span class="sec" style="left:83.33%">4</span><span class="sec" style="left:100.00%">4.8</span></div>
             <p class="tl-readout">clock <b class="tlnow">0.00s</b> &nbsp;<span class="tlwhat">drag, scrub or click a row</span></p>
           </div>
           <div class="tablewrap">
             <table class="trace">
               <thead><tr><th>#</th><th>Tool</th><th>Window</th><th>Returned</th></tr></thead>
-              <tbody><tr id="r0"><td>0</td><td class="tool">LISTEN</td><td class="win">0.00&ndash;1.40s</td><td class="obs">on the 1.2&nbsp;s of speech uttered so far: &ldquo;Not here.&rdquo; &mdash; the refusal is already decodable, the bay to use is not</td></tr><tr id="r1"><td>1</td><td class="tool">SCAN</td><td class="win">1.45&ndash;1.50s</td><td class="obs">all six bays resolved from the front-wide view: 0, 2, 4 taken; 1, 3, 5 free &mdash; run while the speaker is still mid-sentence</td></tr><tr id="r2"><td>2</td><td class="tool">LISTEN</td><td class="win">1.55&ndash;2.00s</td><td class="obs">on 1.8&nbsp;s of speech: &ldquo;Not here, park in that middle spot.&rdquo; &mdash; the direction cue lands, <i>middle</i></td></tr><tr id="r3" class="commit"><td>3</td><td class="tool">RECOGNIZE_GESTURE &rarr; commit</td><td class="win">2.05&ndash;2.15s</td><td class="obs">arm bearing &minus;165.9&deg; against an annotated arm at &minus;153.3&deg; &rarr; bay 3, the middle free bay the arm points nearest</td></tr></tbody>
+              <tbody><tr id="r0"><td>0</td><td class="tool">probe_activity</td><td class="win">0.00&ndash;0.10s</td><td class="obs">the four surround views, downscaled into one 640&times;360 sweep: a person on the driver&rsquo;s side, confidence 0.84 &mdash; this is what wakes the rest of the chain, and what picks the camera</td></tr><tr id="r1"><td>1</td><td class="tool">probe_activity</td><td class="win">0.70&ndash;0.80s</td><td class="obs">still on the driver&rsquo;s side, confidence 0.91 &mdash; walking, not yet speaking</td></tr><tr id="r2"><td>2</td><td class="tool">probe_activity</td><td class="win">1.40&ndash;1.50s</td><td class="obs">same, confidence 0.91</td></tr><tr id="r3"><td>3</td><td class="tool">probe_activity</td><td class="win">2.10&ndash;2.20s</td><td class="obs">same, confidence 0.93 &mdash; arrived and standing; nothing has been said, so nothing expensive has run</td></tr><tr id="r4"><td>4</td><td class="tool">listen_speech</td><td class="win">2.55&ndash;3.95s</td><td class="obs">on the 1.2&nbsp;s of speech uttered so far: &ldquo;Not here.&rdquo; &mdash; the refusal is already decodable, the bay to use is not</td></tr><tr id="r5"><td>5</td><td class="tool">scan_occupancy</td><td class="win">4.00&ndash;4.05s</td><td class="obs">all six bays resolved from the front-wide view: 0, 2, 4 taken; 1, 3, 5 free &mdash; run while the speaker is still mid-sentence</td></tr><tr id="r6"><td>6</td><td class="tool">listen_speech</td><td class="win">4.10&ndash;4.55s</td><td class="obs">on 1.8&nbsp;s of speech: &ldquo;Not here, park in that middle spot.&rdquo; &mdash; the direction cue lands, middle</td></tr><tr id="r7" class="commit"><td>7</td><td class="tool">read_gesture &rarr; commit</td><td class="win">4.60&ndash;4.70s</td><td class="obs">on the camera the probe chose, arm bearing &minus;151.9&deg;; the true speaker-to-bay-3 bearing is &minus;153.8&deg; &rarr; bay 3, the middle free bay the arm points nearest</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -570,7 +575,7 @@ hr.rule{border:0;border-top:1px solid #ededed;margin:0}
   <div class="container has-text-centered">
     <p><b>Recordings and privacy.</b> The vehicle, cabin, and robot clips are real recordings from the
     testbeds described above, captured by the authors with the consent of everyone appearing in them.
-    Every face is blurred frame by frame before publication.</p>
+    Faces, and any printed label that could identify a person, a product or a place, are pixelated frame by frame before publication.</p>
     <p>This website is licensed under a
     <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
     Attribution-ShareAlike 4.0 International License</a>. The layout borrows from the
